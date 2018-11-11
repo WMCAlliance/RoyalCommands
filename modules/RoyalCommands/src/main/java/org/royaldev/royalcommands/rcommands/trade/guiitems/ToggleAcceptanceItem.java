@@ -5,19 +5,18 @@
  */
 package org.royaldev.royalcommands.rcommands.trade.guiitems;
 
+import java.util.Arrays;
 import org.bukkit.Material;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.GUIItem;
 import org.royaldev.royalcommands.rcommands.trade.Party;
 import org.royaldev.royalcommands.rcommands.trade.Trade;
 
-import java.util.Arrays;
-
 public class ToggleAcceptanceItem extends GUIItem {
 
     public ToggleAcceptanceItem(final Trade trade) {
         super(
-            Material.BOOK_AND_QUILL,
+            Material.WRITABLE_BOOK,
             MessageColor.RESET + "Toggle Acceptance",
             Arrays.asList(
                 MessageColor.NEUTRAL + "This toggles your acceptance of the trade.",

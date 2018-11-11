@@ -184,7 +184,7 @@ public class CmdFirework extends TabCommand {
         }
         Player p = (Player) cs;
         ItemStack is = p.getInventory().getItemInMainHand();
-        if (is.getType() != Material.FIREWORK) {
+        if (is.getType() != Material.FIREWORK_ROCKET) {
             cs.sendMessage(MessageColor.NEGATIVE + "The item in hand is not a firework!");
             return true;
         }

@@ -76,9 +76,9 @@ public class CmdIngot2Block extends TabCommand {
             case REDSTONE:
                 i2b(p, hand, Material.REDSTONE, Material.REDSTONE_BLOCK);
                 break;
-            case INK_SACK:
+            case INK_SAC:
                 if (hand.getDurability() == 4) {
-                    i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
+                    i2b(p, hand, Material.INK_SAC, Material.LAPIS_BLOCK, (short) 4);
                     break;
                 }
             case WHEAT:
