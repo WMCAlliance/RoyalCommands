@@ -1244,7 +1244,7 @@ public final class RUtils {
      * @return New inventory with updated holder
      */
     public static Inventory setHolder(Inventory i, InventoryHolder ih) {
-        Inventory ii = createInv(ih, i.getSize(), i.getName());
+        Inventory ii = createInv(ih, i.getSize(), "");
         ii.setContents(i.getContents());
         return ii;
     }

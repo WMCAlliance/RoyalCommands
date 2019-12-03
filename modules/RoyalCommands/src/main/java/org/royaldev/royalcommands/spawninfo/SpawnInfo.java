@@ -8,9 +8,6 @@ package org.royaldev.royalcommands.spawninfo;
 import com.comphenix.attribute.AttributeStorage;
 import com.comphenix.attribute.Attributes;
 import com.comphenix.attribute.NbtFactory;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -21,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * A class used in item-spawning to determine and store information about the spawn status of an item.
@@ -193,24 +192,24 @@ public class SpawnInfo implements Serializable {
             try {
                 defaults.put(Material.DIAMOND_AXE, createAttribute(6D, defaultUUID));
                 defaults.put(Material.DIAMOND_PICKAXE, createAttribute(5D, defaultUUID));
-                defaults.put(Material.DIAMOND_SPADE, createAttribute(4D, defaultUUID));
+                defaults.put(Material.DIAMOND_SHOVEL, createAttribute(4D, defaultUUID));
                 defaults.put(Material.DIAMOND_SWORD, createAttribute(7D, defaultUUID));
-                defaults.put(Material.GOLD_AXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.GOLD_PICKAXE, createAttribute(2D, defaultUUID));
-                defaults.put(Material.GOLD_SPADE, createAttribute(1D, defaultUUID));
-                defaults.put(Material.GOLD_SWORD, createAttribute(4D, defaultUUID));
+                defaults.put(Material.GOLDEN_AXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.GOLDEN_PICKAXE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.GOLDEN_SHOVEL, createAttribute(1D, defaultUUID));
+                defaults.put(Material.GOLDEN_SWORD, createAttribute(4D, defaultUUID));
                 defaults.put(Material.IRON_AXE, createAttribute(5D, defaultUUID));
                 defaults.put(Material.IRON_PICKAXE, createAttribute(4D, defaultUUID));
-                defaults.put(Material.IRON_SPADE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.IRON_SHOVEL, createAttribute(3D, defaultUUID));
                 defaults.put(Material.IRON_SWORD, createAttribute(6D, defaultUUID));
                 defaults.put(Material.STONE_AXE, createAttribute(4D, defaultUUID));
                 defaults.put(Material.STONE_PICKAXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.STONE_SPADE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.STONE_SHOVEL, createAttribute(2D, defaultUUID));
                 defaults.put(Material.STONE_SWORD, createAttribute(5D, defaultUUID));
-                defaults.put(Material.WOOD_AXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.WOOD_PICKAXE, createAttribute(2D, defaultUUID));
-                defaults.put(Material.WOOD_SPADE, createAttribute(1D, defaultUUID));
-                defaults.put(Material.WOOD_SWORD, createAttribute(4D, defaultUUID));
+                defaults.put(Material.WOODEN_AXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.WOODEN_PICKAXE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.WOODEN_SHOVEL, createAttribute(1D, defaultUUID));
+                defaults.put(Material.WOODEN_SWORD, createAttribute(4D, defaultUUID));
             } catch (Exception ex) {
                 ex.printStackTrace(); // wtf is going on
             }
