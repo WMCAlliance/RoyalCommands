@@ -480,7 +480,7 @@ public abstract class BaseCommand implements CommandExecutor {
                 return new Flag(null, new String[]{alias}, o);
             } else {
                 //noinspection unchecked
-                return new Flag<>(realFlag == null ? String.class : realFlag.getType(), new String[]{alias}, o);
+                return new Flag(realFlag == null ? String.class : realFlag.getType(), new String[]{alias}, o);
             }
         }
 

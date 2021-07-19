@@ -30,17 +30,8 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.1</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -86,7 +77,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
+                <version>2.22.2</version>
                 <configuration>
                     <forkCount>1C</forkCount>
                     <workingDirectory>./</workingDirectory>
@@ -109,9 +100,18 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>com.github.wvengen</groupId>
                 <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.0.8</version>
+                <version>2.4.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>net.sf.proguard</groupId>
@@ -199,6 +199,12 @@
             <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
         </repository>-->
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-snapshots</id>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -208,13 +214,13 @@
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>LATEST</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.kitteh</groupId>
             <artifactId>VanishNoPacket</artifactId>
-            <version>RELEASE</version>
+            <version>3.19.1</version>
             <scope>provided</scope>
         </dependency>
         <!--<dependency> Currently has broken repo.
@@ -225,7 +231,7 @@
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
             <artifactId>Multiverse-Core</artifactId>
-            <version>RELEASE</version>
+            <version>4.3.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -235,15 +241,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
-            <version>1.6.1</version>
+            <version>2.0.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>2.0.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -319,6 +331,9 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <java.version>16</java.version>
         <maven.build.timestamp.format>yyyyMMdd.kkmmss</maven.build.timestamp.format>
         <BUILD_NUMBER>local-${maven.build.timestamp}</BUILD_NUMBER>
         <pluginversion>${project.version}-${BUILD_NUMBER}</pluginversion>
