@@ -190,6 +190,10 @@
             <id>multi</id>
             <url>https://repo.onarandombox.com/content/repositories/multiverse/</url>
         </repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
         <repository>
             <id>phoenix616</id>
             <url>https://repo.phoenix616.dev/</url>
