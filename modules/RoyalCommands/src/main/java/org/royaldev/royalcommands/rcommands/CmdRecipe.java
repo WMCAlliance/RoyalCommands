@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.Damageable;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -90,9 +91,10 @@ public class CmdRecipe extends TabCommand {
             } else continue;
             for (ItemStack ist : i.getContents()) {
                 if (ist == null) continue;
-                if (ist.getDurability() == (short)32767) {
+                Damageable im = (Damageable) ist.getItemMeta();
+                if (im.getDamage() == (short)32767) {
                     this.plugin.getLogger().log(Level.WARNING, "RECIPE: Durability of item {0} is invalid.", ist.getType());
-                    ist.setDurability((short)0);
+                    im.setDamage((short)0);
                 }
             }
             workbenches.add(i);

@@ -7,7 +7,7 @@ package org.royaldev.royalcommands;
 
 import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
-import com.onarandombox.MultiverseCore.MultiverseCore;
+//import com.onarandombox.MultiverseCore.MultiverseCore;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -23,6 +23,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
