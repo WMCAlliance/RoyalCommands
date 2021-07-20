@@ -356,9 +356,9 @@ public class SpawnInfo implements Serializable {
 
         public static void removeTagIfEmpty(Attributes a) {
             if (a.size() <= 0) return;
-            NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(a.stack);
+            NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(a.getStack());
             nbt.remove("AttributeModifiers");
-            if (nbt.isEmpty()) NbtFactory.setItemTag(a.stack, null); // FIXME: null
+            if (nbt.isEmpty()) NbtFactory.setItemTag(a.getStack(), null); // FIXME: null
         }
 
     }
