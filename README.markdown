@@ -1,7 +1,7 @@
 RoyalCommands
 =============
 
-![RoyalCommands](http://dev.bukkit.org/media/images/56/527/RoyalCommandsLogo.png)
+![RoyalCommands](https://www.spigotmc.org/attachments/royalcommandslogo-big-png.21832/)
 
 RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 

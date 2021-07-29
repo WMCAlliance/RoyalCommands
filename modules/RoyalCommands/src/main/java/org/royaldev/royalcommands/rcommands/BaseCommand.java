@@ -566,23 +566,25 @@ public abstract class BaseCommand implements CommandExecutor {
             String currentFlagName = null;
             final List<String> parameters = new ArrayList<>();
             final List<String> extraParameters = new ArrayList<>();
-            for (String arg : arguments) {
-                if (this.isFlag(arg) || this.isFlagTerminator(arg)) {
-                    if (currentFlagName != null) {
-                        final Flag f = this.createFlag(currentFlagName, parameters.toArray(new String[parameters.size()]));
-                        this.add(f);
+            if(!expectedFlags.isEmpty()){
+                for (String arg : arguments) {
+                    if (this.isFlag(arg) || this.isFlagTerminator(arg)) {
+                        if (currentFlagName != null) {
+                            final Flag f = this.createFlag(currentFlagName, parameters.toArray(new String[parameters.size()]));
+                            this.add(f);
+                        }
+                        parameters.clear();
+                        currentFlagName = this.isFlagTerminator(arg) ? null : this.getFlagName(arg);
+                        continue;
                     }
-                    parameters.clear();
-                    currentFlagName = this.isFlagTerminator(arg) ? null : this.getFlagName(arg);
-                    continue;
+                    arg = arg.replace("\\-", "-");
+                    if (currentFlagName != null) parameters.add(arg);
+                    else extraParameters.add(arg);
                 }
-                arg = arg.replace("\\-", "-");
-                if (currentFlagName != null) parameters.add(arg);
-                else extraParameters.add(arg);
-            }
-            if (currentFlagName != null) {
-                final Flag f = this.createFlag(currentFlagName, parameters.toArray(new String[parameters.size()]));
-                this.add(f); // last arg can't be neglected
+                if (currentFlagName != null) {
+                    final Flag f = this.createFlag(currentFlagName, parameters.toArray(new String[parameters.size()]));
+                    this.add(f); // last arg can't be neglected
+                }
             }
             this.extraParameters = (String[]) ArrayUtils.addAll(this.extraParameters, extraParameters.toArray(new String[extraParameters.size()]));
         }

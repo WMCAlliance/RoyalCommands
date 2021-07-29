@@ -135,7 +135,6 @@
                     <proguardInclude>../../proguard.cfg</proguardInclude>
                     <outjar>${project.name}-${project.version}.jar</outjar>
                     <libs>
-                        <lib>${java.home}/lib/rt.jar</lib>
                         <lib>${project.build.directory}/lib</lib>
                     </libs>
                 </configuration>
