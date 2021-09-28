@@ -25,6 +25,8 @@ public class CmdWhitelist extends ParentCommand {
 
     public CmdWhitelist(final RoyalCommands instance, final String name) {
         super(instance, name, false);
+        addExpectedFlag(UUID_FLAG);
+        addExpectedFlag(PLAYER_FLAG);
         this.addSubCommand(new SCmdAdd(this.plugin, this));
         this.addSubCommand(new SCmdCheck(this.plugin, this));
         this.addSubCommand(new SCmdRemove(this.plugin, this));
@@ -33,8 +35,6 @@ public class CmdWhitelist extends ParentCommand {
     @Override
     protected void addSubCommand(final SubCommand sc) {
         super.addSubCommand(sc);
-        sc.addExpectedFlag(CmdWhitelist.PLAYER_FLAG);
-        sc.addExpectedFlag(CmdWhitelist.UUID_FLAG);
     }
 
     public RPlayer getRPlayer(final CommandArguments ca, final CommandSender cs) {
