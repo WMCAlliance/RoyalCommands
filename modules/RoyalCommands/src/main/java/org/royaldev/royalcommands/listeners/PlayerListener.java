@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,7 +48,9 @@ import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
+
 import static org.royaldev.royalcommands.RUtils.nearEqual;
+
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
@@ -55,6 +58,7 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.rcommands.CmdMessageOfTheDay;
 import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
+import org.royaldev.royalcommands.rcommands.CmdTime;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
@@ -443,27 +447,46 @@ public class PlayerListener implements Listener {
         // Disallow the event
         event.disallow(Result.KICK_BANNED, kickMessage);
     }
-	
-	@EventHandler
-	public void onPlayerBedEnterEvent(PlayerBedEnterEvent event) {
-		if (event.isCancelled() || !Config.sleepNotifications) {
-			return;
-		}
-		
-		int asleep = 1;
-		String prefix = MessageColor.POSITIVE + "Players asleep: " + MessageColor.NEUTRAL;
-		String suffix = MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + event.getPlayer().getWorld().getPlayers().size() + MessageColor.POSITIVE + ".";
-		for (Player p: event.getPlayer().getWorld().getPlayers()) {
-			if (p.isSleeping()) {
-				asleep++;
-				if(event.getPlayer() != p) {
-					p.sendMessage(ChatColor.GRAY + event.getPlayer().getDisplayName() + MessageColor.POSITIVE + " is now asleep.");
-				}
-			}
-			p.sendMessage(prefix + asleep + suffix);
-		}
-		event.getPlayer().sendMessage(prefix + asleep + suffix);
-	}
+
+    @EventHandler
+    public void onPlayerBedEnterEvent(PlayerBedEnterEvent event) {
+        if (event.isCancelled() || !Config.sleepNotifications) {
+            return;
+        }
+
+        int asleep = 1;
+
+        String prefix = MessageColor.POSITIVE + "Players asleep: " + MessageColor.NEUTRAL;
+        String suffix = MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + event.getPlayer().getWorld().getPlayers().size() + MessageColor.POSITIVE + ".";
+        for (Player p : event.getPlayer().getWorld().getPlayers()) {
+            if (p.isSleeping()) {
+                asleep++;
+                if (event.getPlayer() != p) {
+                    p.sendMessage(ChatColor.GRAY + event.getPlayer().getDisplayName() + MessageColor.POSITIVE + " is now asleep.");
+                }
+            }
+            p.sendMessage(prefix + asleep + suffix);
+        }
+        if (Config.sleepMajority) {
+            double sleep_percent = Config.sleepMajorityPercent / 100D;
+            double current_asleep = (double) asleep / event.getPlayer().getWorld().getPlayers().size();
+            if (current_asleep >= sleep_percent && current_asleep != 1.0) {
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                log.info("[RoyalCommands] It's a new day as sleep majority was met");
+                                World w = event.getPlayer().getWorld();
+                                if (Config.smoothTime) CmdTime.smoothTimeChange(0L, w);
+                                else w.setTime(0L);
+                            }
+                        },
+                        5500
+                );
+            }
+        }
+
+    }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {

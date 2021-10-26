@@ -15,6 +15,9 @@ general:
   findip_alert_percentage: 25.0
   # Alert sleeping players about others who are sleeping in the same world
   sleep_notifications: true
+  # Sleep majority?
+  sleep_majority: true
+  sleep_majority_percentage: 50.0
 
 ###
 # Security #
