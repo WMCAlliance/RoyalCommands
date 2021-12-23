@@ -1,0 +1,29 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>royalcommands-NMS1_18_R1</artifactId>
+    <packaging>jar</packaging>
+    <name>RoyalCommands v1_18_R1</name>
+    <version>v1_18_R1</version>
+
+    <parent>
+        <groupId>org.royaldev</groupId>
+        <artifactId>royalcommands-parent</artifactId>
+        <version>parent</version>
+        <relativePath>../../</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.royaldev</groupId>
+            <artifactId>royalcommands-api</artifactId>
+            <version>API</version>
+        </dependency>
+    </dependencies>
+</project>
