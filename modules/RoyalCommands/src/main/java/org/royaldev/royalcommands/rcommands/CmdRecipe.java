@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -92,9 +93,9 @@ public class CmdRecipe extends TabCommand {
             for (ItemStack ist : i.getContents()) {
                 if (ist == null) continue;
                 Damageable im = (Damageable) ist.getItemMeta();
-                if (im.getDamage() == (short)32767) {
+                if (im.getDamage() == (short) 32767) {
                     this.plugin.getLogger().log(Level.WARNING, "RECIPE: Durability of item {0} is invalid.", ist.getType());
-                    im.setDamage((short)0);
+                    im.setDamage((short) 0);
                 }
             }
             workbenches.add(i);
@@ -134,17 +135,17 @@ public class CmdRecipe extends TabCommand {
 
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
-        if (eargs.length < 1) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
         final Player p = (Player) cs;
+        if (eargs.length < 1 && p.getInventory().getItemInMainHand().getType() == Material.AIR) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
         ItemStack is;
-        if (eargs[0].equalsIgnoreCase("hand")) {
+        if (eargs.length < 1 || eargs[0].equalsIgnoreCase("hand")) {
             is = p.getInventory().getItemInMainHand();
         } else {
             try {
@@ -163,6 +164,7 @@ public class CmdRecipe extends TabCommand {
         this.scheduleRecipeTask(p, is);
         return true;
     }
+
 
     private class WorkbenchCloseListener implements Listener {
 

@@ -69,11 +69,11 @@ public class ItemNameManager {
         boolean found = false;
         String[] aliases = null;
         String data = null;
-        if (alias.contains(":")) {
+        /*if (alias.contains(":")) {
             String[] datas = alias.split(":");
             data = (datas.length > 1) ? datas[1] : "";
             alias = datas[0];
-        }
+        }*/
         for (String[] s : items.keySet())
             if (ArrayUtils.contains(s, alias.toLowerCase())) {
                 found = true;
