@@ -20,7 +20,7 @@ public class CmdGameMode extends TabCommand {
     public CmdGameMode(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.ENUM.getShort()});
     }
-	
+
     @Override
     protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return GameMode.values();
@@ -69,7 +69,7 @@ public class CmdGameMode extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        if (args.length < 1 && cs instanceof Player) {
+        if (args.length < 1) {
             Player p = (Player) cs;
             GameMode toSet = (p.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
             p.setGameMode(toSet);
@@ -78,6 +78,21 @@ public class CmdGameMode extends TabCommand {
         }
         if (args.length > 0) {
             Player t = this.plugin.getServer().getPlayer(args[0]);
+            if (getGameMode(args[0]) != null) {
+                assert cs instanceof Player;
+                Player p = (Player) cs;
+                GameMode toSet = (p.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
+                GameMode result = getGameMode(args[0]);
+                if (result == null) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid gamemode!");
+                    cs.sendMessage(MessageColor.NEUTRAL + RUtils.join(GameMode.values(), MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+                    return true;
+                }
+                toSet = result;
+                p.setGameMode(result);
+                p.sendMessage(MessageColor.POSITIVE + "Your game mode has been changed to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
+                return true;
+            }
             if (t == null || this.plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
