@@ -29,7 +29,10 @@ public class CmdSuicide extends TabCommand {
         Player p = (Player) cs;
         p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, DamageCause.SUICIDE, 0D));
         p.setHealth(0);
-        this.plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
+        // There may be a better solution idk
+        if(p.getServer().getPluginManager().getPlugin("RoyalDeath") == null){
+            this.plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
+        }
         return true;
     }
 }

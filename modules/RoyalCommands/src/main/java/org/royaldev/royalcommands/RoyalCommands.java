@@ -7,7 +7,6 @@ package org.royaldev.royalcommands;
 
 import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
-//import com.onarandombox.MultiverseCore.MultiverseCore;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
