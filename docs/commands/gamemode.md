@@ -13,7 +13,7 @@ command:
   supports:
     name-completion: false
     time-format: false
-  usage: /gamemode (player)
+  usage: /gamemode (player) [gamemode]
 layout: command
 title: /gamemode
 ---
