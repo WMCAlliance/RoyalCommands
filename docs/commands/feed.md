@@ -3,7 +3,7 @@ command:
   added: Pre-0.2.7
   aliases: []
   configuration: []
-  description: Feeds a player or the player himself.
+  description: Feeds a player or the player themself.
   permissions:
   - rcmds.feed
   - rcmds.exempt.feed

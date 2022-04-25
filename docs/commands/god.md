@@ -5,7 +5,7 @@ command:
   - tgm
   - godmode
   configuration: []
-  description: Toggles godmode on a player or the player himself.
+  description: Toggles godmode on a player or the player themself.
   permissions:
   - rcmds.god
   - rcmds.others.god
