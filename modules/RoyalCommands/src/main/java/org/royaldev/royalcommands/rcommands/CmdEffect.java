@@ -63,7 +63,7 @@ public class CmdEffect extends TabCommand {
             }
             String[] parts = arg.split(",");
             if (parts.length < 3) {
-                cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
+                cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + ": Not a complete effect! (name,duration (sec),amplifier(,ambient)).");
                 continue;
             }
             String name = parts[0];
@@ -84,7 +84,7 @@ public class CmdEffect extends TabCommand {
                 continue;
             }
             if (parts.length > 3) ambient = parts[3].equalsIgnoreCase("true");
-            new PotionEffect(pet, duration, amplifier, ambient).apply(t);
+            new PotionEffect(pet, duration*20, amplifier, ambient).apply(t);
             cs.sendMessage(MessageColor.POSITIVE + "Applied effect to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
