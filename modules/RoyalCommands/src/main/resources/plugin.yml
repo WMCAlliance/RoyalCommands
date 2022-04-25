@@ -309,7 +309,7 @@ reflectcommands:
     version_added: Pre-0.2.7
   feed:
     class: CmdFeed
-    description: Feeds a player or the player himself.
+    description: Feeds a player or the player themself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
   findip:
@@ -423,7 +423,7 @@ reflectcommands:
       - tgm
       - godmode
     class: CmdGod
-    description: Toggles godmode on a player or the player himself.
+    description: Toggles godmode on a player or the player themself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
   harm:
@@ -440,7 +440,7 @@ reflectcommands:
     version_added: 0.2.7
   heal:
     class: CmdHeal
-    description: Heals a player or the player himself.
+    description: Heals a player or the player themself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
   helmet:
