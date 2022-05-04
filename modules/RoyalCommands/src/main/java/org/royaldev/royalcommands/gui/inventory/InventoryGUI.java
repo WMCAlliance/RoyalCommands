@@ -5,12 +5,10 @@
  */
 package org.royaldev.royalcommands.gui.inventory;
 
-import com.comphenix.attribute.Attributes;
-import com.comphenix.attribute.Attributes.Attribute;
-import com.comphenix.attribute.Attributes.Attribute.Builder;
-import com.comphenix.attribute.Attributes.AttributeType;
-import com.comphenix.attribute.Attributes.Operation;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -70,11 +68,12 @@ public class InventoryGUI {
      */
     private ItemStack tagItem(final ItemStack is, final UUID uuid) {
         if (is == null || is.getType() == Material.AIR) return is;
-        final Builder b = Attributes.Attribute.newBuilder();
-        final Attribute a = b.name(InventoryGUI.TAG_NAME).uuid(uuid).type(AttributeType.GENERIC_FOLLOW_RANGE).amount(0D).operation(Operation.ADD_NUMBER).build();
-        final Attributes as = new Attributes(is);
-        as.add(a);
-        return as.getStack();
+        ItemMeta meta = is.getItemMeta();
+        if(!meta.hasAttributeModifiers()){
+            meta.addAttributeModifier(Attribute.GENERIC_FOLLOW_RANGE, new AttributeModifier(uuid, InventoryGUI.TAG_NAME, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+            is.setItemMeta(meta);
+        }return is;
+
     }
 
     /**
@@ -189,12 +188,13 @@ public class InventoryGUI {
      */
     public UUID getTag(final ItemStack is) {
         if (is == null || is.getType() == Material.AIR) return null;
-        final Attributes as = new Attributes(is);
-        for (final Attribute a : as.values()) {
-            if (!a.getName().equals(InventoryGUI.TAG_NAME)) continue;
-            return a.getUUID();
-        }
-        return null;
+        ItemMeta meta = is.getItemMeta();
+        if(meta.hasAttributeModifiers()){
+            for (final AttributeModifier a : meta.getAttributeModifiers().values()) {
+                if (!a.getName().equals(InventoryGUI.TAG_NAME)) continue;
+                return a.getUniqueId();
+            }
+        }return null;
     }
 
     /**
