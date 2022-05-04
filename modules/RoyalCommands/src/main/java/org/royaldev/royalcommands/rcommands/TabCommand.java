@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -110,6 +111,12 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     final String lowerCaseName = name.toLowerCase();
                     if (!lowerCaseName.startsWith(arg)) continue;
                     possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
+                }
+                break;
+            case ATTRIBUTE:
+                for (final Attribute at : Attribute.values()) {
+                    if (!at.name().toLowerCase().startsWith(arg.toLowerCase())) continue;
+                    possibilities.add(at.name().toLowerCase());
                 }
                 break;
 			case EFFECT:
@@ -325,6 +332,10 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
          * Completes for any command.
          */
         ANY_COMMAND((short) 8192),
+        /**
+         * Completes attributes for modifiers
+         */
+        ATTRIBUTE((short) 16384),
 		/**
 		 * Completes for empty list.
 		 */

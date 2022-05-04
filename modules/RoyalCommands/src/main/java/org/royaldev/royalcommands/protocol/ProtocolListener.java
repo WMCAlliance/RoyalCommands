@@ -5,7 +5,7 @@
  */
 package org.royaldev.royalcommands.protocol;
 
-import com.comphenix.attribute.NbtFactory;
+import org.royaldev.royalcommands.attribute.NbtFactory;
 import com.comphenix.protocol.PacketType.Play.Server;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
