@@ -106,7 +106,7 @@ reflectcommands:
     class: CmdBlastFurnace
     description: Remotely manages a blast furnace you set.
     usage: '/<command> [set/show]'
-    version_added: 5.0
+    version_added: 5.0.0
   biome:
     class: CmdBiome
     description: Changes the biome of the chunk you're in.
@@ -116,7 +116,7 @@ reflectcommands:
     class: CmdBrewingStand
     description: Remotely manages a brewing stand you set.
     usage: '/<command> [set/show]'
-    version_added: 5.0
+    version_added: 5.0.0
   broadcast:
     aliases:
       - bc
@@ -1013,7 +1013,7 @@ reflectcommands:
     class: CmdSmoker
     description: Remotely manages a smoker you set.
     usage: '/<command> [set/show]'
-    version_added: 5.0
+    version_added: 5.0.0
   spawn:
     class: CmdSpawn
     description: Takes the player to the spawn of the world they are standing in.

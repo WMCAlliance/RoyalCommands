@@ -1,6 +1,6 @@
 ---
 command:
-  added: 5.0
+  added: 5.0.0
   configuration: []
   description: Remotely manages a brewing stand you set.
   permissions:
