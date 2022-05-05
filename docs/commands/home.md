@@ -17,7 +17,11 @@ layout: command
 title: /home
 ---
 
-In-depth content, and...
+```/home``` Teleports the player to the ```(home)``` specified, if not specified the player would teleport to the home named ```home```
+It is possible to teleport to another players home by using ```[player:home]```
+
 
 ### Examples
+```/home mine``` - Would teleport the player to the home ```mine```
+```/home Notch:mine``` - Would teleport the player to the home ```mine``` of the player ```Notch```
 
