@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @ReflectCommand
 public class CmdAttributes extends TabCommand {
@@ -69,35 +70,21 @@ public class CmdAttributes extends TabCommand {
         String subcommand = eargs[0];
         if (subcommand.equalsIgnoreCase("list")) {
             if (meta.hasAttributeModifiers()) {
-                final StringBuilder sb = new StringBuilder();
-                sb.append(MessageColor.POSITIVE);
-                sb.append("Item ");
-                sb.append(MessageColor.NEUTRAL);
-                sb.append(hand.getType().name());
-                sb.append(MessageColor.POSITIVE);
-                sb.append(" has these Attribute Modifiers");
-                sb.append("\n");
+                final FancyMessage fm = new FancyMessage("Item ").color(MessageColor.POSITIVE.cc())
+                        .then(hand.getType().name()).color(MessageColor.NEUTRAL.cc())
+                        .then(" has these Attribute Modifiers:").color(MessageColor.POSITIVE.cc());
+                fm.send(cs);
                 for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                    sb.append(MessageColor.NEUTRAL);
-                    sb.append(am.getName());
-                    sb.append("\n");
-                    sb.append(MessageColor.NEUTRAL);
-                    sb.append("Operation: ");
-                    sb.append(MessageColor.RESET);
-                    sb.append(am.getOperation());
-                    sb.append("\n");
-                    sb.append(MessageColor.NEUTRAL);
-                    sb.append("Amount: ");
-                    sb.append(MessageColor.RESET);
-                    sb.append(am.getAmount());
-                    sb.append("\n");
-                    sb.append(MessageColor.NEUTRAL);
-                    sb.append("UUID: ");
-                    sb.append(MessageColor.RESET);
-                    sb.append(am.getUniqueId());
-                    sb.append("\n");
+                    final FancyMessage fma = new FancyMessage(am.getName()).color(MessageColor.NEUTRAL.cc())
+                            .tooltip(MessageColor.NEUTRAL
+                                    + "Attribute: " + MessageColor.RESET + am.getName() + "\n" + MessageColor.NEUTRAL
+                                    + "Operation: " + MessageColor.RESET + am.getOperation() + "\n" + MessageColor.NEUTRAL
+                                    + "Amount: " + MessageColor.RESET +am.getAmount() + "\n" + MessageColor.NEUTRAL
+                                    + "UUID: " + MessageColor.RESET + am.getUniqueId() + "\n"
+                                    + "click to copy the UUID")
+                            .clipboard(String.valueOf(am.getUniqueId()));
+                    fma.send(cs);
                 }
-                cs.sendMessage(sb.toString());
             } else {
                 cs.sendMessage(MessageColor.NEGATIVE + "Item has no Attribute Modifiers applied!");
             }
@@ -170,7 +157,7 @@ public class CmdAttributes extends TabCommand {
                 meta.addAttributeModifier(ats, new AttributeModifier(uuid, ats.name(), amount, o, EquipmentSlot.HAND));
                 hand.setItemMeta(meta);
                 p.getInventory().setItemInMainHand(hand);
-                cs.sendMessage(MessageColor.POSITIVE + "All attributes applied "+ MessageColor.NEUTRAL+ "UUID is " + uuid);
+                cs.sendMessage(MessageColor.POSITIVE + "The attribute has been applied, it has a UUID of  "+ MessageColor.NEUTRAL + uuid);
             }
         } else cs.sendMessage(MessageColor.NEGATIVE + "No such subcommand!");
         return true;
