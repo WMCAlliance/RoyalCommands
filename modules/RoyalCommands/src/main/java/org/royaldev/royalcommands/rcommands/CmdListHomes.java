@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -66,16 +67,16 @@ public class CmdListHomes extends TabCommand {
         cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + rp.getHomes().size() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         for (final Map.Entry<World, List<Home>> entry : sortedHomes.entrySet()) {
             final World w = entry.getKey();
-			/* TODO Make the world name clickable to teleport to that world if it's valid and if the user has permission to teleport */
-            cs.sendMessage(MessageColor.POSITIVE + "  Homes for " + MessageColor.NEUTRAL + (w == null ? "an invalid world" : w.getName()) + MessageColor.POSITIVE + ":");
-            final FancyMessage fm = new FancyMessage("    ");
+            final FancyMessage fm = new FancyMessage("  Homes for ").color(MessageColor.POSITIVE.cc()).then(w == null ? "an invalid world" : w.getName()).color(MessageColor.NEUTRAL.cc()).tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + w.getName()).command("/world " + w.getName()).then(":").color(MessageColor.POSITIVE.cc());
+            fm.send(cs);
+            final FancyMessage fmh = new FancyMessage("    ");
             final Iterator<Home> homes = entry.getValue().iterator();
             while (homes.hasNext()) {
                 final Home home = homes.next();
-                fm.then(home.getName()).color(w == null ? MessageColor.NEGATIVE.cc() : MessageColor.NEUTRAL.cc()).tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName()).command("/home " + home.getFullName());
-                if (homes.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
+                fmh.then(home.getName()).color(w == null ? MessageColor.NEGATIVE.cc() : MessageColor.NEUTRAL.cc()).tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName()).command("/home " + home.getFullName());
+                if (homes.hasNext()) fmh.then(MessageColor.RESET + ", "); // it's not a color OR a style
             }
-            fm.send(cs);
+            fmh.send(cs);
         }
         return true;
     }
