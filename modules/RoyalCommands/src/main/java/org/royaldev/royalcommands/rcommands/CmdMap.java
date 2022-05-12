@@ -35,7 +35,9 @@ public class CmdMap extends TabCommand {
         return new ArrayList<>(Arrays.asList(
 				"setlock", "locked", "lock",
                 "scale", "scaling", "setscale", "setscaling",
-				"reposition", "position", "pos", "repos", "setposition", "setpos", "coords", "coordinates", "setcoords", "setcoordinates", 
+                "track", "tracking",
+                "unlimited", "unlimit",
+				"reposition", "position", "pos", "repos", "setposition", "setpos", "coords", "coordinates", "setcoords", "setcoordinates",
 				"world", "setworld", 
 				"info", 
 				"help", "?"
@@ -57,7 +59,6 @@ public class CmdMap extends TabCommand {
 			switch (args[0]) {
 				case "scale":
 				case "scaling":
-                case "setlock":
 				case "setscale":
 				case "setscaling":
 					return getCompletionsFor(cs, cmd, label, args, CompletionType.ENUM);
@@ -125,7 +126,9 @@ public class CmdMap extends TabCommand {
             cs.sendMessage(MessageColor.NEUTRAL + "/" + label + MessageColor.POSITIVE + " help:");
             cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " scale [scaletype]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets the scale of the map in hand.");
             cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " position [x] [z]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets the center position of the map in hand.");
-            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " lock [option]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets the lock status of the map in hand.");
+            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " lock" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets the lock status of the map in hand.");
+            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " tracking" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets if tracking should be used on the map in hand.");
+            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " unlimited" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets if unlimited tracking should be used on the map in hand.");
             cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " world [world]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Changes the world displayed by the map in hand.");
             cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " info" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Displays information about the map in hand.");
             cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " help" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Displays this help.");
@@ -170,8 +173,8 @@ public class CmdMap extends TabCommand {
             }
             int x, z;
             try {
-                x = Integer.valueOf(args[1]);
-                z = Integer.valueOf(args[2]);
+                x = Integer.parseInt(args[1]);
+                z = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Those coordinates were invalid!");
                 return true;
@@ -204,9 +207,12 @@ public class CmdMap extends TabCommand {
             cs.sendMessage("  " + MessageColor.POSITIVE + "World: " + MessageColor.NEUTRAL + mv.getWorld().getName());
             cs.sendMessage("  " + MessageColor.POSITIVE + "Scale: " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(mv.getScale()));
             cs.sendMessage("  " + MessageColor.POSITIVE + "Lock: " + MessageColor.NEUTRAL + mv.isLocked());
+            cs.sendMessage("  " + MessageColor.POSITIVE + "Tracking: " + MessageColor.NEUTRAL + mv.isTrackingPosition());
+            cs.sendMessage("  " + MessageColor.POSITIVE + "Unlimited Tracking: " + MessageColor.NEUTRAL + mv.isUnlimitedTracking());
             //cs.sendMessage("  " + MessageColor.POSITIVE + "Char: " + MessageColor.NEUTRAL + "stuff");
             return true;
-            //} else if (subcommandMatches(subcommand, "render", "fullrender")) {
+        } else if (subcommandMatches(subcommand, "render", "fullrender")) {
+            return true;
         } else if (subcommandMatches(subcommand, "lock", "locked", "setlock")) {
             if(!mv.isLocked()){
                 mv.setLocked(true);
@@ -214,6 +220,28 @@ public class CmdMap extends TabCommand {
             } else {
                 mv.setLocked(false);
                 cs.sendMessage(MessageColor.POSITIVE + "Map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " set to unlocked.");
+            }
+            updateMap(p, mv);
+            p.getInventory().setItemInMainHand(hand);
+            return true;
+        } else if (subcommandMatches(subcommand, "track", "tracking")) {
+            if(!mv.isTrackingPosition()){
+                mv.setTrackingPosition(true);
+                cs.sendMessage(MessageColor.POSITIVE + "Tracking for map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " enabled.");
+            } else {
+                mv.setTrackingPosition(false);
+                cs.sendMessage(MessageColor.POSITIVE + "Tracking for map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " disabled");
+            }
+            updateMap(p, mv);
+            p.getInventory().setItemInMainHand(hand);
+            return true;
+        }else if (subcommandMatches(subcommand, "unlimit", "unlimited")) {
+            if(!mv.isUnlimitedTracking()){
+                mv.setUnlimitedTracking(true);
+                cs.sendMessage(MessageColor.POSITIVE + "Unlimited tracking for map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " enabled.");
+            } else {
+                mv.setUnlimitedTracking(false);
+                cs.sendMessage(MessageColor.POSITIVE + "Unlimited tracking for map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " disabled.");
             }
             updateMap(p, mv);
             p.getInventory().setItemInMainHand(hand);

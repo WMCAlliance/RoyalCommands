@@ -20,6 +20,9 @@ title: /map
 ```/map help``` - Displays an ingame list of available arguments.
 ```/map scale [scaletype]``` - Sets the scale of the map in hand. Accepts ```closest```, ```close```, ```normal```, ```far``` and ```farthest``` as valid scales. Can alternatively be accessed via ```scaling```, ```setscale``` and ```setscaling```.
 ```/map position [x] [z]``` - Sets the center position of the map in hand. Cannot be a decimal. Can alternatively be accessed via ```reposition```, ```pos```, ```repos```, ```setposition```, ```setpos```, ```coords```, ```coordinates```, ```setcoords``` and ```setcoordinates```.
+```/map lock``` - Sets the lock status of the map in hand
+```/map tracking``` - Sets if tracking should be used on the map in hand.
+```/map unlimited``` - Sets if unlimited tracking should be used on the map in hand.
 ```/map world [world]``` - Changes the world displayed by the map in hand. Can alternatively be accessed via ```setworld```.
 ```/map info``` - Displays information about the map in hand. Can alternatively be accessed via ```getinfo```, ```information``` and ```getinformation```.
 
