@@ -7,8 +7,8 @@
     <name>RoyalCommands</name>
     <url>https://github.com/RoyalDev/RoyalCommands</url>
     <issueManagement>
-        <system>jira</system>
-        <url>http://bugs.royaldev.org/</url>
+        <system>issues</system>
+        <url>https://github.com/WMCAlliance/RoyalCommands/issues</url>
     </issueManagement>
     <build>
         <directory>target</directory>
@@ -45,7 +45,6 @@
                                     <include>org.shininet.bukkit:ItemRenamer</include>
                                     <include>com.google.code.gson:gson</include>
                                     <!--<include>mkremins:fanciful</include>-->
-                                    <include>com.comphenix.attribute:AttributeStorage</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -57,17 +56,9 @@
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.com.google.gson</shadedPattern>
                                 </relocation>
-                                <!--<relocation>
-                                    <pattern>mkremins.fanciful</pattern>
-                                    <shadedPattern>org.royaldev.royalcommands.shaded.mkremins.fanciful</shadedPattern>
-                                </relocation>-->
                                 <relocation>
                                     <pattern>net.amoebaman</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.net.amoebaman</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.comphenix.attribute</pattern>
-                                    <shadedPattern>org.royaldev.royalcommands.shaded.com.comphenix.attribute</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -204,10 +195,6 @@
             <id>phoenix616</id>
             <url>https://repo.phoenix616.dev/</url>
         </repository>
-        <!--<repository> RoyalDev.org is dead forevermore :(
-            <id>royal-repo</id>
-            <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
-        </repository>-->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -233,11 +220,12 @@
             <version>3.19.1</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency> Currently has broken repo.
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>LATEST</version>
-        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.sk89q.worldguard</groupId>-->
+<!--            <artifactId>worldguard-bukkit</artifactId>-->
+<!--            <version>7.0.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
             <artifactId>Multiverse-Core</artifactId>
