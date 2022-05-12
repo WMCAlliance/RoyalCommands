@@ -5,17 +5,12 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.map.MapView.Scale;
@@ -23,72 +18,71 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @ReflectCommand
 public class CmdMap extends TabCommand {
 
     public CmdMap(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.CUSTOM.getShort()});
     }
-	
+
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new ArrayList<>(Arrays.asList(
-				"setlock", "locked", "lock",
+                "setlock", "locked", "lock",
                 "scale", "scaling", "setscale", "setscaling",
                 "track", "tracking",
                 "unlimited", "unlimit",
-				"reposition", "position", "pos", "repos", "setposition", "setpos", "coords", "coordinates", "setcoords", "setcoordinates",
-				"world", "setworld", 
-				"info", 
-				"help", "?"
-		));
+                "reposition", "position", "pos", "repos", "setposition", "setpos", "coords", "coordinates", "setcoords", "setcoordinates",
+                "world", "setworld",
+                "info",
+                "help", "?"
+        ));
     }
-	
+
     @Override
     protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return Scale.values();
     }
-	
-	@Override
-	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
-		if (cs instanceof Player) {
-			Player p = (Player)cs;
-			/**
-			 * TODO: Depending on the first parameter, either show numbers, the user's current coordinates, or a list of worlds
-			 */
-			switch (args[0]) {
-				case "scale":
-				case "scaling":
-				case "setscale":
-				case "setscaling":
-					return getCompletionsFor(cs, cmd, label, args, CompletionType.ENUM);
-				case "reposition":
-				case "position":
-				case "pos":
-				case "repos":
-				case "setposition":
-				case "setpos":
-				case "coords":
-				case "coordinates":
-				case "setcoords":
-				case "setcoordinates":
-					return new ArrayList<>();
-					/* TODO: Filter this list as they type */
-					/* Currently there's an issue where using these autocompleted values returns an error by the command itself */
-					/*return new ArrayList<>(Arrays.asList(
-						p.getLocation().getBlockX() + " " + p.getLocation().getBlockZ(),
-						p.getWorld().getSpawnLocation().getBlockX() + " " + p.getWorld().getSpawnLocation().getBlockZ()
-					));*/
-				case "world":
-				case "setworld":
-//					return new ArrayList<>();
-					/* Using this causes the command to return "no such world". */
-					return getCompletionsFor(cs, cmd, label, args, CompletionType.WORLD);
-			}
-			return new ArrayList<>();
-		}
-		return new ArrayList<>();
-	}
+
+    @Override
+    protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            /**
+             * TODO: Depending on the first parameter, either show numbers, the user's current coordinates, or a list of worlds
+             */
+            switch (args[0]) {
+                case "scale":
+                case "scaling":
+                case "setscale":
+                case "setscaling":
+                    return getCompletionsFor(cs, cmd, label, args, CompletionType.ENUM);
+                case "reposition":
+                case "position":
+                case "pos":
+                case "repos":
+                case "setposition":
+                case "setpos":
+                case "coords":
+                case "coordinates":
+                case "setcoords":
+                case "setcoordinates":
+                    return new ArrayList<>(Arrays.asList(
+                            p.getLocation().getBlockX() + " " + p.getLocation().getBlockZ(),
+                            p.getWorld().getSpawnLocation().getBlockX() + " " + p.getWorld().getSpawnLocation().getBlockZ()
+                    ));
+                case "world":
+                case "setworld":
+                    return getCompletionsFor(cs, cmd, label, args, CompletionType.WORLD);
+            }
+            return new ArrayList<>();
+        }
+        return new ArrayList<>();
+    }
 
     private String combineEnums(Enum[] es) {
         StringBuilder sb = new StringBuilder();
@@ -141,7 +135,7 @@ public class CmdMap extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
             return true;
         }
-        if(!mapMeta.hasMapView()){
+        if (!mapMeta.hasMapView()) {
             cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
             return true;
         }
@@ -214,7 +208,7 @@ public class CmdMap extends TabCommand {
         } else if (subcommandMatches(subcommand, "render", "fullrender")) {
             return true;
         } else if (subcommandMatches(subcommand, "lock", "locked", "setlock")) {
-            if(!mv.isLocked()){
+            if (!mv.isLocked()) {
                 mv.setLocked(true);
                 cs.sendMessage(MessageColor.POSITIVE + "Map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " set to locked.");
             } else {
@@ -225,7 +219,7 @@ public class CmdMap extends TabCommand {
             p.getInventory().setItemInMainHand(hand);
             return true;
         } else if (subcommandMatches(subcommand, "track", "tracking")) {
-            if(!mv.isTrackingPosition()){
+            if (!mv.isTrackingPosition()) {
                 mv.setTrackingPosition(true);
                 cs.sendMessage(MessageColor.POSITIVE + "Tracking for map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " enabled.");
             } else {
@@ -235,8 +229,8 @@ public class CmdMap extends TabCommand {
             updateMap(p, mv);
             p.getInventory().setItemInMainHand(hand);
             return true;
-        }else if (subcommandMatches(subcommand, "unlimit", "unlimited")) {
-            if(!mv.isUnlimitedTracking()){
+        } else if (subcommandMatches(subcommand, "unlimit", "unlimited")) {
+            if (!mv.isUnlimitedTracking()) {
                 mv.setUnlimitedTracking(true);
                 cs.sendMessage(MessageColor.POSITIVE + "Unlimited tracking for map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " enabled.");
             } else {
