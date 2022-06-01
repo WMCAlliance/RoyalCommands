@@ -765,6 +765,20 @@ public final class RUtils {
         return tooltip.isEmpty() ? null : tooltip;
     }
 
+    public static List<FancyMessage> getItemTooltip(final Object o) {
+        final List<FancyMessage> tooltip = new ArrayList<>();
+        final VaultHandler vh = RoyalCommands.getInstance().vh;
+        if (o instanceof Material) {
+            final Material item = (Material) o;
+            tooltip.add(new FancyMessage("Item").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(getItemName(item)).color(MessageColor.NEUTRAL.cc()));
+            if(item.getMaxDurability() > 0) {
+                tooltip.add(new FancyMessage("Durability: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(String.valueOf(item.getMaxDurability())).color(MessageColor.NEUTRAL.cc()));
+            }
+        }
+        return tooltip.isEmpty() ? null : tooltip;
+    }
+
     public static Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Class<?> clazz = object.getClass();
         Field objectField = clazz.getDeclaredField(field);
