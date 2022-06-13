@@ -206,7 +206,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <version>1.19-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -291,8 +291,8 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_18_R2</artifactId>
-            <version>v1_18_R2</version>
+            <artifactId>royalcommands-NMS1_19_R1</artifactId>
+            <version>v1_19_R1</version>
             <type>jar</type>
             <optional>true</optional>
         </dependency>
@@ -306,7 +306,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <version>1.19-R0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
