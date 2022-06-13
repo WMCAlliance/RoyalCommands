@@ -20,7 +20,7 @@ def create_good_dir(name):
 
 def download():
     global r, data
-    r = get("https://raw.githubusercontent.com/WMCAlliance/RoyalCommands/native-1.18/modules/RoyalCommands/src/main/resources/plugin.yml")
+    r = get("https://raw.githubusercontent.com/WMCAlliance/RoyalCommands/native-1.19/modules/RoyalCommands/src/main/resources/plugin.yml")
     try:
         data = yaml.safe_load(r.text)
     except Exception as e:
