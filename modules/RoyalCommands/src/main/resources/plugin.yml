@@ -1002,7 +1002,7 @@ reflectcommands:
       - es
     class: CmdSignEdit
     description: Edits the sign a player is currently looking at.
-    usage: '/<command> [line#] (new text)'
+    usage: '/<command>'
     version_added: 0.2.7
   slap:
     class: CmdSlap
@@ -1469,7 +1469,6 @@ permissions:
       rcmds.setwarp: true
       rcmds.sign.*: true
       rcmds.signedit: true
-      rcmds.signedit.color: true
       rcmds.slap: true
       rcmds.smoker: true
       rcmds.spawn: true
@@ -2334,7 +2333,6 @@ permissions:
       rcmds.setwarp: true
       rcmds.sign.*: true
       rcmds.signedit: true
-      rcmds.signedit.color: true
       rcmds.slap: true
       rcmds.spawn: true
       rcmds.spawn.other: true
@@ -2854,10 +2852,6 @@ permissions:
     command: signedit
     default: op
     description: Allows you to edit signs.
-  rcmds.signedit.color:
-    command: signedit
-    default: op
-    description: Allows you to use colors on signs.
   rcmds.slap:
     command: slap
     default: op
