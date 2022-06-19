@@ -15,7 +15,4 @@ layout: command
 title: /fireball
 ---
 
-In-depth content, and...
-
-### Examples
-
+```/fireball``` Launches a fireball towards where a player is looking.

@@ -15,3 +15,8 @@ command:
 layout: command
 title: /deletewarp
 ---
+
+```/deletewarp``` Deletes a warp, ```[warp]``` is the warp to be deleted
+
+### Examples
+```/deletewarp shop``` - Would delete the warp ```shop```

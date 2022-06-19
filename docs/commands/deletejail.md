@@ -15,3 +15,8 @@ command:
 layout: command
 title: /deletejail
 ---
+
+```/deletejail``` Deletes a jail, ```[jail]``` is the jail to be deleted
+
+### Examples
+```/deletejail grief``` - Would delete the jail ```grief```

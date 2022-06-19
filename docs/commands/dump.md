@@ -5,7 +5,7 @@ command:
   - empty
   - store
   configuration: []
-  description: Dumps contents of inventory into chest.
+  description: Dumps contents of inventory into a chest.
   permissions:
   - rcmds.dump
   supports:
@@ -16,7 +16,8 @@ layout: command
 title: /dump
 ---
 
-In-depth content, and...
+```/dump``` Dumps contents of inventory into a chest, this can either be an existing chest or a new chest depending on configuration
 
 ### Examples
+```/dump ``` Would dump a players inventory into the chest they are looking at
 
