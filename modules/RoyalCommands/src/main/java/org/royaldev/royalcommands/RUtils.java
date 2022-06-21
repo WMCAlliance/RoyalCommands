@@ -789,6 +789,16 @@ public final class RUtils {
         return result;
     }
 
+    public static Object getPrivateFieldSuper(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass().getSuperclass();
+        Field objectField = clazz.getDeclaredField(field);
+        final boolean wasAccessible = objectField.isAccessible();
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(wasAccessible);
+        return result;
+    }
+
     public static String getRChatGroupPrefix(final String s) {
         try {
             Class.forName("org.royaldev.royalchat.DataManager");

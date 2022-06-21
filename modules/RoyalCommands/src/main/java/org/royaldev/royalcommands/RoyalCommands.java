@@ -247,19 +247,19 @@ public class RoyalCommands extends JavaPlugin {
                     final VUUpdater.VUUpdateInfo vuui = RoyalCommands.this.getNewestVersions();
                     final String stable = vuui.getStable();
                     final String dev = vuui.getDevelopment() + "-SNAPSHOT";
-                    String currentVersion = useVersion.toString().toLowerCase();
+                    String currentVersion = useVersion.toString();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
-                        RoyalCommands.this.getLogger().warning("Development builds are available at https://ci.royaldev.org/");
+                        RoyalCommands.this.getLogger().warning("Development builds are available at https://jenkins.blny.me/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at https://www.spigotmc.org/resources/royalcommands.4113/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at https://www.spigotmc.org/resources/royalcommands.4113/");
                     }
                 } catch (Exception ignored) {}
             }
