@@ -180,31 +180,17 @@ public class RoyalCommands extends JavaPlugin {
 
     private void initializeMetrics() {
         try {
-            this.m = new Metrics(this);
-            Matcher matcher = this.versionPattern.matcher(this.version);
-            if (matcher.matches()) {
-                // 1 = base version
-                // 3 = -SNAPSHOT
-                // 6 = build #
-                String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
-                String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
-                if (matcher.group(3) == null) build = "release";
-                Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
-                g.addPlotter(new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
-                    @Override
-                    public int getValue() {
-                        return 1; // this value doesn't matter
-                    }
-                }); // add the donut graph with major version inside and build outside
-                m.addGraph(g); // add the graph
+            this.m = new Metrics(this, 15550);
+            if (YamlConfiguration.loadConfiguration(new File(new File(this.getDataFolder().getParentFile(), "bStats"), "config.yml")).getBoolean("enabled", true)) {
+                this.getLogger().info("Metrics enabled. Thank you!");
+            } else {
+                this.getLogger().info("You have Metrics off, no hard feelings :(");
             }
-            if (!m.start())
-                this.getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
-            else this.getLogger().info("Metrics enabled. Thank you!");
         } catch (Exception ignore) {
             this.getLogger().warning("Could not start Metrics!");
         }
     }
+
 
     private void initializeNMS() {
         // Get full package string of CraftServer.
