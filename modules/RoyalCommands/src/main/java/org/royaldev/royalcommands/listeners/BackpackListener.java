@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.listeners;
 
+import java.util.UUID;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,8 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
-
-import java.util.UUID;
 
 public class BackpackListener implements Listener {
 
@@ -31,7 +30,7 @@ public class BackpackListener implements Listener {
 
     @EventHandler
     public void backpackClose(InventoryCloseEvent e) {
-        if (e.getInventory() == null || e.getInventory().getName() == null) return; // modpacks
+        if (e.getInventory() == null || e.getView().getTitle() == null) return; // modpacks
         final InventoryHolder ih = e.getInventory().getHolder();
         if (!(ih instanceof BackpackHolder)) return;
         final BackpackHolder bh = (BackpackHolder) ih;

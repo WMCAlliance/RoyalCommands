@@ -3,7 +3,7 @@ command:
   added: Pre-0.2.7
   aliases: []
   configuration: []
-  description: Heals a player or the player himself.
+  description: Heals a player or the player themself.
   permissions:
   - rcmds.heal
   supports:

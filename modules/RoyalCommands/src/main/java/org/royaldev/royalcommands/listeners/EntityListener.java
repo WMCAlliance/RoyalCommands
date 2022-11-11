@@ -74,7 +74,7 @@ public class EntityListener implements Listener {
     public void onEntityTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player)) return;
         Player p = (Player) event.getTarget();
-        if (PlayerConfigurationManager.getConfiguration(p).getBoolean("mobignored")) event.setTarget(null);
+        if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("mobignored")) event.setTarget(null);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

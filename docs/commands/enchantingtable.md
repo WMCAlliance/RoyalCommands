@@ -15,7 +15,4 @@ layout: command
 title: /enchantingtable
 ---
 
-In-depth content, and...
-
-### Examples
-
+```/enchantingtable``` Allows you to set and use the enchanting table remotely, before using ```[show]``` it is required for ```[set]``` to be used when looking at the enchanting table to be used remotely

@@ -7,7 +7,6 @@ package org.royaldev.royalcommands;
 
 import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
-import com.onarandombox.MultiverseCore.MultiverseCore;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -23,6 +22,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -179,31 +180,17 @@ public class RoyalCommands extends JavaPlugin {
 
     private void initializeMetrics() {
         try {
-            this.m = new Metrics(this);
-            Matcher matcher = this.versionPattern.matcher(this.version);
-            if (matcher.matches()) {
-                // 1 = base version
-                // 3 = -SNAPSHOT
-                // 6 = build #
-                String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
-                String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
-                if (matcher.group(3) == null) build = "release";
-                Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
-                g.addPlotter(new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
-                    @Override
-                    public int getValue() {
-                        return 1; // this value doesn't matter
-                    }
-                }); // add the donut graph with major version inside and build outside
-                m.addGraph(g); // add the graph
+            this.m = new Metrics(this, 15550);
+            if (YamlConfiguration.loadConfiguration(new File(new File(this.getDataFolder().getParentFile(), "bStats"), "config.yml")).getBoolean("enabled", true)) {
+                this.getLogger().info("Metrics enabled. Thank you!");
+            } else {
+                this.getLogger().info("You have Metrics off, no hard feelings :(");
             }
-            if (!m.start())
-                this.getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
-            else this.getLogger().info("Metrics enabled. Thank you!");
         } catch (Exception ignore) {
             this.getLogger().warning("Could not start Metrics!");
         }
     }
+
 
     private void initializeNMS() {
         // Get full package string of CraftServer.
@@ -246,19 +233,19 @@ public class RoyalCommands extends JavaPlugin {
                     final VUUpdater.VUUpdateInfo vuui = RoyalCommands.this.getNewestVersions();
                     final String stable = vuui.getStable();
                     final String dev = vuui.getDevelopment() + "-SNAPSHOT";
-                    String currentVersion = useVersion.toString().toLowerCase();
+                    String currentVersion = useVersion.toString();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
-                        RoyalCommands.this.getLogger().warning("Development builds are available at https://ci.royaldev.org/");
+                        RoyalCommands.this.getLogger().warning("Development builds are available at https://jenkins.blny.me/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at https://www.spigotmc.org/resources/royalcommands.4113/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at https://www.spigotmc.org/resources/royalcommands.4113/");
                     }
                 } catch (Exception ignored) {}
             }

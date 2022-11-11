@@ -5,12 +5,6 @@
  */
 package org.royaldev.royalcommands.spawninfo;
 
-import com.comphenix.attribute.AttributeStorage;
-import com.comphenix.attribute.Attributes;
-import com.comphenix.attribute.NbtFactory;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -21,6 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.royaldev.royalcommands.attribute.NbtFactory;
 
 /**
  * A class used in item-spawning to determine and store information about the spawn status of an item.
@@ -187,30 +188,30 @@ public class SpawnInfo implements Serializable {
 
         private static final UUID uuid = UUID.fromString("553ade7d-86cd-469e-a4ff-c6fbb564d961");
         private static final UUID defaultUUID = UUID.fromString("4f0925a7-abf4-4a61-8c81-2028d453ff92");
-        private static final Map<Material, Attributes.Attribute> defaults = new HashMap<>();
+        private static final Map<Material, AttributeModifier> defaults = new HashMap<>();
 
         static {
             try {
                 defaults.put(Material.DIAMOND_AXE, createAttribute(6D, defaultUUID));
                 defaults.put(Material.DIAMOND_PICKAXE, createAttribute(5D, defaultUUID));
-                defaults.put(Material.DIAMOND_SPADE, createAttribute(4D, defaultUUID));
+                defaults.put(Material.DIAMOND_SHOVEL, createAttribute(4D, defaultUUID));
                 defaults.put(Material.DIAMOND_SWORD, createAttribute(7D, defaultUUID));
-                defaults.put(Material.GOLD_AXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.GOLD_PICKAXE, createAttribute(2D, defaultUUID));
-                defaults.put(Material.GOLD_SPADE, createAttribute(1D, defaultUUID));
-                defaults.put(Material.GOLD_SWORD, createAttribute(4D, defaultUUID));
+                defaults.put(Material.GOLDEN_AXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.GOLDEN_PICKAXE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.GOLDEN_SHOVEL, createAttribute(1D, defaultUUID));
+                defaults.put(Material.GOLDEN_SWORD, createAttribute(4D, defaultUUID));
                 defaults.put(Material.IRON_AXE, createAttribute(5D, defaultUUID));
                 defaults.put(Material.IRON_PICKAXE, createAttribute(4D, defaultUUID));
-                defaults.put(Material.IRON_SPADE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.IRON_SHOVEL, createAttribute(3D, defaultUUID));
                 defaults.put(Material.IRON_SWORD, createAttribute(6D, defaultUUID));
                 defaults.put(Material.STONE_AXE, createAttribute(4D, defaultUUID));
                 defaults.put(Material.STONE_PICKAXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.STONE_SPADE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.STONE_SHOVEL, createAttribute(2D, defaultUUID));
                 defaults.put(Material.STONE_SWORD, createAttribute(5D, defaultUUID));
-                defaults.put(Material.WOOD_AXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.WOOD_PICKAXE, createAttribute(2D, defaultUUID));
-                defaults.put(Material.WOOD_SPADE, createAttribute(1D, defaultUUID));
-                defaults.put(Material.WOOD_SWORD, createAttribute(4D, defaultUUID));
+                defaults.put(Material.WOODEN_AXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.WOODEN_PICKAXE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.WOODEN_SHOVEL, createAttribute(1D, defaultUUID));
+                defaults.put(Material.WOODEN_SWORD, createAttribute(4D, defaultUUID));
             } catch (Exception ex) {
                 ex.printStackTrace(); // wtf is going on
             }
@@ -224,9 +225,11 @@ public class SpawnInfo implements Serializable {
          */
         public static ItemStack applyDefaultAttributes(ItemStack is) {
             if (!defaults.containsKey(is.getType())) return is;
-            final Attributes attr = new Attributes(is);
-            attr.add(defaults.get(is.getType()));
-            return attr.getStack();
+            ItemMeta meta = is.getItemMeta();
+            if(!meta.hasAttributeModifiers()){
+                meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, defaults.get(is.getType()));
+                is.setItemMeta(meta);
+            } return is;
         }
 
         /**
@@ -256,13 +259,11 @@ public class SpawnInfo implements Serializable {
         public static ItemStack applySpawnInfo(ItemStack is, String s) {
             if (is.getType() == Material.AIR) return is; // air; do not apply
             is = applyDefaultAttributes(is);
-            final AttributeStorage as = AttributeStorage.newTarget(is, uuid);
-            as.setData(s);
-            return as.getTarget();
+            return is;
         }
 
-        private static Attributes.Attribute createAttribute(double amount, UUID uuid) {
-            return Attributes.Attribute.newBuilder().name("default").type(Attributes.AttributeType.GENERIC_ATTACK_DAMAGE).operation(Attributes.Operation.ADD_NUMBER).amount(amount).uuid(uuid).build();
+        private static AttributeModifier createAttribute(double amount, UUID uuid) {
+            return new AttributeModifier(uuid, "default", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
         }
 
         /**
@@ -270,20 +271,14 @@ public class SpawnInfo implements Serializable {
          *
          * @return The stored data, or defaultValue if not found.
          */
-        public static String getData(AttributeStorage as) {
-            Attributes attr = new Attributes(as.getTarget());
-            try {
-                final Method getAttribute = AttributeStorage.class.getDeclaredMethod("getAttribute", Attributes.class, UUID.class);
-                final Field uniqueKey = AttributeStorage.class.getDeclaredField("uniqueKey");
-                getAttribute.setAccessible(true);
-                uniqueKey.setAccessible(true);
-                final Attributes.Attribute current = (Attributes.Attribute) getAttribute.invoke(as, attr, uniqueKey.get(as));
-                SpawnInfoManager.removeTagIfEmpty(attr);
-                return current != null ? current.getName() : null;
-            } catch (ReflectiveOperationException ex) {
-                ex.printStackTrace();
-            }
-            return null;
+        public static String getData(ItemStack is) {
+            ItemMeta meta = is.getItemMeta();
+            if(meta.hasAttributeModifiers()) {
+                for (AttributeModifier am : meta.getAttributeModifiers().values()) {
+                    SpawnInfoManager.removeTagIfEmpty(is);
+                    return am != null ? am.getName() : null;
+                }
+            } return null;
         }
 
         /**
@@ -298,8 +293,7 @@ public class SpawnInfo implements Serializable {
          */
         public static SpawnInfo getSpawnInfo(ItemStack is) {
             if (is.getType() == Material.AIR) return new SpawnInfo(); // air cannot contain NBT data
-            final AttributeStorage as = AttributeStorage.newTarget(is, uuid);
-            String stored = SpawnInfoManager.getData(as);
+            String stored = SpawnInfoManager.getData(is);
             if (stored == null) stored = "false/null/false/null";
             return new SpawnInfo(stored);
         }
@@ -307,21 +301,15 @@ public class SpawnInfo implements Serializable {
         /**
          * Removes the data stored in the attributes.
          */
-        public static void removeData(AttributeStorage as) {
-            final Attributes attributes = new Attributes(as.getTarget());
-            try {
-                final Method getAttribute = AttributeStorage.class.getDeclaredMethod("getAttribute", Attributes.class, UUID.class);
-                final Field uniqueKey = AttributeStorage.class.getDeclaredField("uniqueKey");
-                getAttribute.setAccessible(true);
-                uniqueKey.setAccessible(true);
-                final Attributes.Attribute current = (Attributes.Attribute) getAttribute.invoke(as, attributes, uniqueKey.get(as));
-                if (current == null) return;
-                attributes.remove(current);
-                SpawnInfoManager.removeTagIfEmpty(attributes);
-                final Field target = AttributeStorage.class.getDeclaredField("target");
-                target.set(as, attributes.getStack());
-            } catch (ReflectiveOperationException ex) {
-                ex.printStackTrace();
+        public static void removeData(ItemStack is, UUID uuid) {
+            ItemMeta meta = is.getItemMeta();
+            if (meta.hasAttributeModifiers()){
+                for (AttributeModifier am : meta.getAttributeModifiers().values()) {
+                    if (am.getUniqueId().equals(uuid)) {
+                        meta.removeAttributeModifier(Attribute.valueOf(am.getName()));
+                        SpawnInfoManager.removeTagIfEmpty(is);
+                    }
+                }is.setItemMeta(meta);
             }
         }
 
@@ -333,12 +321,11 @@ public class SpawnInfo implements Serializable {
          * @return ItemStack with default attributes removed
          */
         public static ItemStack removeDefaultAttributes(ItemStack is) {
-            final Attributes attr = new Attributes(is);
-            for (Attributes.Attribute a : attr.values()) {
-                if (!a.getUUID().equals(defaultUUID)) continue;
-                attr.remove(a);
-            }
-            return attr.getStack();
+            ItemMeta meta = is.getItemMeta();
+            for (AttributeModifier am : meta.getAttributeModifiers().values()) {
+                if (am.getUniqueId().equals(defaultUUID)) {
+                    meta.removeAttributeModifier(Attribute.valueOf(am.getName()));}
+            }return is;
         }
 
         /**
@@ -349,17 +336,16 @@ public class SpawnInfo implements Serializable {
          */
         public static ItemStack removeSpawnInfo(ItemStack is) {
             if (is.getType() == Material.AIR) return is; // silly air
-            is = SpawnInfoManager.removeDefaultAttributes(is);
-            final AttributeStorage as = AttributeStorage.newTarget(is, uuid);
-            SpawnInfoManager.removeData(as);
-            return as.getTarget();
+            SpawnInfoManager.removeDefaultAttributes(is);
+            SpawnInfoManager.removeData(is, uuid);
+            return is;
         }
 
-        public static void removeTagIfEmpty(Attributes a) {
-            if (a.size() <= 0) return;
-            NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(a.stack);
+        public static void removeTagIfEmpty(ItemStack is) {
+            if (is.getItemMeta().getAttributeModifiers().size() <= 0) return;
+            NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(is);
             nbt.remove("AttributeModifiers");
-            if (nbt.isEmpty()) NbtFactory.setItemTag(a.stack, null); // FIXME: null
+            if (nbt.isEmpty()) NbtFactory.setItemTag(is, null); // FIXME: null
         }
 
     }

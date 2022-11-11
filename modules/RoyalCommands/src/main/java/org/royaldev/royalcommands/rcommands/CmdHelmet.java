@@ -24,24 +24,28 @@ public class CmdHelmet extends TabCommand {
     public CmdHelmet(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
     }
-
+    /**
+     * TODO: Add support to add a helmet to another player
+     */
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length < 1) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-		/**
-		 * TODO: Add support to use /helmet without arguments to use the item in hand
-		 * TODO: Add support to add a helmet to another player
-		 */
+        String name;
         Player p = (Player) cs;
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
-        String name = args[0];
+        if (args.length < 1) {
+            ItemStack hand = p.getInventory().getItemInMainHand();
+            if (hand.getType() == Material.AIR) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot use air as a helmet!");
+                return true;
+            }
+            name = hand.getType().name();
+        } else {
+            name = args[0];
+        }
         if (name.equalsIgnoreCase("none")) {
             ItemStack helm = p.getInventory().getHelmet();
             if (Config.requireHelm) {

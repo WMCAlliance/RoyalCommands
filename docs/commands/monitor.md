@@ -4,7 +4,7 @@ command:
   aliases:
   - watch
   configuration: []
-  description: Watch another player.
+  description: Watch another player. As of 1.8, Spectator mode should be used instead.
   permissions:
   - rcmds.monitor
   - rcmds.exempt.monitor

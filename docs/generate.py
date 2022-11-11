@@ -2,11 +2,12 @@ from os import makedirs
 from os.path import exists
 from shutil import move, rmtree
 
+import yaml
 from requests import get
-from yaml import load, dump
+from yaml import load, dump, Loader
 
 r = None
-data = None
+data = {}
 
 def create_good_dir(name):
     orig_name = name
@@ -19,9 +20,9 @@ def create_good_dir(name):
 
 def download():
     global r, data
-    r = get("https://raw.githubusercontent.com/WMCAlliance/RoyalCommands/master/modules/RoyalCommands/src/main/resources/plugin.yml")
+    r = get("https://raw.githubusercontent.com/WMCAlliance/RoyalCommands/native-1.19/modules/RoyalCommands/src/main/resources/plugin.yml")
     try:
-        data = load(r.text)
+        data = yaml.safe_load(r.text)
     except Exception as e:
         print("Could not parse plugin.yml: {}".format(e))
 
@@ -92,7 +93,7 @@ def generate_command_files():
         old_data = None
         if exists("commands/{}.md".format(command)):
             old_data = open("commands/{}.md".format(command)).read()
-            front_matter = load(old_data.split("---")[1])
+            front_matter = yaml.safe_load(old_data.split("---")[1])
         else:
             front_matter = {}
         fm_command = front_matter["command"] if "command" in front_matter else {}

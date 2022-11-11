@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -31,9 +33,6 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdMonitor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MonitorListener implements Listener {
 
@@ -170,11 +169,11 @@ public class MonitorListener implements Listener {
         final Block b = RUtils.getTarget(p);
         switch (i.getType()) {
             case WORKBENCH:
-                if (!b.getType().equals(Material.WORKBENCH)) return;
+                if (!b.getType().equals(Material.CRAFTING_TABLE)) return;
                 t.openWorkbench(b.getLocation(), false);
                 break;
             case ENCHANTING:
-                if (!b.getType().equals(Material.ENCHANTMENT_TABLE)) return;
+                if (!b.getType().equals(Material.ENCHANTING_TABLE)) return;
                 t.openEnchanting(b.getLocation(), false);
                 break;
             case BREWING:

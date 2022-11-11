@@ -31,7 +31,8 @@ public class CmdGetID extends TabCommand {
         }
         Player p = (Player) cs;
         ItemStack hand = p.getInventory().getItemInMainHand();
-        int id = hand.getTypeId();
+        // int id = hand.getTypeId(); // TODO: Do something better here
+		int id = -1;
         short damage = hand.getDurability();
         byte data = hand.getData().getData();
         String name = RUtils.getItemName(hand);

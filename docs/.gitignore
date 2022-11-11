@@ -20,3 +20,6 @@ creoleToMarkdown.py
 
 # Build script
 build.sh
+
+# venv
+venv/

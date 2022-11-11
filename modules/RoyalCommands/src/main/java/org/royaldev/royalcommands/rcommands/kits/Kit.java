@@ -7,6 +7,7 @@ package org.royaldev.royalcommands.rcommands.kits;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -67,9 +68,10 @@ public class Kit {
      */
     private ItemStack getItemStack(final ConfigurationNode item) {
         final ItemStack is = RoyalCommands.inm.getItemStackFromAlias(item.getString("type"));
+        final Damageable imd = (Damageable) is.getItemMeta();
         if (is == null) return null;
         is.setAmount(item.getInt("amount", 1));
-        is.setDurability(item.getShort("damage", (short) 0));
+        imd.setDamage(item.getShort("damage", (short) 0));
         final ItemMeta im = is.getItemMeta();
         im.setDisplayName(RUtils.colorize(item.getString("name")));
         im.setLore(this.getLore(item));

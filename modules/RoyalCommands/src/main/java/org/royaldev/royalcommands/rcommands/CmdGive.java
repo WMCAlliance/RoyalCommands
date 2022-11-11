@@ -6,6 +6,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import java.util.HashMap;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,21 +53,21 @@ public class CmdGive extends TabCommand {
         // @formatter:off
         new FancyMessage("Giving ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(String.valueOf(amount))
+                .then(String.valueOf(amount))
                 .color(MessageColor.NEUTRAL.cc())
-            .then(" of ")
+                .then(" of ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(RUtils.getItemName(m))
+                .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL.cc())
-                //.itemTooltip(stack)
-            .then(" to ")
+                .formattedTooltip(RUtils.getItemTooltip(m))
+                .then(" to ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(target.getName())
+                .then(target.getName())
                 .color(MessageColor.NEUTRAL.cc())
                 .formattedTooltip(RUtils.getPlayerTooltip(target))
-            .then(".")
+                .then(".")
                 .color(MessageColor.POSITIVE.cc())
-            .send(target);
+                .send(target);
         // @formatter:on
         if (Config.itemSpawnTag && cs != null)
             stack = RUtils.applySpawnLore(RUtils.setItemStackSpawned(stack, cs.getName(), true));
@@ -148,33 +149,33 @@ public class CmdGive extends TabCommand {
         // @formatter:off
         new FancyMessage("Giving ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(String.valueOf(amount))
+                .then(String.valueOf(amount))
                 .color(MessageColor.NEUTRAL.cc())
-            .then(" of ")
+                .then(" of ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(RUtils.getItemName(m))
+                .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL.cc())
-                //.itemTooltip(toInv)
-            .then(" to ")
+                .formattedTooltip(RUtils.getItemTooltip(m))
+                .then(" to ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(t.getName())
+                .then(t.getName())
                 .color(MessageColor.NEUTRAL.cc())
                 .formattedTooltip(RUtils.getPlayerTooltip(t))
-            .then(".")
+                .then(".")
                 .color(MessageColor.POSITIVE.cc())
-            .send(cs);
+                .send(cs);
         new FancyMessage("You have been given ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(String.valueOf(amount))
+                .then(String.valueOf(amount))
                 .color(MessageColor.NEUTRAL.cc())
-            .then(" of ")
+                .then(" of ")
                 .color(MessageColor.POSITIVE.cc())
-            .then(RUtils.getItemName(m))
+                .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL.cc())
-                //.itemTooltip(toInv)
-            .then(".")
+                .formattedTooltip(RUtils.getItemTooltip(m))
+                .then(".")
                 .color(MessageColor.POSITIVE.cc())
-            .send(t);
+                .send(t);
         // @formatter:on
         return true;
     }

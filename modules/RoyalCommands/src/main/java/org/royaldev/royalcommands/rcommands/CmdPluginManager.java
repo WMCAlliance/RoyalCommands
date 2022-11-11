@@ -6,6 +6,9 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.io.Files;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -39,15 +42,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,10 +60,10 @@ public class CmdPluginManager extends ParentCommand {
         this.addSubCommand(new SCmdCommands(this.plugin, this));
         this.addSubCommand(new SCmdDelete(this.plugin, this));
         this.addSubCommand(new SCmdDisable(this.plugin, this));
-        this.addSubCommand(new SCmdDownload(this.plugin, this));
+        //this.addSubCommand(new SCmdDownload(this.plugin, this));
         this.addSubCommand(new SCmdDownloadLink(this.plugin, this));
         this.addSubCommand(new SCmdEnable(this.plugin, this));
-        this.addSubCommand(new SCmdFindTag(this.plugin, this));
+        //this.addSubCommand(new SCmdFindTag(this.plugin, this));
         this.addSubCommand(new SCmdInfo(this.plugin, this));
         this.addSubCommand(new SCmdList(this.plugin, this));
         this.addSubCommand(new SCmdLoad(this.plugin, this));
@@ -211,7 +210,7 @@ public class CmdPluginManager extends ParentCommand {
         try {
             Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
             SimpleCommandMap commandMap = (SimpleCommandMap) result;
-            Object map = RUtils.getPrivateField(commandMap, "knownCommands");
+            Object map = RUtils.getPrivateFieldSuper(commandMap, "knownCommands");
             @SuppressWarnings("unchecked") HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
             final List<Command> commands = new ArrayList<>(commandMap.getCommands());
             for (Command c : commands) {
@@ -237,18 +236,15 @@ public class CmdPluginManager extends ParentCommand {
     public String updateCheck(String name, String currentVersion) throws Exception {
         String tag = this.getCustomTag(name);
         if (tag == null) tag = name.toLowerCase();
-        String pluginUrlString = "http://dev.bukkit.org/bukkit-plugins/" + tag + "/files.rss";
+        String pluginUrlString = "https://api.spigotmc.org/simple/0.2/index.php?action=getResource&id=" + tag;
         URL url = new URL(pluginUrlString);
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
-        doc.getDocumentElement().normalize();
-        NodeList nodes = doc.getElementsByTagName("item");
-        Node firstNode = nodes.item(0);
-        if (firstNode.getNodeType() == 1) {
-            Element firstElement = (Element) firstNode;
-            NodeList firstElementTagName = firstElement.getElementsByTagName("title");
-            Element firstNameElement = (Element) firstElementTagName.item(0);
-            NodeList firstNodes = firstNameElement.getChildNodes();
-            return firstNodes.item(0).getNodeValue();
+        URLConnection request = url.openConnection();
+        request.connect();
+        JsonParser jp = new JsonParser();
+        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        JsonObject rootobj = root.getAsJsonObject();
+        if (rootobj.has("current_version")) {
+            return rootobj.get("current_version").getAsString();
         }
         return currentVersion;
     }

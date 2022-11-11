@@ -18,17 +18,17 @@ import org.royaldev.royalcommands.RoyalCommands;
 public class CmdSetCharacteristic extends TabCommand {
 
     public CmdSetCharacteristic(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort(), CompletionType.LIST.getShort(), CompletionType.CUSTOM.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.LIST.getShort(), CompletionType.CUSTOM.getShort()});
     }
 	
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
-        return new ArrayList<>(Arrays.asList("maxhealth", "maxair", "exp", "canpickupitems", "help"));
+        return new ArrayList<>(Arrays.asList("maxhealth", "maxair", "exp", "canpickupitems"));
     }
 	
 	@Override
 	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
-		switch(args[0].toLowerCase()) {
+		switch(args[1].toLowerCase()) {
 			case "canpickupitems":
 				return new ArrayList<>(Arrays.asList("true", "false"));
 		}

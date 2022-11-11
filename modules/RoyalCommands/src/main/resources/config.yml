@@ -15,6 +15,9 @@ general:
   findip_alert_percentage: 25.0
   # Alert sleeping players about others who are sleeping in the same world
   sleep_notifications: true
+  # Sleep majority?
+  sleep_majority: true
+  sleep_majority_percentage: 50.0
 
 ###
 # Security #
@@ -224,38 +227,36 @@ kits:
       description: An example kit.
       # List of items for this kit
       items:
-      - type: WOOD
-        amount: 1
-        # You can use colors in lore and names
-        name: "&rWood of Champions"
-      - type: WOOD_SWORD
-        amount: 1
-        name: "Skyforge Wood Sword"
-        lore:
-        - "Wooden sword forged in the Skyforge"
-        # Enchantments that can't naturally be applied can be used here
-        enchantments:
-        - type: DAMAGE_ALL
-          level: 2
-        - type: DURABILITY
-          level: 1
+        - type: LOG:OAK
+          amount: 1
+          # You can use colors in lore and names
+          name: "&rWood of Champions"
+        - type: WOODEN_SWORD
+          amount: 1
+          name: "Skyforge Wood Sword"
+          lore:
+            - "Wooden sword forged in the Skyforge"
+          # Enchantments that can't naturally be applied can be used here
+          enchantments:
+            - type: DAMAGE_ALL
+              level: 2
+            - type: DURABILITY
+              level: 1
       # Cooldown of one day
       cooldown: "1d"
     wool:
       description: A kit containing wool.
       items:
-      - type: WOOL
-        damage: 14
-        amount: 64
-      - type: WOOL
-        damage: 15
-        amount: 35
+        - type: WOOL:BLACK
+          amount: 64
+        - type: WOOL:BLUE
+          amount: 35
     # This kit can only be used once (cooldown of -1)
     onetime:
       description: A kit that can only be used one time.
       items:
-      - type: IRON_SWORD
-        amount: 1
+        - type: IRON_SWORD
+          amount: 1
       cooldown: -1
 
 ###

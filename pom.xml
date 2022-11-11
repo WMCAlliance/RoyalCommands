@@ -9,22 +9,14 @@
     <url>http://royaldev.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
     </properties>
 
     <modules>
         <module>modules/API</module>
-        <module>modules/NMS1_13_R2</module>
-        <module>modules/NMS1_12_R1</module>
-        <module>modules/NMS1_8_R2</module>
-        <module>modules/NMS1_8_R1</module>
-        <module>modules/NMS1_7_R4</module>
-        <module>modules/NMS1_7_R3</module>
-        <module>modules/NMS1_7_R2</module>
-        <module>modules/NMS1_7_R1</module>
-        <module>modules/NMS1_6_R2</module>
-        <module>modules/NMS1_6_R1</module>
+        <module>modules/NMS1_19_R1</module>
         <module>modules/NoSupport</module>
         <module>modules/RoyalCommands</module>
     </modules>
@@ -35,14 +27,22 @@
             <id>spigot</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>blaney-repo</id>
+            <url>https://repo.blny.me/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.13.1-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
         </dependency>
     </dependencies>
 

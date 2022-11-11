@@ -48,7 +48,7 @@ public class CmdMessageOfTheDay extends TabCommand {
             s = s.replace("{playerlist}", ps);
             s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
-            s = (CmdMessageOfTheDay.pluginInstance.getServer().getServerName() != null || !CmdMessageOfTheDay.pluginInstance.getServer().getServerName().isEmpty()) ? s.replace("{servername}", CmdMessageOfTheDay.pluginInstance.getServer().getServerName()) : s.replace("{servername}", "this server");
+            s = (CmdMessageOfTheDay.pluginInstance.getServer().getName() != null || !CmdMessageOfTheDay.pluginInstance.getServer().getName().isEmpty()) ? s.replace("{servername}", CmdMessageOfTheDay.pluginInstance.getServer().getName()) : s.replace("{servername}", "this server");
             cs.sendMessage(s);
         }
     }

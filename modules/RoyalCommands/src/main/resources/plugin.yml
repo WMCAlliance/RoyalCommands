@@ -1,6 +1,7 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
 version: ${pluginversion}
+api-version: 1.17
 website: http://rcmds.wma.im/
 description: A general plugin containing all the commands a discerning server admin could want.
 authors: [jkcclemens, The Worldwide Minecraft Alliance]
@@ -101,11 +102,21 @@ reflectcommands:
     description: Lists all banned players.
     usage: /<command>
     version_added: Pre-0.2.7
+  blastfurnace:
+    class: CmdBlastFurnace
+    description: Remotely manages a blast furnace you set.
+    usage: '/<command> [set/show]'
+    version_added: 5.0.0
   biome:
     class: CmdBiome
     description: Changes the biome of the chunk you're in.
     usage: '/<command> [biome] (radius)'
     version_added: Pre-0.2.7
+  brewingstand:
+    class: CmdBrewingStand
+    description: Remotely manages a brewing stand you set.
+    usage: '/<command> [set/show]'
+    version_added: 5.0.0
   broadcast:
     aliases:
       - bc
@@ -308,7 +319,7 @@ reflectcommands:
     version_added: Pre-0.2.7
   feed:
     class: CmdFeed
-    description: Feeds a player or the player himself.
+    description: Feeds a player or the player themself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
   findip:
@@ -422,7 +433,7 @@ reflectcommands:
       - tgm
       - godmode
     class: CmdGod
-    description: Toggles godmode on a player or the player himself.
+    description: Toggles godmode on a player or the player themself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
   harm:
@@ -439,7 +450,7 @@ reflectcommands:
     version_added: 0.2.7
   heal:
     class: CmdHeal
-    description: Heals a player or the player himself.
+    description: Heals a player or the player themself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
   helmet:
@@ -991,13 +1002,18 @@ reflectcommands:
       - es
     class: CmdSignEdit
     description: Edits the sign a player is currently looking at.
-    usage: '/<command> [line#] (new text)'
+    usage: '/<command>'
     version_added: 0.2.7
   slap:
     class: CmdSlap
     description: Broadcasts you slapping another player.
     usage: '/<command> [player]'
     version_added: Pre-0.2.7
+  smoker:
+    class: CmdSmoker
+    description: Remotely manages a smoker you set.
+    usage: '/<command> [set/show]'
+    version_added: 5.0.0
   spawn:
     class: CmdSpawn
     description: Takes the player to the spawn of the world they are standing in.
@@ -1325,7 +1341,9 @@ permissions:
       rcmds.baninfo: true
       rcmds.banip: true
       rcmds.banlist: true
+      rcmds.blastfurnace: true
       rcmds.biome: true
+      rcmds.brewingstand: true
       rcmds.broadcast: true
       rcmds.buddha: true
       rcmds.burn: true
@@ -1451,8 +1469,8 @@ permissions:
       rcmds.setwarp: true
       rcmds.sign.*: true
       rcmds.signedit: true
-      rcmds.signedit.color: true
       rcmds.slap: true
+      rcmds.smoker: true
       rcmds.spawn: true
       rcmds.spawn.other: true
       rcmds.spawner: true
@@ -1550,10 +1568,18 @@ permissions:
     command: banlist
     default: op
     description: Allows you to see all banned players.
+  rcmds.blastfurnace:
+    command: blastfurnace
+    default: op
+    description: Allows you to remotely open a blast furnace.
   rcmds.biome:
     command: biome
     default: op
     description: Allows you to change biomes.
+  rcmds.brewingstand:
+    command: brewingstand
+    default: op
+    description: Allows you to remotely open a brewing stand.
   rcmds.broadcast:
     command: broadcast
     default: op
@@ -2307,7 +2333,6 @@ permissions:
       rcmds.setwarp: true
       rcmds.sign.*: true
       rcmds.signedit: true
-      rcmds.signedit.color: true
       rcmds.slap: true
       rcmds.spawn: true
       rcmds.spawn.other: true
@@ -2827,14 +2852,14 @@ permissions:
     command: signedit
     default: op
     description: Allows you to edit signs.
-  rcmds.signedit.color:
-    command: signedit
-    default: op
-    description: Allows you to use colors on signs.
   rcmds.slap:
     command: slap
     default: op
     description: Allows you to slap another player
+  rcmds.smoker:
+    command: smoker
+    default: op
+    description: Allows you to remotely open a smoker.
   rcmds.spawn:
     command: spawn
     default: op

@@ -35,7 +35,7 @@ public class CmdHead extends TabCommand {
             return false;
         }
         final Player p = (Player) cs;
-        final ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        final ItemStack head = new ItemStack(Material.SKELETON_SKULL, 1, (short) 3);
         if (!(head.getItemMeta() instanceof SkullMeta)) {
             cs.sendMessage(MessageColor.NEGATIVE + "The head had incorrect item metadata!");
             return true;

@@ -6,9 +6,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.royaldev.royalcommands.opencsv.CSVReader;
 
 import java.io.File;
@@ -20,11 +17,9 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({RoyalCommands.class})
+
 public class TestAliases {
 
     private YamlConfiguration pluginYml = null;
@@ -48,6 +43,7 @@ public class TestAliases {
         boolean allAliasesExist = true;
         for (final Material m : Material.values()) {
             if (inm.aliasExists(m)) continue;
+            if (m.name().startsWith("LEGACY")) continue;
             if (allAliasesExist) allAliasesExist = false;
             l.warning("Missing alias for Material " + m.name() + ".");
         }

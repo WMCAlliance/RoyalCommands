@@ -9,7 +9,7 @@ command:
   supports:
     name-completion: false
     time-format: false
-  usage: /setspawn
+  usage: /setspawn (group)
 layout: command
 title: /setspawn
 ---

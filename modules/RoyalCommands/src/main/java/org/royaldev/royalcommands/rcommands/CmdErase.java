@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,12 +29,16 @@ import org.royaldev.royalcommands.RoyalCommands;
 public class CmdErase extends TabCommand {
 
     public CmdErase(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{});
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
     }
 	/**
 	 * TODO: Support more categories
-	 * TODO: Autocomplete categories
 	 */
+
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList("mobs", "monsters", "animals", "arrows", "boats", "littnt", "all", "minecart", "xp", "paintings", "drops"));
+    }
 
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {

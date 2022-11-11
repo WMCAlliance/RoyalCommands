@@ -96,10 +96,12 @@ public class CmdNick extends CACommand {
             return false;
         }
         final RPlayer rpt = MemoryRPlayer.getRPlayer(ca.getFlag(CmdNick.TARGET_FLAG).getValue());
-        final boolean same = rpt.isSameAs((OfflinePlayer) cs);
-        if (!same && (cs instanceof Player && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) || (rpt.isOnline() && this.ah.isAuthorized(rpt.getPlayer(), cmd, PermType.EXEMPT))) {
-            RUtils.dispNoPerms(cs);
-            return true;
+        if (cs instanceof Player) {
+            final boolean same = rpt.isSameAs((OfflinePlayer) cs);
+            if (!same && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS) || rpt.isOnline() && this.ah.isAuthorized(rpt.getPlayer(), cmd, PermType.EXEMPT)) {
+                RUtils.dispNoPerms(cs);
+                return true;
+            }
         }
         final PlayerConfiguration pcm = rpt.getPlayerConfiguration();
         if (!pcm.exists()) {

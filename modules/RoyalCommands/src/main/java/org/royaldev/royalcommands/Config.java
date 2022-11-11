@@ -57,6 +57,7 @@ public class Config {
     public static boolean showcommands;
     public static boolean simpleList;
 	public static boolean sleepNotifications;
+	public static boolean sleepMajority;
     public static boolean smoothTime;
     public static boolean stsBack;
     public static boolean stsNew;
@@ -88,6 +89,7 @@ public class Config {
     public static double findIpPercent;
     public static double globalTeleportCooldown;
     public static double maxNear;
+    public static double sleepMajorityPercent;
 
     //-- Floats --//
     public static float explodePower;
@@ -210,6 +212,7 @@ public class Config {
         showcommands = c.getBoolean("commands.logging.view_commands", true);
         simpleList = c.getBoolean("playerlist.simple", true);
 		sleepNotifications = c.getBoolean("general.sleep_notifications", true);
+		sleepMajority = c.getBoolean("general.sleep_majority", true);
         smoothTime = c.getBoolean("general.use_smooth_time", true);
         stsBack = c.getBoolean("teleports.spawn.login.send_all.register_back", false);
         stsNew = c.getBoolean("teleports.spawn.login.send_new", true);
@@ -243,6 +246,7 @@ public class Config {
         findIpPercent = c.getDouble("general.findip_alert_percentage", 25D);
         globalTeleportCooldown = c.getDouble("teleports.options.global_cooldown", 0D);
         maxNear = c.getDouble("near.max_radius", 2000D);
+        sleepMajorityPercent = c.getDouble("general.sleep_majority_percentage", 50D);
 
         //-- Floats --//
 
