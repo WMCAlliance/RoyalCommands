@@ -44,7 +44,7 @@ jobs:
         run: test -f ~/.m2/repository/org/spigotmc/spigot/1.19.2-R0.1-SNAPSHOT/spigot-1.19.2-R0.1-SNAPSHOT-remapped-obf.jar && echo "::set-output name=sucess::true" || echo "::set-output name=sucess::false"
       - name: Build 1.19.2
         if: steps.wild.outputs.sucess != 'true' || steps.wildMojang.outputs.sucess != 'true' || steps.wildObf.outputs.sucess != 'true'
-        run: cd BuildTools && java -jar BuildTools.jar --rev 1.19.2 --remapped
+        run: cd BuildTools && java -jar BuildTools.jar --rev 1.19.2 --compile craftbukkit
 
   # Build RoyalCommands using Maven
   build:
@@ -74,6 +74,7 @@ jobs:
           ~/.m2/repository/org/spigotmc/spigot/1.19.2-R0.1-SNAPSHOT/
           ~/.m2/repository/org/spigotmc/spigot-parent/
           ~/.m2/repository/org/spigotmc/minecraft-server/
+          ~/.m2/repository/org/bukkit/craftbukkit/1.19.2-R0.1-SNAPSHOT/
         key: ${{ runner.os }}-spigot-1.19.2-all
         restore-keys: ${{ runner.os }}-spigot-1.19.2-all
 
