@@ -53,12 +53,26 @@ jobs:
 
     steps:
     - name: Checkout RoyalCommands
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
+      
+    - name: Checkout RoyalChat
+      uses: actions/checkout@v3
+      with:
+        repository: WMCAlliance/RoyalChat
+        path: royalchat
+        
+    - name: Checkout RoyalDeath
+      uses: actions/checkout@v3
+      with:
+        repository: WMCAlliance/RoyalDeath
+        path: royaldeath
+        
     - name: Set up JDK 17
       uses: actions/setup-java@v2
       with:
         distribution: 'temurin'
         java-version: '17'
+        
     - name: Cache Maven packages
       id: cacheMain
       uses: actions/cache@v2
@@ -77,9 +91,17 @@ jobs:
           ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
         key: ${{ runner.os }}-spigot-1.19.3-all
         restore-keys: ${{ runner.os }}-spigot-1.19.3-all
-
-    - name: Install with Maven
+    
+    - name: Install RoyalChat with Maven
+      working-directory: royalchat
       run: mvn clean install
       
-    - name: Build with Maven
+    - name: Install RoyalDeath with Maven
+      working-directory: royaldeath
+      run: mvn clean install
+
+    - name: Install RoyalCommands with Maven
+      run: mvn clean install
+      
+    - name: Build RoyalCommands with Maven
       run: mvn clean package
