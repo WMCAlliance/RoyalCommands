@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.royaldev</groupId>
     <artifactId>royalcommands</artifactId>
-    <version>4.1.4-SNAPSHOT</version>
+    <version>4.1.5-SNAPSHOT</version>
     <name>RoyalCommands</name>
     <url>https://github.com/RoyalDev/RoyalCommands</url>
     <issueManagement>
@@ -176,20 +176,16 @@
             <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
         <repository>
-            <id>comp</id>
-            <url>https://repo.comphenix.net/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>multi</id>
             <url>https://repo.onarandombox.com/content/repositories/multiverse/</url>
         </repository>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
         <repository>
-            <id>phoenix616</id>
-            <url>https://repo.phoenix616.dev/</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>ender.zone</id>
+            <url>https://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -211,9 +207,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.kitteh</groupId>
+            <groupId>com.github.mbax</groupId>
             <artifactId>VanishNoPacket</artifactId>
-            <version>3.19.1</version>
+            <version>3.22</version>
             <scope>provided</scope>
         </dependency>
 <!--        <dependency>-->
@@ -229,10 +225,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.griefcraft</groupId>
-            <artifactId>lwc</artifactId>
-            <version>4.5</version>
-            <scope>provided</scope>
+            <groupId>com.griefcraft.lwc</groupId>
+            <artifactId>LWCX</artifactId>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -249,12 +244,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.shininet.bukkit</groupId>
-            <artifactId>ItemRenamer</artifactId>
-            <version>2.2.0</version>
+            <version>4.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
@@ -275,7 +265,7 @@
             <groupId>org.royaldev</groupId>
             <artifactId>RoyalChat</artifactId>
             <type>jar</type>
-            <version>1.1.1</version>
+            <version>1.1.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -287,8 +277,8 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_19_R1</artifactId>
-            <version>v1_19_R1</version>
+            <artifactId>royalcommands-NMS1_19_R2</artifactId>
+            <version>v1_19_R2</version>
             <type>jar</type>
             <optional>true</optional>
         </dependency>
@@ -302,7 +292,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

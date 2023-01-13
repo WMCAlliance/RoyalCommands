@@ -5,7 +5,7 @@ command:
   - empty
   - store
   configuration: []
-  description: Dumps contents of inventory into a chest.
+  description: Dumps contents of inventory into chest.
   permissions:
   - rcmds.dump
   supports:
