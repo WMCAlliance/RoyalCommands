@@ -46,15 +46,12 @@ jobs:
         if: steps.wild.outputs.sucess != 'true' || steps.wildMojang.outputs.sucess != 'true' || steps.wildObf.outputs.sucess != 'true'
         run: cd BuildTools && java -jar BuildTools.jar --rev 1.19.3 --compile craftbukkit --compile-if-changed
 
-  # Build RoyalCommands using Maven
+  # Build RoyalChat using Maven
   build-rchat:
     runs-on: ubuntu-latest
     needs: nms_version
 
     steps:
-      - name: Checkout RoyalCommands
-        uses: actions/checkout@v3
-
       - name: Checkout RoyalChat
         uses: actions/checkout@v3
         with:
@@ -84,6 +81,7 @@ jobs:
             ~/.m2/repository/org/spigotmc/spigot-parent/
             ~/.m2/repository/org/spigotmc/minecraft-server/
             ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
+            ~/.m2/repository/org/royaldev/RoyalChat/
           key: ${{ runner.os }}-spigot-1.19.3-all
           restore-keys: ${{ runner.os }}-spigot-1.19.3-all
 
@@ -122,6 +120,7 @@ jobs:
           ~/.m2/repository/org/spigotmc/spigot-parent/
           ~/.m2/repository/org/spigotmc/minecraft-server/
           ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
+          ~/.m2/repository/org/royaldev/RoyalChat/
         key: ${{ runner.os }}-spigot-1.19.3-all
         restore-keys: ${{ runner.os }}-spigot-1.19.3-all
 
