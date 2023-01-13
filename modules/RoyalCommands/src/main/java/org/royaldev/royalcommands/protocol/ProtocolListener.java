@@ -24,12 +24,12 @@ public class ProtocolListener {
 
     protected static final String NBT_INFO_KEY = "rcmds-spawninfo";
     private final RoyalCommands plugin;
-    final SpawnRenameProcessor srp;
+    //final SpawnRenameProcessor srp;
     private final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
 
     public ProtocolListener(RoyalCommands instance) {
         this.plugin = instance;
-		this.srp = new SpawnRenameProcessor(plugin);
+		//this.srp = new SpawnRenameProcessor(plugin);
     }
 
     public void createSetSlotListener() {

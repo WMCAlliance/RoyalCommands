@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.royaldev.royalcommands.nms.v1_19_R1;
+package org.royaldev.royalcommands.nms.v1_19_R2;
 
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.nms.api.NMSFace;
 
@@ -19,7 +19,7 @@ public class NMSHandler implements NMSFace {
 
     @Override
     public String getVersion() {
-        return "v1_19_R1";
+        return "v1_19_R2";
     }
 
     @Override
