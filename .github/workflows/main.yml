@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17 # 1.19.3 can only be built with Java 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Cache 1.19.3 Maven package
         id: cacheWild
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.m2/repository/org/spigotmc/spigot/1.19.3-R0.1-SNAPSHOT/
@@ -47,48 +47,47 @@ jobs:
         run: cd BuildTools && java -jar BuildTools.jar --rev 1.19.3 --compile craftbukkit --compile-if-changed
 
   # Build RoyalCommands using Maven
-  build:
+  build-rchat:
     runs-on: ubuntu-latest
     needs: nms_version
 
     steps:
+      - name: Checkout RoyalCommands
+        uses: actions/checkout@v3
+
+      - name: Checkout RoyalChat
+        uses: actions/checkout@v3
+        with:
+          repository: WMCAlliance/RoyalChat
+          path: royalchat
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Install RoyalChat with Maven
+        working-directory: royalchat
+        run: mvn clean install
+
+
+  # Build RoyalCommands using Maven
+  build-rcmds:
+    runs-on: ubuntu-latest
+    needs: build-rcmds
+
+    steps:
     - name: Checkout RoyalCommands
       uses: actions/checkout@v3
-      
-    - name: Checkout RoyalChat
-      uses: actions/checkout@v3
-      with:
-        repository: WMCAlliance/RoyalChat
-        path: royalchat
         
     - name: Set up JDK 17
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '17'
-        
-    - name: Cache Maven packages
-      id: cacheMain
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2
-        restore-keys: ${{ runner.os }}-m2
-    - name: Cache 1.19.3 Maven package
-      id: cacheWild
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.m2/repository/org/spigotmc/spigot/1.19.3-R0.1-SNAPSHOT/
-          ~/.m2/repository/org/spigotmc/spigot-parent/
-          ~/.m2/repository/org/spigotmc/minecraft-server/
-          ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
-        key: ${{ runner.os }}-spigot-1.19.3-all
-        restore-keys: ${{ runner.os }}-spigot-1.19.3-all
-    
-    - name: Install RoyalChat with Maven
-      working-directory: royalchat
-      run: mvn clean install
+        cache: maven
 
     - name: Install RoyalCommands with Maven
       run: mvn clean install
