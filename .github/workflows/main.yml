@@ -65,12 +65,11 @@ jobs:
           java-version: '17'
           cache: maven
           
-      - name: Cache 1.19.3 RoyalChat
+      - name: Cache RoyalChat
         id: cacheRoyalChat
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.m2/repository/org/royaldev/royalchat/*
+          path: ~/.m2/repository/org/royaldev/royalchat/1.1.2-SNAPSHOT/
           key: ${{ runner.os }}-royalchat
           restore-keys: ${{ runner.os }}-royalchat
 
@@ -111,12 +110,12 @@ jobs:
           ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
         key: ${{ runner.os }}-spigot-1.19.3-all
         restore-keys: ${{ runner.os }}-spigot-1.19.3-all
-    - name: Cache 1.19.3 RoyalChat
+     
+    - name: Cache RoyalChat
       id: cacheRoyalChat
       uses: actions/cache@v3
       with:
-        path: |
-          ~/.m2/repository/org/royaldev/royalchat/*
+        path: ~/.m2/repository/org/royaldev/royalchat/1.1.2-SNAPSHOT/
         key: ${{ runner.os }}-royalchat
         restore-keys: ${{ runner.os }}-royalchat
         
