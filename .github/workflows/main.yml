@@ -65,25 +65,14 @@ jobs:
           java-version: '17'
           cache: maven
           
-      - name: Cache Maven packages
-        id: cacheMain
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2
-          restore-keys: ${{ runner.os }}-m2
-      - name: Cache 1.19.3 Maven package
-        id: cacheWild
-        uses: actions/cache@v2
+      - name: Cache 1.19.3 RoyalChat
+        id: cacheRoyalChat
+        uses: actions/cache@v3
         with:
           path: |
-            ~/.m2/repository/org/spigotmc/spigot/1.19.3-R0.1-SNAPSHOT/
-            ~/.m2/repository/org/spigotmc/spigot-parent/
-            ~/.m2/repository/org/spigotmc/minecraft-server/
-            ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
             ~/.m2/repository/org/royaldev/RoyalChat/
-          key: ${{ runner.os }}-spigot-1.19.3-all
-          restore-keys: ${{ runner.os }}-spigot-1.19.3-all
+          key: ${{ runner.os }}-royalchat
+          restore-keys: ${{ runner.os }}-royalchat
 
       - name: Install RoyalChat with Maven
         working-directory: royalchat
@@ -123,7 +112,15 @@ jobs:
           ~/.m2/repository/org/royaldev/RoyalChat/
         key: ${{ runner.os }}-spigot-1.19.3-all
         restore-keys: ${{ runner.os }}-spigot-1.19.3-all
-
+    - name: Cache 1.19.3 RoyalChat
+      id: cacheRoyalChat
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository/org/royaldev/RoyalChat/
+        key: ${{ runner.os }}-royalchat
+        restore-keys: ${{ runner.os }}-royalchat
+        
     - name: Install RoyalCommands with Maven
       run: mvn clean install
       
