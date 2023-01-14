@@ -369,7 +369,7 @@ public class RoyalCommands extends JavaPlugin {
             return true;
         }
         Integer currentVersion = RUtils.getInt(m.group(1).replace(".", ""));
-        return currentVersion == null || currentVersion <= minVersion;
+        return currentVersion == null || currentVersion >= minVersion;
     }
 
     public boolean canAccessChest(Player p, Block b) {
