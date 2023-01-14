@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.m2/repository/org/royaldev/royalchat/*/
+            ~/.m2/repository/org/royaldev/royalchat/*
           key: ${{ runner.os }}-royalchat
           restore-keys: ${{ runner.os }}-royalchat
 
@@ -116,7 +116,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
-          ~/.m2/repository/org/royaldev/royalchat/*/
+          ~/.m2/repository/org/royaldev/royalchat/*
         key: ${{ runner.os }}-royalchat
         restore-keys: ${{ runner.os }}-royalchat
         
