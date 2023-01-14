@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.m2/repository/org/royaldev/RoyalChat/
+            ~/.m2/repository/org/royaldev/royalchat/*/
           key: ${{ runner.os }}-royalchat
           restore-keys: ${{ runner.os }}-royalchat
 
@@ -109,7 +109,6 @@ jobs:
           ~/.m2/repository/org/spigotmc/spigot-parent/
           ~/.m2/repository/org/spigotmc/minecraft-server/
           ~/.m2/repository/org/bukkit/craftbukkit/1.19.3-R0.1-SNAPSHOT/
-          ~/.m2/repository/org/royaldev/RoyalChat/
         key: ${{ runner.os }}-spigot-1.19.3-all
         restore-keys: ${{ runner.os }}-spigot-1.19.3-all
     - name: Cache 1.19.3 RoyalChat
@@ -117,7 +116,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
-          ~/.m2/repository/org/royaldev/RoyalChat/
+          ~/.m2/repository/org/royaldev/royalchat/*/
         key: ${{ runner.os }}-royalchat
         restore-keys: ${{ runner.os }}-royalchat
         
