@@ -89,7 +89,7 @@ public class RoyalCommands extends JavaPlugin {
     private static RoyalCommands instance;
     public final AuthorizationHandler ah = new AuthorizationHandler(this);
     public final VaultHandler vh = new VaultHandler(this);
-    private final int minVersion = 2645;
+    private final int minVersion = 1180; // 1.18.0
 
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
     private final long startTime = System.currentTimeMillis();
@@ -362,14 +362,14 @@ public class RoyalCommands extends JavaPlugin {
     private boolean versionCheck() {
         // If someone happens to be looking through this and knows a better way, let me know.
         if (!Config.checkVersion) return true;
-        Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
-        Matcher m = p.matcher(getServer().getVersion());
+        Pattern p = Pattern.compile("(\\d+.\\d+.\\d+).+");
+        Matcher m = p.matcher(getServer().getBukkitVersion());
         if (!m.matches() || m.groupCount() < 1) {
             this.getLogger().warning("Could not get CraftBukkit version! No version checking will take place.");
             return true;
         }
-        Integer currentVersion = RUtils.getInt(m.group(1));
-        return currentVersion == null || currentVersion >= minVersion;
+        Integer currentVersion = RUtils.getInt(m.group(1).replace(".", ""));
+        return currentVersion == null || currentVersion <= minVersion;
     }
 
     public boolean canAccessChest(Player p, Block b) {
