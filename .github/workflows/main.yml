@@ -61,7 +61,25 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-        cache: maven
-      
+
+    - name: Cache 1.19.3 Maven package
+      id: cacheWild
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository/org/spigotmc/spigot/1.19.3-R0.1-SNAPSHOT/
+          ~/.m2/repository/org/spigotmc/spigot-parent/
+          ~/.m2/repository/org/spigotmc/minecraft-server/
+        key: ${{ runner.os }}-spigot-1.19.3-all
+        restore-keys: ${{ runner.os }}-spigot-1.19.3-all
+
+    - name: Cache Maven packages
+      id: cacheMain
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2_1.19.3
+        restore-keys: ${{ runner.os }}-m2_1.19.3
+
     - name: Build RoyalCommands with Maven
       run: mvn clean package
