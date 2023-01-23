@@ -50,7 +50,6 @@ jobs:
   # Build RoyalCommands using Maven
   build-rcmds:
     runs-on: ubuntu-latest
-    needs: build-rcmds
 
     steps:
     - name: Checkout RoyalCommands
