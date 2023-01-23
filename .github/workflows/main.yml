@@ -84,7 +84,7 @@ jobs:
     - name: 'Create settings.xml'
       uses: whelk-io/maven-settings-xml-action@v4
       with:
-        repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/WMCAlliance/RoyalChat", "snapshots": {"enabled": "true" } }]'
+        repositories: '[{"id": "github", "url": "https://maven.pkg.github.com/WMCAlliance/RoyalChat", "snapshots": {"enabled": "true" }}]'
         servers: '[{"id": "github", "username": "${{ secrets.USERNAME }}", "password": "${{ secrets.PAT }}"}]'
 
     - name: Build RoyalCommands with Maven
