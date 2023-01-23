@@ -172,14 +172,7 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/WMCAlliance/RoyalChat</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>github</id>
+            <id>github-wma-royalchat</id>
             <url>https://maven.pkg.github.com/WMCAlliance/RoyalChat</url>
             <snapshots>
                 <enabled>true</enabled>
