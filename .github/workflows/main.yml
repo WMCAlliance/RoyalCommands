@@ -90,4 +90,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: RoyalCommands (#${{ github.run_number }})
-        path: target/*.jar
+        path: /home/runner/work/RoyalCommands/RoyalCommands/modules/RoyalCommands/target/*.jar
