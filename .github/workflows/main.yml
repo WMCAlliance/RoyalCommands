@@ -81,10 +81,8 @@ jobs:
         key: ${{ runner.os }}-m2_1.19.3
         restore-keys: ${{ runner.os }}-m2_1.19.3
 
-    - name: 'Create settings.xml'
-      uses: whelk-io/maven-settings-xml-action@v21
-      with:
-        servers: '[{"id": "github", "username": "${{ secrets.USERNAME }}", "password": "${{ secrets.PAT }}"}]'
-
     - name: Build RoyalCommands with Maven
-      run: mvn clean package --settings ~/.m2/settings.xml
+      env:
+        GITHUB_USERNAME: ${{ secrets.USERNAME }}
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+      run: mvn clean package --settings settings.xml
