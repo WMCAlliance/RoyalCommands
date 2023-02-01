@@ -270,8 +270,7 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>RoyalChat</artifactId>
-            <type>jar</type>
+            <artifactId>royalchat</artifactId>
             <version>1.1.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
