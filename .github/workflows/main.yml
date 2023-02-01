@@ -87,4 +87,4 @@ jobs:
         servers: '[{"id": "github", "username": "${{ secrets.USERNAME }}", "password": "${{ secrets.PAT }}"}]'
 
     - name: Build RoyalCommands with Maven
-      run: mvn clean package --settings settings.xml
+      run: mvn clean package --settings ~/.m2/settings.xml
