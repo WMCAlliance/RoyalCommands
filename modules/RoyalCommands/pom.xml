@@ -172,6 +172,13 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
+            <id>github-wma-royalchat</id>
+            <url>https://maven.pkg.github.com/WMCAlliance/RoyalChat</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>dmulloy2-repo</id>
             <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
@@ -263,9 +270,8 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>RoyalChat</artifactId>
-            <type>jar</type>
-            <version>1.1.2-SNAPSHOT</version>
+            <artifactId>royalchat</artifactId>
+            <version>1.1.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -288,6 +294,17 @@
             <version>NoSupport</version>
             <type>jar</type>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
