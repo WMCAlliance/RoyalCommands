@@ -25,7 +25,7 @@ jobs:
           restore-keys: ${{ runner.os }}-spigot-1.19.3-all
       - name: Cache Maven packages
         id: cacheMain
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2_1.19.3
@@ -75,7 +75,7 @@ jobs:
 
     - name: Cache Maven packages
       id: cacheMain
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2_1.19.3
@@ -86,3 +86,8 @@ jobs:
         GITHUB_USERNAME: ${{ secrets.USERNAME }}
         GITHUB_TOKEN: ${{ secrets.PAT }}
       run: mvn clean package --settings settings.xml
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: RoyalCommands (#${{ github.run_number }})
+        path: RoyalCommands/target/*.jar
