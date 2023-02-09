@@ -1,5 +1,5 @@
 # Credit to https://github.com/APDevTeam/Movecraft/actions for this
-name: Java CI
+name: Maven Build
 
 on: [push, pull_request]
 

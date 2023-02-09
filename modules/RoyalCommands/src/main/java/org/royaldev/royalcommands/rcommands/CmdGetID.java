@@ -31,18 +31,16 @@ public class CmdGetID extends TabCommand {
         }
         Player p = (Player) cs;
         ItemStack hand = p.getInventory().getItemInMainHand();
-        // int id = hand.getTypeId(); // TODO: Do something better here
-		int id = -1;
-        short damage = hand.getDurability();
-        byte data = hand.getData().getData();
+		//int id = -1;
+        short damage = hand.getType().getMaxDurability();
         String name = RUtils.getItemName(hand);
         Map<Enchantment, Integer> enchants = hand.getEnchantments();
-        cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + id + MessageColor.POSITIVE + " (damage: " + MessageColor.NEUTRAL + damage + MessageColor.POSITIVE + ", materialdata: " + MessageColor.NEUTRAL + data + MessageColor.POSITIVE + ")");
+        cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + ": " + "(damage: " + MessageColor.NEUTRAL + damage + MessageColor.POSITIVE + ")");
         if (!enchants.isEmpty()) {
             cs.sendMessage(MessageColor.POSITIVE + "Enchantments:");
             for (Entry<Enchantment, Integer> entry : enchants.entrySet()) {
                 int lvl = entry.getValue();
-                cs.sendMessage(" " + MessageColor.NEUTRAL + entry.getKey().getName().toLowerCase() + " " + lvl);
+                cs.sendMessage(" " + MessageColor.NEUTRAL + entry.getKey().getKey() + " " + lvl);
             }
         }
         return true;
