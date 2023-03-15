@@ -1,7 +1,12 @@
 # Credit to https://github.com/APDevTeam/Movecraft/actions for this
 name: Maven Build
 
-on: [push, pull_request]
+on: 
+  push:
+      branches:
+      - main
+      - five_o_o 
+  pull_request:
 
 jobs:
   # Build 1.19.4 NMS
