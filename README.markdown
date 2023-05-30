@@ -1,5 +1,6 @@
 RoyalCommands
 =============
+[![Maven Build](https://github.com/WMCAlliance/RoyalCommands/actions/workflows/main.yml/badge.svg?branch=five_o_o)](https://github.com/WMCAlliance/RoyalCommands/actions/workflows/main.yml)
 
 ![RoyalCommands](https://www.spigotmc.org/attachments/royalcommandslogo-big-png.21832/)
 
