@@ -27,10 +27,6 @@
             <id>spigot</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>blaney-repo</id>
-            <url>https://repo.blny.me/repository/maven-releases/</url>
-        </repository>
     </repositories>
 
     <dependencies>
