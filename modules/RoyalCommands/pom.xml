@@ -283,8 +283,8 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_19_R3</artifactId>
-            <version>v1_19_R3</version>
+            <artifactId>royalcommands-NMS1_20_R2</artifactId>
+            <version>v1_20_R2</version>
             <type>jar</type>
             <optional>true</optional>
         </dependency>
@@ -298,7 +298,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
