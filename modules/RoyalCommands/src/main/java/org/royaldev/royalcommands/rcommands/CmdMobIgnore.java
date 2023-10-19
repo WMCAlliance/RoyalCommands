@@ -30,8 +30,9 @@ public class CmdMobIgnore extends TabCommand {
             }
             Player p = (Player) cs;
             PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
-            boolean isHidden = pcm.getBoolean("mobignored");
-            pcm.set("mobignored", !isHidden);
+            boolean wasHidden = pcm.getBoolean("mobignored");
+            boolean isHidden = !wasHidden;
+            pcm.set("mobignored", isHidden);
             String status = BooleanUtils.toStringOnOff(isHidden);
             cs.sendMessage(MessageColor.POSITIVE + "Toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
             return true;
@@ -42,8 +43,9 @@ public class CmdMobIgnore extends TabCommand {
             return true;
         }
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
-        boolean isHidden = pcm.getBoolean("mobignored", false);
-        pcm.set("mobignored", !isHidden);
+        boolean wasHidden = pcm.getBoolean("mobignored", false);
+        boolean isHidden = !wasHidden;
+        pcm.set("mobignored", isHidden);
         String status = BooleanUtils.toStringOnOff(isHidden);
         cs.sendMessage(MessageColor.POSITIVE + "Toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
         t.sendMessage(MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " for you.");
