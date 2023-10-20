@@ -21,7 +21,6 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.google.common.base.Objects;
-import java.lang.reflect.InvocationTargetException;
 import org.bukkit.entity.Player;
 
 public abstract class AbstractPacket {
@@ -64,7 +63,7 @@ public abstract class AbstractPacket {
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver,
                     getHandle());
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Cannot send packet.", e);
         }
     }
@@ -80,7 +79,7 @@ public abstract class AbstractPacket {
     @Deprecated
     public void recievePacket(Player sender) {
         try {
-            ProtocolLibrary.getProtocolManager().recieveClientPacket(sender,
+            ProtocolLibrary.getProtocolManager().receiveClientPacket(sender,
                     getHandle());
         } catch (Exception e) {
             throw new RuntimeException("Cannot recieve packet.", e);
@@ -95,7 +94,7 @@ public abstract class AbstractPacket {
      */
     public void receivePacket(Player sender) {
         try {
-            ProtocolLibrary.getProtocolManager().recieveClientPacket(sender,
+            ProtocolLibrary.getProtocolManager().receiveClientPacket(sender,
                     getHandle());
         } catch (Exception e) {
             throw new RuntimeException("Cannot recieve packet.", e);
