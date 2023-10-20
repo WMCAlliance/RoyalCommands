@@ -35,11 +35,8 @@ public class CmdHead extends TabCommand {
             return false;
         }
         final Player p = (Player) cs;
-        final ItemStack head = new ItemStack(Material.SKELETON_SKULL, 1, (short) 3);
-        if (!(head.getItemMeta() instanceof SkullMeta)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "The head had incorrect item metadata!");
-            return true;
-        }
+        // final ItemStack head = new ItemStack(Material.SKELETON_SKULL, 1, (short) 3);
+		ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         final SkullMeta sm = (SkullMeta) head.getItemMeta();
         final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
         if (!t.getName().equalsIgnoreCase(p.getName()) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
@@ -50,7 +47,11 @@ public class CmdHead extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn that player's head!");
             return true;
         }
-        sm.setOwner(t.getName());
+        if (t.hasPlayedBefore()) {
+			sm.setOwningPlayer(t);
+		} else {
+			sm.setOwner(args[0]);
+		}
         head.setItemMeta(sm);
         p.getInventory().addItem(head);
         cs.sendMessage(MessageColor.POSITIVE + "You have been given the head of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
