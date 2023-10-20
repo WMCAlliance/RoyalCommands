@@ -67,7 +67,15 @@ public class CmdListHomes extends TabCommand {
         cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + rp.getHomes().size() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         for (final Map.Entry<World, List<Home>> entry : sortedHomes.entrySet()) {
             final World w = entry.getKey();
-            final FancyMessage fm = new FancyMessage("  Homes for ").color(MessageColor.POSITIVE.cc()).then(w == null ? "an invalid world" : w.getName()).color(MessageColor.NEUTRAL.cc()).tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + w.getName()).command("/world " + w.getName()).then(":").color(MessageColor.POSITIVE.cc());
+            final FancyMessage fm = new FancyMessage("  Homes for ")
+					.color(MessageColor.POSITIVE.cc())
+					.then(w == null ? "an invalid world" : w.getName())
+					.color(MessageColor.NEUTRAL.cc())
+					.tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + w.getName());
+			if (w != null) {
+				fm.command("/world " + w.getName()).then(":").color(MessageColor.POSITIVE.cc());
+			}
+			
             fm.send(cs);
             final FancyMessage fmh = new FancyMessage("    ");
             final Iterator<Home> homes = entry.getValue().iterator();
