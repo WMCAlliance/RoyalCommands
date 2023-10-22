@@ -168,7 +168,7 @@ public class InventoryListener implements Listener {
         final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) pcm.createFile();
         final int invSize = pcm.getInt("inventory." + group + ".ender.size");
-        final Inventory i = this.plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
+        final Inventory i = this.plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.ENDER_CHEST.getDefaultSize());
         if (!pcm.isSet("inventory." + group + ".ender.slot")) return i;
         for (int slot = 0; slot < invSize; slot++) {
             final ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
