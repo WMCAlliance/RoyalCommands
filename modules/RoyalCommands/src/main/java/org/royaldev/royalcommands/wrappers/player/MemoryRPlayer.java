@@ -127,7 +127,7 @@ public class MemoryRPlayer implements RPlayer {
     public List<String> getHomeNames() {
         final List<String> names = new ArrayList<>();
         for (final Home h : this.getHomes()) {
-			if(h.getName() == null) continue;
+			if(h == null || h.getName() == null) continue;
             names.add(h.getName());
         }
         return names;
