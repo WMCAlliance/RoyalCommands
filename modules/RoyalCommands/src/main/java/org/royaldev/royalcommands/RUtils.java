@@ -125,7 +125,7 @@ public final class RUtils {
 
     public static void banIP(String ip, CommandSender cs, String reason) {
         final BanList bl = Bukkit.getBanList(BanList.Type.IP);
-        bl.addBan(ip, reason, null, cs.getName());
+        bl.addBan(ip, reason, (Date) null, cs.getName());
     }
 
     /**
@@ -142,7 +142,7 @@ public final class RUtils {
     public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
         reason = colorize(reason);
         final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
-        bl.addBan(t.getName(), reason, null, cs.getName());
+        bl.addBan(t.getName(), reason, (Date) null, cs.getName());
         writeBanHistory(t);
         String inGameFormat = Config.igBanFormat;
         String outFormat = Config.banFormat;

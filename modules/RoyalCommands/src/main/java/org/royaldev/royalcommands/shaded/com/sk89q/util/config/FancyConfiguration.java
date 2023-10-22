@@ -6,6 +6,7 @@
 package org.royaldev.royalcommands.shaded.com.sk89q.util.config;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.introspector.Property;
@@ -70,7 +71,7 @@ public class FancyConfiguration extends ConfigurationNode {
         DumperOptions options = new DumperOptions();
         options.setIndent(4);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        this.yaml = new Yaml(new SafeConstructor(), new EmptyNullRepresenter(), options);
+        this.yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new EmptyNullRepresenter(), options);
         this.file = file;
     }
 
@@ -197,7 +198,7 @@ public class FancyConfiguration extends ConfigurationNode {
 class EmptyNullRepresenter extends Representer {
 
     public EmptyNullRepresenter() {
-        super();
+        super(new DumperOptions());
         this.nullRepresenter = new EmptyRepresentNull();
     }
 
