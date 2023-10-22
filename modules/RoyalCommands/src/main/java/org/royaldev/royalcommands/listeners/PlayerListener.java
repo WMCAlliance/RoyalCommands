@@ -454,22 +454,33 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        int asleep = 1;
+		String myName = event.getPlayer().getDisplayName();
+        List<String> sleepers = new ArrayList<>(List.of(myName));
 
-        String prefix = MessageColor.POSITIVE + "Players asleep: " + MessageColor.NEUTRAL;
-        String suffix = MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + event.getPlayer().getWorld().getPlayers().size() + MessageColor.POSITIVE + ".";
+        FancyMessage fm = new FancyMessage("Players asleep: ")
+            .color(MessageColor.POSITIVE.cc());
         for (Player p : event.getPlayer().getWorld().getPlayers()) {
             if (p.isSleeping()) {
-                asleep++;
+                sleepers.add(p.getDisplayName());
                 if (event.getPlayer() != p) {
-                    p.sendMessage(ChatColor.GRAY + event.getPlayer().getDisplayName() + MessageColor.POSITIVE + " is now asleep.");
+                    p.sendMessage(MessageColor.NEUTRAL + myName + MessageColor.POSITIVE + " is now asleep.");
                 }
             }
-            p.sendMessage(prefix + asleep + suffix);
+            fm
+                .then(String.valueOf(sleepers.size()))
+                .color(MessageColor.NEUTRAL.cc())
+                .tooltip(MessageColor.NEUTRAL + String.join("\n", sleepers))
+                .then(" of ")
+                .color(MessageColor.POSITIVE.cc())
+                .then(String.valueOf(event.getPlayer().getWorld().getPlayers().size()))
+                .color(MessageColor.NEUTRAL.cc())
+                .then(".")
+                .color(MessageColor.POSITIVE.cc());
+            fm.send(p);
         }
         if (Config.sleepMajority) {
             double sleep_percent = Config.sleepMajorityPercent / 100D;
-            double current_asleep = (double) asleep / event.getPlayer().getWorld().getPlayers().size();
+            double current_asleep = (double) sleepers.size() / event.getPlayer().getWorld().getPlayers().size();
             if (current_asleep >= sleep_percent && current_asleep != 1.0) {
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
