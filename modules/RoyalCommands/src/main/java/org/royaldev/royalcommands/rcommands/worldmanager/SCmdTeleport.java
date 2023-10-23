@@ -39,7 +39,7 @@ public class SCmdTeleport extends SubCommand<CmdWorldManager> {
         }
         final Player p = (Player) cs;
         final World w = this.plugin.getServer().getWorld(eargs[0]);
-        if (w == null) {
+        if (w == null || Config.hiddenWorlds.contains(w.getName())) {
             cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
             return true;
         }

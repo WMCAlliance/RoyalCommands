@@ -453,6 +453,9 @@ teleports:
   worlds:
     # Require rcmds.worldaccess.worldname to access a world?
     worldaccess_perm: false
+    # Worlds to hide from listing and disallow teleportation to
+    hidden:
+    - someworldhere
   sound:
     enabled: false
     sound: ENTITY_ENDERMAN_TELEPORT

@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -38,12 +39,14 @@ public class CmdWorld extends TabCommand {
             final FancyMessage fm = new FancyMessage("");
             while (worlds.hasNext()) {
                 final World world = worlds.next();
+                if (Config.hiddenWorlds.contains(world.getName())) continue;
                 fm.then(RUtils.getMVWorldName(world)).color(MessageColor.NEUTRAL.cc()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName(world)).command("/tpw " + world.getName());
                 if (worlds.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
             }
             fm.send(cs);
             return true;
         }
+        if (Config.hiddenWorlds.contains(w.getName())) return true;
         Player p = (Player) cs;
         p.sendMessage(MessageColor.POSITIVE + "Teleporting you to world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
         String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));

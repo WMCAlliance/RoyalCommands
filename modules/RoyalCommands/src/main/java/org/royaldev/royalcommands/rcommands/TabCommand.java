@@ -157,6 +157,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     final String name = w.getName();
                     final String lowerCaseName = name.toLowerCase();
                     if (!lowerCaseName.startsWith(arg)) continue;
+                    if (Config.hiddenWorlds.contains(w.getName())) continue;
                     possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
                 }
                 break;

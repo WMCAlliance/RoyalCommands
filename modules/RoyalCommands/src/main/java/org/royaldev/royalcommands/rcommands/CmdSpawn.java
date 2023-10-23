@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -73,7 +74,7 @@ public class CmdSpawn extends TabCommand {
                 return true;
             }
             w = this.plugin.getServer().getWorld(args[0]);
-            if (w == null) {
+            if (w == null || Config.hiddenWorlds.contains(w.getName())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                 return true;
             }

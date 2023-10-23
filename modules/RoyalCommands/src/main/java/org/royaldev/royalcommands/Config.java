@@ -111,6 +111,7 @@ public class Config {
     public static List<String> commandSpyBlacklist;
     public static List<String> disabledBackWorlds;
     public static List<String> disabledCommands;
+    public static List<String> hiddenWorlds;
     public static List<String> itemSpawnTagLore;
     public static List<String> logBlacklist;
     public static List<String> motd;
@@ -271,6 +272,7 @@ public class Config {
         blockedItems = c.getStringList("items.spawn.blocked");
         disabledBackWorlds = c.getStringList("teleports.back.disabled_worlds");
         disabledCommands = c.getStringList("commands.disabled");
+        hiddenWorlds = c.getStringList("teleports.worlds.hidden");
         itemSpawnTagLore = c.getStringList("items.spawn.tag.lore");
         logBlacklist = c.getStringList("commands.logging.blacklist");
         motd = c.getStringList("motd.content");
