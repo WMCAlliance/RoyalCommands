@@ -1285,6 +1285,7 @@ reflectcommands:
   whois:
     aliases:
       - whowas
+      - playerinfo
     class: CmdWhois
     description: Looks up data on the specified player.
     usage: '/<command> [player]'
@@ -1314,6 +1315,7 @@ reflectcommands:
       - teleportworld
       - worldteleport
       - tpw
+      - worlds
     class: CmdWorld
     description: Teleports the player to the specified world.
     usage: '/<command> [world]'
