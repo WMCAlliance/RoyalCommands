@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @ReflectCommand
 public class CmdPlayerSearch extends TabCommand {
@@ -41,10 +42,32 @@ public class CmdPlayerSearch extends TabCommand {
                     long seen = pcm.getLong("seen");
                     if (seen < 1L) continue;
                     found++;
-                    String lastseen = (op.isOnline()) ? " now" : RUtils.formatDateDiff(seen) + MessageColor.POSITIVE + " ago";
-                    cs.sendMessage(MessageColor.POSITIVE + String.valueOf(found) + ". " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " - Last seen" + MessageColor.NEUTRAL + lastseen + MessageColor.POSITIVE + ".");
+                    String opName = op.getName();
+                    String lastseen = (op.isOnline()) ? " now"
+                            : RUtils.formatDateDiff(seen) + MessageColor.POSITIVE + " ago";
+                    FancyMessage fm = new FancyMessage(String.valueOf(found))
+                        .color(MessageColor.POSITIVE.cc())
+                        .then(". ")
+                        .color(MessageColor.POSITIVE.cc())
+                        .then(opName)
+                        .formattedTooltip(RUtils.getPlayerTooltip(cs))
+                        .command("/whois " + opName)
+                        .color(MessageColor.NEUTRAL.cc())
+                        .then(" - Last seen")
+                        .color(MessageColor.POSITIVE.cc())
+                        .then(lastseen)
+                        .color(MessageColor.NEUTRAL.cc())
+                        .then(".")
+                        .color(MessageColor.POSITIVE.cc());
+                    fm.send(cs);
                 }
-                cs.sendMessage(MessageColor.POSITIVE + "Search completed. " + MessageColor.NEUTRAL + found + MessageColor.POSITIVE + " results found.");
+                FancyMessage fmR = new FancyMessage("Search completed. ")
+                        .color(MessageColor.POSITIVE.cc())
+                        .then(String.valueOf(found))
+                        .color(MessageColor.NEUTRAL.cc())
+                        .then(" results found.")
+                        .color(MessageColor.POSITIVE.cc());
+                fmR.send(cs);
             }
         };
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
