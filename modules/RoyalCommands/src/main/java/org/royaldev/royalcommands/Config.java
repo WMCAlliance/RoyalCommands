@@ -190,8 +190,8 @@ public class Config {
         dumpUseInv = c.getBoolean("dump.use_inv", true);
         explodeFire = c.getBoolean("explode.fire", false);
         h2Convert = c.getBoolean("h2.convert", false);
-        hastebinErrors = c.getBoolean("security.hastebin.errors", true);
-        hastebinGeneral = c.getBoolean("security.hastebin.general", true);
+        hastebinErrors = c.getBoolean("security.hastebin.errors", false);
+        hastebinGeneral = c.getBoolean("security.hastebin.general", false);
         itemSpawnTag = c.getBoolean("items.spawn.tag.enabled", false);
         kitPerms = c.getBoolean("kits.options.exclusive_perms", false);
         motdLogin = c.getBoolean("motd.options.display_on_login", true);
