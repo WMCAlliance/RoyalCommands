@@ -410,9 +410,12 @@ public class PlayerListener implements Listener {
             pcm.set("ip", playerip);
         }
         if (Config.sendToSpawn) {
-            if (Config.stsBack)
-                RUtils.teleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
-            else RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+			final RPlayer rp = MemoryRPlayer.getRPlayer(event.getPlayer());
+            if (Config.stsBack) {
+				rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+			} else {
+				RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+			}
         }
     }
 
