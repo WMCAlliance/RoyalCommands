@@ -24,6 +24,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @SuppressWarnings("unused")
 public class EntityListener implements Listener {
@@ -66,8 +67,17 @@ public class EntityListener implements Listener {
         Player p = e.getEntity();
         Location pLoc = p.getLocation();
         CmdBack.addBackLocation(p, pLoc);
-        if (plugin.ah.isAuthorized(p, "rcmds.back"))
-            p.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/back" + MessageColor.POSITIVE + " to go back to where you died.");
+        if (plugin.ah.isAuthorized(p, "rcmds.back")) {
+            FancyMessage fm = new FancyMessage("Type ")
+                    .color(MessageColor.POSITIVE.cc())
+                    .then("/back")
+                    .color(MessageColor.NEUTRAL.cc())
+                    .tooltip(MessageColor.POSITIVE + "Click to teleport back")
+                    .command("/back")
+                    .then(" to go back to where you died.")
+                    .color(MessageColor.POSITIVE.cc());
+            fm.send(p);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
