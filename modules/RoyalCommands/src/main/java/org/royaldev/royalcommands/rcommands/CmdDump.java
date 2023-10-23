@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -27,7 +28,7 @@ public class CmdDump extends TabCommand {
         super(instance, name, true, new Short[]{});
     }
 
-    public void dumpItems(Chest c, Inventory i) {
+    public void dumpItems(Chest c, PlayerInventory i) {
         Inventory ci = c.getInventory();
         ItemStack[] pc = i.getContents();
         for (ItemStack aPc : pc) {
@@ -40,6 +41,10 @@ public class CmdDump extends TabCommand {
                 i.addItem(item);
             }
         }
+		// as i.getContents() returns armor and off-hand but i.removeItem() uses i.getStorageContents() which does not contain armor or off-hand, remove them separately
+		ItemStack[] armor = new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)};
+		i.setArmorContents(armor);
+		i.setItemInOffHand(new ItemStack(Material.AIR));
     }
 
     @Override
