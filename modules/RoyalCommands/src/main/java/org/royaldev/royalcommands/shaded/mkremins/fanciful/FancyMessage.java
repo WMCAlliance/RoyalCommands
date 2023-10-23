@@ -26,6 +26,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import static org.royaldev.royalcommands.shaded.mkremins.fanciful.TextualComponent.rawText;
+
+import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.net.amoebaman.util.ArrayWrapper;
 
 /**
@@ -481,7 +483,9 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
             return;
         }
         Player player = (Player) sender;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + jsonString);
+        Bukkit.getScheduler().runTask(RoyalCommands.getInstance(), () ->
+		    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + jsonString)
+        );
     }
 
     /**
