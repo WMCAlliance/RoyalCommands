@@ -8,6 +8,7 @@ package org.royaldev.royalcommands.rcommands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,7 +28,7 @@ public class CmdSetArmor extends TabCommand {
 
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
-        return new ArrayList<>(Arrays.asList("diamond", "gold", "iron", "leather", "chain", "none"));
+        return new ArrayList<>(Arrays.asList("diamond", "gold", "iron", "leather", "netherite", "chain", "none"));
     }
 	
     @Override
@@ -57,69 +58,33 @@ public class CmdSetArmor extends TabCommand {
             }
         } else p = (Player) cs;
         String set = args[0];
-        ItemStack[] diamond = new ItemStack[]{new ItemStack(Material.DIAMOND_BOOTS), new ItemStack(Material.DIAMOND_LEGGINGS), new ItemStack(Material.DIAMOND_CHESTPLATE), new ItemStack(Material.DIAMOND_HELMET)};
-        ItemStack[] gold = new ItemStack[]{new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLDEN_HELMET)};
-        ItemStack[] iron = new ItemStack[]{new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_HELMET)};
-        ItemStack[] leather = new ItemStack[]{new ItemStack(Material.LEATHER_BOOTS), new ItemStack(Material.LEATHER_LEGGINGS), new ItemStack(Material.LEATHER_CHESTPLATE), new ItemStack(Material.LEATHER_HELMET)};
-        ItemStack[] chain = new ItemStack[]{new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.CHAINMAIL_HELMET)};
-        ItemStack[] none = new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)};
-        if (set.equalsIgnoreCase("diamond")) {
-            if (!this.ah.isAuthorized(cs, "rcmds.setarmor.diamond")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
-                return true;
-            } else {
-                p.getInventory().setArmorContents(diamond);
-                cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
-                return true;
-            }
-        } else if (set.equalsIgnoreCase("gold")) {
-            if (!this.ah.isAuthorized(cs, "rcmds.setarmor.gold")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
-                return true;
-            } else {
-                p.getInventory().setArmorContents(gold);
-                cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
-                return true;
-            }
-        } else if (set.equalsIgnoreCase("iron")) {
-            if (!this.ah.isAuthorized(cs, "rcmds.setarmor.iron")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
-                return true;
-            } else {
-                p.getInventory().setArmorContents(iron);
-                cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
-                return true;
-            }
-        } else if (set.equalsIgnoreCase("leather")) {
-            if (!this.ah.isAuthorized(cs, "rcmds.setarmor.leather")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
-                return true;
-            } else {
-                p.getInventory().setArmorContents(leather);
-                cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
-                return true;
-            }
-        } else if (set.equalsIgnoreCase("chain")) {
-            if (!this.ah.isAuthorized(cs, "rcmds.setarmor.chain")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
-                return true;
-            } else {
-                p.getInventory().setArmorContents(chain);
-                p.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
-                return true;
-            }
-        } else if (set.equalsIgnoreCase("none")) {
-            if (!this.ah.isAuthorized(cs, "rcmds.setarmor.none")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
-                return true;
-            } else {
-                p.getInventory().setArmorContents(none);
-                cs.sendMessage(MessageColor.POSITIVE + "Armor was cleared.");
-                return true;
-            }
-        } else {
-            cs.sendMessage(MessageColor.NEGATIVE + "The armor type must be diamond, gold, iron, leather, chain, or none.");
-            return true;
-        }
+		Map<String, ItemStack[]> map = Map.of(
+				"diamond", new ItemStack[]{new ItemStack(Material.DIAMOND_BOOTS), new ItemStack(Material.DIAMOND_LEGGINGS), new ItemStack(Material.DIAMOND_CHESTPLATE), new ItemStack(Material.DIAMOND_HELMET)},
+				"gold", new ItemStack[]{new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLDEN_HELMET)},
+				"iron", new ItemStack[]{new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_HELMET)},
+				"leather", new ItemStack[]{new ItemStack(Material.LEATHER_BOOTS), new ItemStack(Material.LEATHER_LEGGINGS), new ItemStack(Material.LEATHER_CHESTPLATE), new ItemStack(Material.LEATHER_HELMET)},
+				"netherite", new ItemStack[]{new ItemStack(Material.NETHERITE_BOOTS), new ItemStack(Material.NETHERITE_LEGGINGS), new ItemStack(Material.NETHERITE_CHESTPLATE), new ItemStack(Material.NETHERITE_HELMET)},
+				"chain", new ItemStack[]{new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.CHAINMAIL_HELMET)},
+				"none", new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)}
+        );
+
+		String setName = set.toLowerCase();
+		if (map.containsKey(setName)) {
+			if (!this.ah.isAuthorized(cs, "rcmds.setarmor." + setName)) {
+				cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
+				return true;
+			} else {
+				p.getInventory().setArmorContents(map.get(setName));
+				if ("none".equals(setName)) {
+					cs.sendMessage(MessageColor.POSITIVE + "Armor was cleared.");
+				} else {
+					cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + MessageColor.NEUTRAL + setName + MessageColor.POSITIVE + ".");
+				}
+				return true;
+			}
+		} else {
+			cs.sendMessage(MessageColor.NEGATIVE + "The armor type must be diamond, gold, iron, leather, nethertite, chain, or none.");
+			return true;
+		}
     }
 }
