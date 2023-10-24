@@ -460,8 +460,6 @@ public class PlayerListener implements Listener {
 		String myName = event.getPlayer().getDisplayName();
         List<String> sleepers = new ArrayList<>(List.of(myName));
 
-        FancyMessage fm = new FancyMessage("Players asleep: ")
-            .color(MessageColor.POSITIVE.cc());
         for (Player p : event.getPlayer().getWorld().getPlayers()) {
             if (p.isSleeping()) {
                 sleepers.add(p.getDisplayName());
@@ -469,7 +467,8 @@ public class PlayerListener implements Listener {
                     p.sendMessage(MessageColor.NEUTRAL + myName + MessageColor.POSITIVE + " is now asleep.");
                 }
             }
-            fm
+            FancyMessage fm = new FancyMessage("Players asleep: ")
+				.color(MessageColor.POSITIVE.cc())
                 .then(String.valueOf(sleepers.size()))
                 .color(MessageColor.NEUTRAL.cc())
                 .tooltip(MessageColor.NEUTRAL + String.join("\n", sleepers))
