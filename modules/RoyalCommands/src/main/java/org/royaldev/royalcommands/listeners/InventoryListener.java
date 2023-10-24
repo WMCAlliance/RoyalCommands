@@ -10,10 +10,12 @@ import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -24,7 +26,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -285,8 +286,9 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler
-    public void onPickup(PlayerPickupItemEvent e) {
-        Player p = e.getPlayer();
+    public void onPickup(EntityPickupItemEvent e) {
+        if (e.getEntityType() != EntityType.PLAYER) return;
+        Player p = (Player)e.getEntity();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
     }

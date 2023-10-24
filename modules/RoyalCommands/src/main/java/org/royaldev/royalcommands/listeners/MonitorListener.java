@@ -10,12 +10,14 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -194,11 +196,13 @@ public class MonitorListener implements Listener {
     }
 
     @EventHandler
-    public void onItemPickupViewee(PlayerPickupItemEvent e) {
-        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        final Player t = this.getVP(e.getPlayer());
+    public void onItemPickupViewee(EntityPickupItemEvent e) {
+        if (e.getEntityType() != EntityType.PLAYER) return;
+        Player p = (Player)e.getEntity();
+        if (!CmdMonitor.viewees.containsKey(p.getName())) return;
+        final Player t = this.getVP(p);
         if (t == null) return;
-        t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+        t.getInventory().setContents(p.getInventory().getContents());
     }
 
     @EventHandler
@@ -211,8 +215,10 @@ public class MonitorListener implements Listener {
     }
 
     @EventHandler
-    public void onPickup(PlayerPickupItemEvent e) {
-        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+    public void onPickup(EntityPickupItemEvent e) {
+        if (e.getEntityType() != EntityType.PLAYER) return;
+        Player p = (Player)e.getEntity();
+        if (!CmdMonitor.monitors.containsKey(p.getName())) return;
         e.setCancelled(true);
     }
 
