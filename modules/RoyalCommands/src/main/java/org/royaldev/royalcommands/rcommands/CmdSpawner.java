@@ -71,7 +71,7 @@ public class CmdSpawner extends TabCommand {
             return true;
         }
         crs.setSpawnedType(ct);
-        cs.sendMessage(MessageColor.POSITIVE + "Spawner type set to " + MessageColor.NEUTRAL + crs.getCreatureTypeName().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+        cs.sendMessage(MessageColor.POSITIVE + "Spawner type set to " + MessageColor.NEUTRAL + crs.getSpawnedType().toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
         return true;
     }
 }
