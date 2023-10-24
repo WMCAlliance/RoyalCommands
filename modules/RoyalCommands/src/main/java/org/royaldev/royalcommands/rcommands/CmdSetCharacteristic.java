@@ -81,7 +81,7 @@ public class CmdSetCharacteristic extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "Cannot set maxhealth to less than 1.");
                 return true;
             }
-            p.setMaxHealth(i);
+            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(i);
             cs.sendMessage(MessageColor.POSITIVE + "Set max health to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
         } else if (subcommand.equalsIgnoreCase("maxair")) {
             Integer i = toInt(args[2]);
