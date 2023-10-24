@@ -49,6 +49,7 @@ public class UnZip {
                 dest.close();
                 is.close();
             }
+            zipfile.close();
         } catch (Exception ignored) {
             ignored.printStackTrace();
         } finally {
