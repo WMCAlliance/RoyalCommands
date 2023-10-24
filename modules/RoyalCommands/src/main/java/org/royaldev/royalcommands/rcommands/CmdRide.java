@@ -49,7 +49,11 @@ public class CmdRide extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot ride that player!");
                 return true;
             }
-            t.setPassenger(p);
+            Boolean success = t.addPassenger(p);
+            if (!success) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Failed to ride that player.");
+                return true;
+            }
             return true;
         }
         return true;
