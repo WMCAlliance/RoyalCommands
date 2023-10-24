@@ -8,10 +8,16 @@ package org.royaldev.royalcommands.rcommands;
 import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Rotatable;
+import org.bukkit.block.sign.Side;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -34,7 +40,18 @@ public class CmdSignEdit extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "The block in sight is not a sign!");
             return true;
         }
-        p.openSign(s);
+		BlockData blockData = s.getBlockData();
+		BlockFace signFace;
+		if (blockData instanceof Directional directional) {
+            signFace = directional.getFacing();
+        } else if (blockData instanceof Rotatable rotatable) {
+            signFace = rotatable.getRotation();
+        } else {
+            signFace = BlockFace.NORTH;
+        }
+		Vector signDirection = new Vector(signFace.getModX(), signFace.getModY(), signFace.getModZ());
+        Vector vector = p.getEyeLocation().toVector().subtract(s.getLocation().add(0.5, 0.5, 0.5).toVector());
+        p.openSign(s, vector.dot(signDirection) > 0 ? Side.FRONT : Side.BACK);
         return true;
     }
 }
