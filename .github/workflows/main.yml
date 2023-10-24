@@ -5,7 +5,8 @@ on:
   push:
       branches:
       - main
-      - five_o_o 
+      - master
+      - five_o_o
   pull_request:
 
 jobs:
