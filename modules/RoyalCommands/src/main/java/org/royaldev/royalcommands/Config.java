@@ -328,7 +328,9 @@ public class Config {
         Reader in = null;
         try {
             in = new FileReader(new File(this.plugin.getDataFolder() + File.separator + "items.csv"));
-            RoyalCommands.inm = new ItemNameManager(new CSVReader(in).readAll());
+            CSVReader reader = new CSVReader(in);
+            RoyalCommands.inm = new ItemNameManager(reader.readAll());
+            reader.close();
         } catch (FileNotFoundException e) {
             this.plugin.getLogger().warning("items.csv was not found! Item aliases will not be used.");
             RoyalCommands.inm = null;
