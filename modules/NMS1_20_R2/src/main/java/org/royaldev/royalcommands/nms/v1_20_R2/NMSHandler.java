@@ -5,17 +5,9 @@
  */
 package org.royaldev.royalcommands.nms.v1_20_R2;
 
-import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.nms.api.NMSFace;
 
 public class NMSHandler implements NMSFace {
-
-    @Override
-    public int getPing(Player p) {
-        if (p instanceof CraftPlayer) return ((CraftPlayer) p).getPing();
-        throw new IllegalArgumentException("Player was not a CraftPlayer!");
-    }
 
     @Override
     public String getVersion() {
