@@ -5,7 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands.pluginmanager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;

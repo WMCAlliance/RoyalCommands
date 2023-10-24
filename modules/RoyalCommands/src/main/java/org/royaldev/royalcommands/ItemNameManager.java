@@ -5,7 +5,7 @@
  */
 package org.royaldev.royalcommands;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.tools.Pair;

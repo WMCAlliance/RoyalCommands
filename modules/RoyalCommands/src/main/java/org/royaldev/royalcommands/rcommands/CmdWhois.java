@@ -7,7 +7,7 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.text.DecimalFormat;
 import java.util.Date;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;

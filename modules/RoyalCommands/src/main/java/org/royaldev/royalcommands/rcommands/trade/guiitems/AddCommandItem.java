@@ -6,7 +6,7 @@
 package org.royaldev.royalcommands.rcommands.trade.guiitems;
 
 import java.util.Arrays;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.GUIItem;
