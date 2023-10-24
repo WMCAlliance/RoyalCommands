@@ -5,17 +5,7 @@
  */
 package org.royaldev.royalcommands.nms.api;
 
-import org.bukkit.entity.Player;
-
 public interface NMSFace {
-    /**
-     * Gets the ping reported to the server by the client.
-     *
-     * @param p Player to get ping of
-     * @return ping
-     */
-    public int getPing(Player p);
-
     /**
      * Gets the version of the NMS support (e.g. v1_4_5).
      *

@@ -22,7 +22,7 @@ public class CmdPing extends TabCommand {
 
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
-        if (!this.plugin.getNMSFace().hasSupport() || (!(cs instanceof Player) && args.length < 1)) {
+        if (!(cs instanceof Player) && args.length < 1) {
             cs.sendMessage(MessageColor.POSITIVE + "Pong!");
             return true;
         }
@@ -36,7 +36,7 @@ public class CmdPing extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            int ping = this.plugin.getNMSFace().getPing(p);
+            int ping = p.getPing();
             String possessive = (p.getName().endsWith("s")) ? "'" : "'s";
             cs.sendMessage(MessageColor.NEUTRAL + p.getName() + possessive + MessageColor.POSITIVE + " ping: " + MessageColor.NEUTRAL + ping + "ms");
             return true;
@@ -46,7 +46,7 @@ public class CmdPing extends TabCommand {
             return true;
         }
         Player p = (Player) cs;
-        int ping = this.plugin.getNMSFace().getPing(p);
+        int ping = p.getPing();
         p.sendMessage(MessageColor.POSITIVE + "Your ping: " + MessageColor.NEUTRAL + ping + "ms");
         return true;
     }
