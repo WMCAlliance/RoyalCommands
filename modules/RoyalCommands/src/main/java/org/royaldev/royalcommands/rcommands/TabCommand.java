@@ -185,7 +185,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     final String name = e.name();
                     final String lowerCaseName = name.toLowerCase();
                     if (!lowerCaseName.startsWith(arg)) continue;
-                    possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
+                    possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), lowerCaseName);
                 }
                 break;
             case ROYALCOMMANDS_COMMAND:
