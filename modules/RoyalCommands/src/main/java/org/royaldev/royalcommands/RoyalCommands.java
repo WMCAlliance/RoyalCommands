@@ -207,7 +207,7 @@ public class RoyalCommands extends JavaPlugin {
             if (NMSFace.class.isAssignableFrom(clazz)) this.nmsFace = (NMSFace) clazz.getConstructor().newInstance();
         } catch (final Exception e) {
             this.getLogger().log(Level.WARNING, "Could not find support for this CraftBukkit version ({0}).", versionNMS);
-            this.getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
+            this.getLogger().info("The GitHub page has links to the newest development builds to fix this.");
             this.getLogger().info("For now, NMS/CB internal support will be disabled.");
             this.nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
         }
