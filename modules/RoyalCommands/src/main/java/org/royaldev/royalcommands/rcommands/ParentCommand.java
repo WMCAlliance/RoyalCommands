@@ -20,7 +20,7 @@ public class ParentCommand extends TabCommand {
     private final List<SubCommand> subcommands = new ArrayList<>();
 
     public ParentCommand(final RoyalCommands instance, final String name, final boolean checkPermissions) {
-        super(instance, name, checkPermissions, new Short[0]);
+        super(instance, name, checkPermissions, new Short[]{TabCommand.CompletionType.LIST.getShort()});
         this.setAlwaysUse(CompletionType.LIST);
     }
 
