@@ -58,7 +58,6 @@ import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.PlayerListener;
 import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
-import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.BaseCommand;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
@@ -99,7 +98,6 @@ public class RoyalCommands extends JavaPlugin {
     public Metrics m = null;
     public Config c;
     public Help h;
-    private NMSFace nmsFace;
     private CommandMap cm = null;
     private YamlConfiguration pluginYml = null;
     private RApiMain api;
@@ -189,29 +187,6 @@ public class RoyalCommands extends JavaPlugin {
         } catch (Exception ignore) {
             this.getLogger().warning("Could not start Metrics!");
         }
-    }
-
-
-    private void initializeNMS() {
-        // Get full package string of CraftServer.
-        // org.bukkit.craftbukkit.versionstring (or for pre-refactor, just org.bukkit.craftbukkit
-        final String packageName = getServer().getClass().getPackage().getName();
-        // Get the last element of the package
-        // If the last element of the package was "craftbukkit" we are now pre-refactor
-        String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
-        if ("craftbukkit".equals(versionNMS)) versionNMS = "NoSupport";
-        try {
-            // Check if we have a NMSHandler class at that location.
-            final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
-            // Make sure it actually implements NMS and set our handler
-            if (NMSFace.class.isAssignableFrom(clazz)) this.nmsFace = (NMSFace) clazz.getConstructor().newInstance();
-        } catch (final Exception e) {
-            this.getLogger().log(Level.WARNING, "Could not find support for this CraftBukkit version ({0}).", versionNMS);
-            this.getLogger().info("The GitHub page has links to the newest development builds to fix this.");
-            this.getLogger().info("For now, NMS/CB internal support will be disabled.");
-            this.nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
-        }
-        if (this.nmsFace.hasSupport()) getLogger().info("Loaded support for " + this.nmsFace.getVersion() + ".");
     }
 
     private void initializeTasks() {
@@ -398,10 +373,6 @@ public class RoyalCommands extends JavaPlugin {
         return fc;
     }
 
-    public NMSFace getNMSFace() {
-        return this.nmsFace;
-    }
-
     public int getNumberVanished() {
         int hid = 0;
         for (Player p : getServer().getOnlinePlayers()) if (this.isVanished(p)) hid++;
@@ -494,10 +465,6 @@ public class RoyalCommands extends JavaPlugin {
         //-- Initialize ConfManagers if not made --//
 
         this.initializeConfManagers();
-
-        //-- Work out NMS magic using mbaxter's glorious methods --//
-
-        this.initializeNMS();
 
         //-- Hidendra's Metrics --//
 
