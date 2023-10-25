@@ -90,7 +90,8 @@ public class CmdJail extends TabCommand {
                     }
                     return true;
                 }
-                String error = RUtils.silentTeleport(t, this.jaildb.get(t.getUniqueId()));
+                final RPlayer rp = MemoryRPlayer.getRPlayer(t);
+                String error = rp.getTeleporter().teleport(this.jaildb.get(t.getUniqueId()), true);
                 if (!error.isEmpty()) {
                     cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
@@ -156,7 +157,8 @@ public class CmdJail extends TabCommand {
                 }
                 return true;
             }
-            String error = RUtils.silentTeleport(t, this.jaildb.get(t.getUniqueId()));
+            final RPlayer rp = MemoryRPlayer.getRPlayer(t);
+            String error = rp.getTeleporter().teleport(this.jaildb.get(t.getUniqueId()), true);
             if (!error.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + error);
                 return true;

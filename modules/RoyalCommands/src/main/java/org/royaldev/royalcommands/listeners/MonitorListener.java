@@ -34,6 +34,8 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdMonitor;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class MonitorListener implements Listener {
 
@@ -209,7 +211,8 @@ public class MonitorListener implements Listener {
         if (!CmdMonitor.monitors.containsValue(e.getPlayer().getName())) return;
         final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
-        RUtils.silentTeleport(p, e.getPlayer());
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        rp.getTeleporter().teleport(e.getPlayer(), true);
         if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(this.plugin, p);
     }
 
@@ -248,7 +251,8 @@ public class MonitorListener implements Listener {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
         final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
-        RUtils.silentTeleport(p, e.getPlayer());
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        rp.getTeleporter().teleport(e.getPlayer(), true);
         e.getPlayer().hidePlayer(this.plugin, p);
     }
 

@@ -7,7 +7,9 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.util.Date;
 import org.bukkit.BanList.Type;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.ban.ProfileBanList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,7 +52,7 @@ public class CmdTemporaryBan extends TabCommand {
         time++; // fix for always being a second short;
         long curTime = new Date().getTime();
         String banreason = RoyalCommands.getFinalArg(args, 2);
-        this.plugin.getServer().getBanList(Type.NAME).addBan(t.getName(), banreason, null, cs.getName());
+        ((ProfileBanList) Bukkit.getBanList(Type.PROFILE)).addBan(t.getPlayerProfile(), banreason, (Date) null, cs.getName());
         pcm.set("bantime", (time * 1000L) + curTime);
         pcm.set("bannedat", curTime);
         pcm.set("banreason", banreason);
