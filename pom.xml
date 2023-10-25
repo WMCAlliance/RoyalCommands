@@ -15,9 +15,6 @@
     </properties>
 
     <modules>
-        <module>modules/API</module>
-        <module>modules/NMS1_20_R2</module>
-        <module>modules/NoSupport</module>
         <module>modules/RoyalCommands</module>
     </modules>
 
