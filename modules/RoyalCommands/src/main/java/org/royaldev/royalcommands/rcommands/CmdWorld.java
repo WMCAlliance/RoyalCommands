@@ -15,6 +15,8 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdWorld extends TabCommand {
@@ -49,7 +51,8 @@ public class CmdWorld extends TabCommand {
         if (Config.hiddenWorlds.contains(w.getName())) return true;
         Player p = (Player) cs;
         p.sendMessage(MessageColor.POSITIVE + "Teleporting you to world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
-        String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        String error = rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(w));
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);
             return true;

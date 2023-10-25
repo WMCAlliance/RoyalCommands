@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdJump extends TabCommand {
@@ -34,7 +36,8 @@ public class CmdJump extends TabCommand {
             return true;
         }
         Location bLoc = new Location(p.getWorld(), bb.getLocation().getX() + .5, bb.getLocation().getY() + 1, bb.getLocation().getZ() + .5, p.getLocation().getYaw(), p.getLocation().getPitch());
-        String error = RUtils.teleport(p, bLoc);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        String error = rp.getTeleporter().teleport(bLoc);
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);
             return true;

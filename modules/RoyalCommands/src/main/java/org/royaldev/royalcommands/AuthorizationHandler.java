@@ -41,7 +41,7 @@ public class AuthorizationHandler {
         if (op.isOnline()) return this.iAPlayer(op.getPlayer(), node);
         if (this.plugin.vh.usingVault() && this.permissionsLoaded()) {
             final String world = this.plugin.getServer().getWorlds().get(0).getName();
-            return this.plugin.vh.getPermission().has(world, op.getName(), node);
+            return this.plugin.vh.getPermission().playerHas(world, op, node);
         }
         return false;
     }

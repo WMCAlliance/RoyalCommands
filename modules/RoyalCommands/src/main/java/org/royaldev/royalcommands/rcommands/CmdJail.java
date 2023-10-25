@@ -22,6 +22,8 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdJail extends TabCommand {
@@ -80,7 +82,8 @@ public class CmdJail extends TabCommand {
                 t.sendMessage(MessageColor.POSITIVE + "You have been released.");
                 if (this.jaildb.get(t.getUniqueId()) == null || this.jaildb.get(t.getUniqueId()).getWorld() == null) {
                     t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
-                    String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
+                    final RPlayer rp = MemoryRPlayer.getRPlayer(t);
+                    String error = rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(t.getWorld()), true);
                     if (!error.isEmpty()) {
                         cs.sendMessage(MessageColor.NEGATIVE + error);
                         return true;
@@ -145,7 +148,8 @@ public class CmdJail extends TabCommand {
             t.sendMessage(MessageColor.POSITIVE + "You have been released.");
             if (this.jaildb.get(t.getUniqueId()) == null || this.jaildb.get(t.getUniqueId()).getWorld() == null) {
                 t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
-                String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
+                final RPlayer rp = MemoryRPlayer.getRPlayer(t);
+                String error = rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(t.getWorld()), true);
                 if (!error.isEmpty()) {
                     cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
@@ -165,7 +169,8 @@ public class CmdJail extends TabCommand {
             cs.sendMessage(MessageColor.POSITIVE + "You have jailed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             t.sendMessage(MessageColor.NEGATIVE + "You have been jailed.");
             this.jaildb.put(t.getUniqueId(), t.getLocation());
-            String error = RUtils.silentTeleport(t, jailLoc);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(t);
+            String error = rp.getTeleporter().teleport(jailLoc, true);
             if (!error.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + error);
                 return true;

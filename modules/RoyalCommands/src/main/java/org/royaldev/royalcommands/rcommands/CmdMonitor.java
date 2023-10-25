@@ -41,9 +41,10 @@ public class CmdMonitor extends TabCommand {
         Player p = (Player) cs;
         if (monitors.containsKey(p.getName())) {
             Player m = this.plugin.getServer().getPlayer(monitors.get(p.getName()));
-            RUtils.silentTeleport(p, locs.get(p.getName()));
-            if (m != null) p.showPlayer(m);
-            for (Player pl : this.plugin.getServer().getOnlinePlayers()) pl.showPlayer(p);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+            rp.getTeleporter().teleport(locs.get(p.getName()), true);
+            if (m != null) p.showPlayer(this.plugin, m);
+            for (Player pl : this.plugin.getServer().getOnlinePlayers()) pl.showPlayer(this.plugin, p);
             viewees.remove(monitors.get(p.getName()));
             monitors.remove(p.getName());
             locs.remove(p.getName());
@@ -76,9 +77,9 @@ public class CmdMonitor extends TabCommand {
             cs.sendMessage(MessageColor.POSITIVE + "You are now monitoring " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             for (Player pl : this.plugin.getServer().getOnlinePlayers()) {
                 if (pl.equals(p)) continue;
-                pl.hidePlayer(p);
+                pl.hidePlayer(this.plugin, p);
             }
-            p.hidePlayer(t);
+            p.hidePlayer(this.plugin, t);
             invs.put(p.getName(), p.getInventory().getContents());
             locs.put(p.getName(), p.getLocation());
             p.getInventory().clear();

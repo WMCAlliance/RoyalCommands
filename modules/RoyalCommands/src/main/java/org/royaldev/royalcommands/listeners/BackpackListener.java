@@ -16,6 +16,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class BackpackListener implements Listener {
 
@@ -23,7 +25,8 @@ public class BackpackListener implements Listener {
     public void backpackClearOnDeath(PlayerDeathEvent e) {
         if (!Config.backpackReset) return;
         final Player p = e.getEntity();
-        final Inventory backpack = RUtils.getBackpack(p);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        final Inventory backpack = rp.getBackpack(p.getWorld());
         backpack.clear();
         RUtils.saveBackpack(p, backpack);
     }
@@ -34,7 +37,8 @@ public class BackpackListener implements Listener {
         final InventoryHolder ih = e.getInventory().getHolder();
         if (!(ih instanceof BackpackHolder)) return;
         final BackpackHolder bh = (BackpackHolder) ih;
-        final Inventory backpack = RUtils.getBackpack(bh.getOwnerUUID(), bh.getWorld());
+        final RPlayer rp = MemoryRPlayer.getRPlayer(bh.getOwnerUUID());
+        final Inventory backpack = rp.getBackpack(bh.getWorld());
         backpack.setContents(e.getInventory().getContents());
         RUtils.saveBackpack(bh.getOwnerUUID(), bh.getWorld(), backpack);
     }

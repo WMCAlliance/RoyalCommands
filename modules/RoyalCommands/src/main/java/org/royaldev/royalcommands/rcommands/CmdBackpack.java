@@ -15,6 +15,8 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdBackpack extends TabCommand {
@@ -49,7 +51,8 @@ public class CmdBackpack extends TabCommand {
                 RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You cannot access that player's backpack!");
                 return true;
             }
-            final Inventory i = RUtils.getBackpack(t.getUniqueId(), w);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(t.getUniqueId());
+            final Inventory i = rp.getBackpack(w);
             if (i == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
@@ -57,7 +60,8 @@ public class CmdBackpack extends TabCommand {
             p.openInventory(i);
             return true;
         }
-        final Inventory i = RUtils.getBackpack(p);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        final Inventory i = rp.getBackpack(p.getWorld());
         p.openInventory(i);
         return true;
     }

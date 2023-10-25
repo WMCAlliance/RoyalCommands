@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
@@ -33,8 +34,8 @@ public class CmdCompareIP extends TabCommand {
         }
         OfflinePlayer player1;
         OfflinePlayer player2;
-        player1 = this.plugin.getServer().getOfflinePlayer(args[0]);
-        player2 = this.plugin.getServer().getOfflinePlayer(args[1]);
+        player1 = RUtils.getOfflinePlayer(args[0]);
+        player2 = RUtils.getOfflinePlayer(args[1]);
         PlayerConfiguration pcm1 = PlayerConfigurationManager.getConfiguration(player1);
         PlayerConfiguration pcm2 = PlayerConfigurationManager.getConfiguration(player2);
         if (pcm1.exists()) {

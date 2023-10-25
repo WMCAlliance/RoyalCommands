@@ -15,6 +15,8 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdSpawn extends TabCommand {
@@ -82,7 +84,8 @@ public class CmdSpawn extends TabCommand {
         Location l = getGroupSpawn(p, w);
         if (l == null) l = getWorldSpawn(w);
         p.sendMessage(MessageColor.POSITIVE + "Going to spawn in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
-        String error = RUtils.teleport(p, l);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        String error = rp.getTeleporter().teleport(l);
         if (!error.isEmpty()) p.sendMessage(MessageColor.NEGATIVE + error);
         return true;
     }

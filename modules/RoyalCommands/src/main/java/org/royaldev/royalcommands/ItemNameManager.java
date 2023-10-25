@@ -58,7 +58,7 @@ public class ItemNameManager {
     }
 
     public boolean aliasExists(ItemStack is) {
-        return aliasExists(new Pair<>(is.getType(), is.getDurability()));
+        return aliasExists(new Pair<>(is.getType(), (short) 0));
     }
 
     public boolean aliasExists(Pair<Material, Short> data) {

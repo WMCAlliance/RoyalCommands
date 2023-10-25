@@ -8,6 +8,8 @@ package org.royaldev.royalcommands;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -125,7 +127,12 @@ public final class RUtils {
 
     public static void banIP(String ip, CommandSender cs, String reason) {
         final BanList bl = Bukkit.getBanList(BanList.Type.IP);
-        bl.addBan(ip, reason, (Date) null, cs.getName());
+        try {
+            InetAddress addr = InetAddress.getByName(ip);
+            bl.addBan(addr, reason, (Date) null, cs.getName());
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -141,8 +148,8 @@ public final class RUtils {
      */
     public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
         reason = colorize(reason);
-        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
-        bl.addBan(t.getName(), reason, (Date) null, cs.getName());
+        final BanList bl = Bukkit.getBanList(BanList.Type.PROFILE);
+        bl.addBan(t.getPlayerProfile(), reason, (Date) null, cs.getName());
         writeBanHistory(t);
         String inGameFormat = Config.igBanFormat;
         String outFormat = Config.banFormat;
@@ -1503,8 +1510,8 @@ public final class RUtils {
     }
 
     public static void unbanPlayer(OfflinePlayer t) {
-        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
-        bl.pardon(t.getName());
+        final BanList bl = Bukkit.getBanList(BanList.Type.PROFILE);
+        bl.pardon(t.getPlayerProfile());
     }
 
     /**

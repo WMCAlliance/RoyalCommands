@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -49,7 +52,12 @@ public class CmdUnbanIP extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
             return true;
         }
-        this.plugin.getServer().unbanIP(ip);
+        try {
+            InetAddress addr = InetAddress.getByName(ip);
+            this.plugin.getServer().unbanIP(addr);
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
         if (!op.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
             return true;

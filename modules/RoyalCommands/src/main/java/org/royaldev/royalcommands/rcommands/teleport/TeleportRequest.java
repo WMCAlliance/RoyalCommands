@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,13 +177,15 @@ public class TeleportRequest {
         final Player requester = Bukkit.getPlayerExact(this.getRequester());
         final Player target = Bukkit.getPlayerExact(this.getTarget());
         if (requester == null || target == null) return;
+        final RPlayer reqRP = MemoryRPlayer.getRPlayer(requester);
+        final RPlayer tarRP = MemoryRPlayer.getRPlayer(target);
         String error;
         switch (this.getType()) {
             case TO:
-                error = RUtils.teleport(requester, target);
+                error = reqRP.getTeleporter().teleport(target.getLocation());
                 break;
             case HERE:
-                error = RUtils.teleport(target, requester);
+                error = tarRP.getTeleporter().teleport(requester.getLocation());
                 break;
             default:
                 return;

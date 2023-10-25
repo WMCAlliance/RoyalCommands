@@ -47,11 +47,7 @@ public class CmdHead extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn that player's head!");
             return true;
         }
-        if (t.hasPlayedBefore()) {
-			sm.setOwningPlayer(t);
-		} else {
-			sm.setOwner(args[0]);
-		}
+		sm.setOwningPlayer(t);
         head.setItemMeta(sm);
         p.getInventory().addItem(head);
         cs.sendMessage(MessageColor.POSITIVE + "You have been given the head of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");

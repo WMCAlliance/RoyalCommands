@@ -28,7 +28,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.MessageColor;
@@ -88,7 +87,7 @@ public class MonitorListener implements Listener {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
         final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
-        t.hidePlayer(e.getPlayer());
+        t.hidePlayer(this.plugin, e.getPlayer());
     }
 
     @EventHandler
@@ -211,7 +210,7 @@ public class MonitorListener implements Listener {
         final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
-        if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(p);
+        if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(this.plugin, p);
     }
 
     @EventHandler
@@ -228,7 +227,7 @@ public class MonitorListener implements Listener {
         for (final String pn : CmdMonitor.monitors.keySet()) {
             final Player p = this.plugin.getServer().getPlayer(pn);
             if (p == null) continue;
-            e.getPlayer().hidePlayer(p);
+            e.getPlayer().hidePlayer(this.plugin, p);
         }
     }
 
@@ -250,7 +249,7 @@ public class MonitorListener implements Listener {
         final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
-        e.getPlayer().hidePlayer(p);
+        e.getPlayer().hidePlayer(this.plugin, p);
     }
 
 }

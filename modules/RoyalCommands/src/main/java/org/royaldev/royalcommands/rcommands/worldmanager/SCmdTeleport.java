@@ -16,6 +16,8 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 import org.royaldev.royalcommands.rcommands.CmdWorldManager;
 import org.royaldev.royalcommands.rcommands.SubCommand;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class SCmdTeleport extends SubCommand<CmdWorldManager> {
 
@@ -44,7 +46,8 @@ public class SCmdTeleport extends SubCommand<CmdWorldManager> {
             return true;
         }
         p.sendMessage(MessageColor.POSITIVE + "Teleporting you to world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
-        final String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        final String error = rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(w));
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);
             return true;

@@ -400,8 +400,10 @@ public class PlayerListener implements Listener {
             pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
             pcm.set("banreason", "");
             pcm.set("allow_tp", true);
-            if (Config.stsNew)
-                RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+            if (Config.stsNew) {
+                final RPlayer rp = MemoryRPlayer.getRPlayer(event.getPlayer());
+                rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()), true);
+            }
             pcm.setFirstJoin(false);
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
@@ -411,11 +413,7 @@ public class PlayerListener implements Listener {
         }
         if (Config.sendToSpawn) {
 			final RPlayer rp = MemoryRPlayer.getRPlayer(event.getPlayer());
-            if (Config.stsBack) {
-				rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
-			} else {
-				RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
-			}
+			rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()), !Config.stsBack);
         }
     }
 

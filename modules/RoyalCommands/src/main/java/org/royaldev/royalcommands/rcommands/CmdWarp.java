@@ -20,6 +20,8 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdWarp extends TabCommand {
@@ -101,7 +103,8 @@ public class CmdWarp extends TabCommand {
                 return true;
             }
             cs.sendMessage(MessageColor.POSITIVE + "Teleported to warp " + MessageColor.NEUTRAL + args[0].toLowerCase() + MessageColor.POSITIVE + ".");
-            String error = RUtils.teleport(p, warpLoc);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+            String error = rp.getTeleporter().teleport(warpLoc);
             if (!error.isEmpty()) {
                 p.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
@@ -132,7 +135,8 @@ public class CmdWarp extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not have permission for that warp!");
                 return true;
             }
-            String error = RUtils.teleport(t, warpLoc);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(t);
+            String error = rp.getTeleporter().teleport(warpLoc);
             if (!error.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
