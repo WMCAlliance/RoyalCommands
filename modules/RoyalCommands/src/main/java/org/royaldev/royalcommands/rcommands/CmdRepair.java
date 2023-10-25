@@ -13,6 +13,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -42,11 +44,14 @@ public class CmdRepair extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't repair air!");
                 return true;
             }
-            if (hand.getDurability() == (short) 0) {
+            ItemMeta handMeta = hand.getItemMeta();
+            Damageable handItem = (Damageable)handMeta;
+            if (handItem.getDamage() == 0) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That doesn't need to be repaired!");
                 return true;
             }
-            hand.setDurability((short) 0);
+            handItem.setDamage(0);
+            hand.setItemMeta(handItem);
             cs.sendMessage(MessageColor.POSITIVE + "Fixed your " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
             return true;
         }
@@ -55,8 +60,12 @@ public class CmdRepair extends TabCommand {
             ItemStack[] pInv = p.getInventory().getContents();
             final StringBuilder items = new StringBuilder();
             for (ItemStack aPInv : pInv) {
-                if (aPInv != null && aPInv.getType() == Material.AIR && aPInv.getDurability() != (short) 0) {
-                    aPInv.setDurability((short) 0);
+                if (aPInv == null) continue;
+                ItemMeta apMeta = aPInv.getItemMeta();
+                Damageable apItem = (Damageable)apMeta;
+                if (aPInv != null && aPInv.getType() != Material.AIR && apItem.getDamage() != 0) {
+                    apItem.setDamage(0);
+                    aPInv.setItemMeta(apItem);
                     items.append(MessageColor.NEUTRAL);
                     items.append(RUtils.getItemName(aPInv));
                     items.append(MessageColor.POSITIVE);
