@@ -7,6 +7,7 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -129,9 +130,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
 				break;
 			case ENCHANT:
 				for (Enchantment e : Enchantment.values()) {
-					if (!e.getName().toLowerCase().startsWith(arg.toLowerCase())) continue;
-					possibilities.add(e.getName().toLowerCase());
+                    String k = e.getKey().getKey();
+					if (!k.toLowerCase().startsWith(arg.toLowerCase())) continue;
+					possibilities.add(k.toLowerCase());
 				}
+                Collections.sort(possibilities);
 				possibilities.add("all");
 				break;
             case CUSTOM:

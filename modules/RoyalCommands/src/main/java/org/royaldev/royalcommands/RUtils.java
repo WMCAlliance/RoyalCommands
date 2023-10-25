@@ -31,6 +31,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -533,7 +534,7 @@ public final class RUtils {
             } catch (NumberFormatException e) {
                 continue;
             }
-            Enchantment e = Enchantment.getByName(name.toUpperCase());
+            Enchantment e = Enchantment.getByKey(new NamespacedKey("minecraft:", name.toLowerCase()));
             if (e == null) continue;
             enchants.put(e, lvl);
         }

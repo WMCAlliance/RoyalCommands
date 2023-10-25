@@ -5,7 +5,13 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -50,9 +56,16 @@ public class CmdEnchant extends TabCommand {
 
     private void sendEnchantmentList(CommandSender cs) {
         StringBuilder sb = new StringBuilder();
-        for (Enchantment e : Enchantment.values()) {
+        List<Enchantment> ench = new ArrayList<>(Arrays.asList(Enchantment.values()));
+        ench.sort(new Comparator<Enchantment>() {
+            @Override
+            public int compare(Enchantment e1, Enchantment e2) {
+              return e1.getKey().getKey().compareTo(e1.getKey().getKey());
+            }
+        });
+        for (Enchantment e : ench) {
             sb.append(MessageColor.NEUTRAL);
-            sb.append(e.getName());
+            sb.append(e.getKey().getKey());
             sb.append(MessageColor.RESET);
             sb.append(", ");
         }
@@ -76,7 +89,7 @@ public class CmdEnchant extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Air cannot be enchanted!");
             return true;
         }
-        Enchantment toAdd = Enchantment.getByName(args[0].toUpperCase());
+        Enchantment toAdd = Enchantment.getByKey(new NamespacedKey("minecraft", args[0]));
         if (toAdd == null) {
             if (args[0].equalsIgnoreCase("all")) {
                 int level;
@@ -157,30 +170,30 @@ public class CmdEnchant extends TabCommand {
         }
         if (level == 0) {
             if (!hand.containsEnchantment(toAdd)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " does not contain " + MessageColor.NEUTRAL + toAdd.getName().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "That " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " does not contain " + MessageColor.NEUTRAL + toAdd.getKey().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
                 return true;
             }
             hand.removeEnchantment(toAdd);
-            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getName().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getKey().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
         } else {
             int toApply = getRealLevel(toAdd, level);
             if (toApply > toAdd.getMaxLevel() && !this.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That level is too high for " + MessageColor.NEUTRAL + toAdd.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "That level is too high for " + MessageColor.NEUTRAL + toAdd.getKey().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
                 return true;
             }
             if (!toAdd.canEnchantItem(hand) && !this.ah.isAuthorized(cs, "rcmds.enchant.illegal")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it is not for that type of item!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getKey().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it is not for that type of item!");
                 return true;
             }
             if (!this.ah.isAuthorized(cs, "rcmds.enchant.illegal"))
                 for (Enchantment e : hand.getEnchantments().keySet()) {
                     if (toAdd.conflictsWith(e)) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it conflicts with " + MessageColor.NEUTRAL + e.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getKey().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it conflicts with " + MessageColor.NEUTRAL + e.getKey().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
                         return true;
                     }
                 }
             hand.addUnsafeEnchantment(toAdd, toApply);
-            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getName().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " at level " + MessageColor.NEUTRAL + toApply + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getKey().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " at level " + MessageColor.NEUTRAL + toApply + MessageColor.POSITIVE + ".");
         }
         return true;
     }
