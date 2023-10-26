@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
@@ -77,7 +78,7 @@ public class CmdGod extends TabCommand {
                 return true;
             }
         }
-        OfflinePlayer t2 = this.plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t2 = RUtils.getOfflinePlayer(args[0]);
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t2);
         if (!pcm.getBoolean("godmode")) {
             if (!pcm.exists()) {

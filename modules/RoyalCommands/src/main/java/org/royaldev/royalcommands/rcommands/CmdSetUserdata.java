@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
@@ -29,7 +30,7 @@ public class CmdSetUserdata extends TabCommand {
         String name = args[0];
         String node = args[1];
         String value = RoyalCommands.getFinalArg(args, 2);
-        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(name);
+        OfflinePlayer op = RUtils.getOfflinePlayer(name);
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists() || !op.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");

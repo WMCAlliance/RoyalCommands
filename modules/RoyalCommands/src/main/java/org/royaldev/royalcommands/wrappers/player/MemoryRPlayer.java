@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.WorldManager;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
@@ -42,7 +43,7 @@ public class MemoryRPlayer implements RPlayer {
     }
 
     private MemoryRPlayer(final String name) {
-        this.uuid = this.getRoyalCommands().getServer().getOfflinePlayer(name).getUniqueId();
+        this.uuid = RUtils.getOfflinePlayer(name).getUniqueId();
         this.nick = new Nick(this);
     }
 
@@ -56,7 +57,7 @@ public class MemoryRPlayer implements RPlayer {
     }
 
     public static RPlayer getRPlayer(final String name) {
-        return MemoryRPlayer.getRPlayer(RoyalCommands.getInstance().getServer().getOfflinePlayer(name).getUniqueId());
+        return MemoryRPlayer.getRPlayer(RUtils.getOfflinePlayer(name).getUniqueId());
     }
 
     public static RPlayer getRPlayer(final UUID uuid) {

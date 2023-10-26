@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
@@ -40,7 +41,7 @@ public class CmdVip extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No player specified!");
                 return true;
             }
-            OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer t = RUtils.getOfflinePlayer(args[1]);
             PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -58,7 +59,7 @@ public class CmdVip extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No player specified!");
                 return true;
             }
-            OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer t = RUtils.getOfflinePlayer(args[1]);
             PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -76,7 +77,7 @@ public class CmdVip extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No player specified!");
                 return true;
             }
-            OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer t = RUtils.getOfflinePlayer(args[1]);
             PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

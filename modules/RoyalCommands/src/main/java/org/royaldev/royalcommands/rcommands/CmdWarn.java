@@ -33,8 +33,7 @@ public class CmdWarn extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = this.plugin.getServer().getPlayer(args[0]);
-        if (op == null) op = this.plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

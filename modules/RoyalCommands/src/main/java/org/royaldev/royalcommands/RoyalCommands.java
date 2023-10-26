@@ -343,8 +343,7 @@ public class RoyalCommands extends JavaPlugin {
         if (playersToConvert.size() > 0) this.getLogger().info("Converting offline-mode players.");
         for (final String name : playersToConvert) {
             if (name.trim().isEmpty()) continue;
-            //noinspection deprecation
-            final UUID uuid = this.getServer().getOfflinePlayer(name).getUniqueId();
+            final UUID uuid = RUtils.getOfflinePlayer(name).getUniqueId();
             try {
                 Files.move(new File(userdataFolder, name + ".yml").toPath(), new File(userdataFolder, uuid + ".yml").toPath());
                 this.getLogger().info("Converted offline-mode player " + name + ".yml to " + uuid + ".yml");

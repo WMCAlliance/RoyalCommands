@@ -28,7 +28,7 @@ public class CmdUnban extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
+        final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
         final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!t.isBanned()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player isn't banned!");

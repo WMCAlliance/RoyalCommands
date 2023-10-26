@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
@@ -35,7 +36,7 @@ public class CmdReply extends TabCommand {
             }
         }
         String target = CmdMessage.replydb.get(cs.getName());
-        OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(target);
+        OfflinePlayer t = RUtils.getOfflinePlayer(target);
         if (!t.isOnline()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is offline!");
             return true;

@@ -34,7 +34,7 @@ public class CmdListWarns extends TabCommand {
             RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
             return true;
         }
-        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer((args.length > 0) ? args[0] : cs.getName());
+        OfflinePlayer op = RUtils.getOfflinePlayer(args.length > 0 ? args[0] : cs.getName());
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

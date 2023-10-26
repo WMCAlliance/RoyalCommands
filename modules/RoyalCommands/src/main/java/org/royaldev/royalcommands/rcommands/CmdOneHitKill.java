@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
@@ -26,7 +27,7 @@ public class CmdOneHitKill extends TabCommand {
         if (args.length > 0) {
             Player t = this.plugin.getServer().getPlayer(args[0]);
             if (t == null || this.plugin.isVanished(t, cs)) {
-                OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
+                OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
                 PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
                 if (!pcm.exists()) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

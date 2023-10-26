@@ -45,7 +45,7 @@ public class CmdUnbanIP extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
         String ip = (!op.hasPlayedBefore()) ? args[0] : PlayerConfigurationManager.getConfiguration(op).getString("ip");
         if (ip == null) ip = args[0];
         if (!isValid(ip)) {

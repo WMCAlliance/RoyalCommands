@@ -6,6 +6,7 @@
 package org.royaldev.royalcommands.rcommands.home;
 
 import org.bukkit.Location;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
@@ -33,7 +34,7 @@ public class Home {
         final PlayerConfiguration pcm;
         if (playerName == null) pcm = PlayerConfigurationManager.getConfiguration(uuid);
         else
-            pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+            pcm = PlayerConfigurationManager.getConfiguration(RUtils.getOfflinePlayer(playerName));
         return new Home(pcm.getManagerPlayerUUID(), homeName, null);
     }
 
@@ -49,7 +50,7 @@ public class Home {
         final PlayerConfiguration pcm;
         if (playerName == null) pcm = PlayerConfigurationManager.getConfiguration(uuid);
         else
-            pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+            pcm = PlayerConfigurationManager.getConfiguration(RUtils.getOfflinePlayer(playerName));
         return Home.fromPConfManager(pcm, homeName);
     }
 

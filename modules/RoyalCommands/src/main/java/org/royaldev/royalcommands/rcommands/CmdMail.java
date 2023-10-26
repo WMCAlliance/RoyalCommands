@@ -87,7 +87,7 @@ public class CmdMail extends TabCommand {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer op = RUtils.getOfflinePlayer(args[1]);
             if (!op.hasPlayedBefore()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;

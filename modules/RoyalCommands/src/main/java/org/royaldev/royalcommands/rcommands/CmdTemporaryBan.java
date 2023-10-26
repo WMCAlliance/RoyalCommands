@@ -33,8 +33,7 @@ public class CmdTemporaryBan extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = this.plugin.getServer().getPlayer(args[0]);
-        if (t == null) t = this.plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");

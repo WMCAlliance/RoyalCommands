@@ -60,7 +60,7 @@ public class CmdBanIP extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
         String ip = (!op.hasPlayedBefore()) ? args[0] : PlayerConfigurationManager.getConfiguration(op).getString("ip");
         String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.banMessage;
         banreason = RUtils.colorize(banreason);
