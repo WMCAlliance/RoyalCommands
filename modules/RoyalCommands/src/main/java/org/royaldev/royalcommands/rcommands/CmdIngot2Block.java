@@ -22,16 +22,12 @@ public class CmdIngot2Block extends TabCommand {
     }
 
     public void i2b(Player p, ItemStack hand, Material ingot, Material block) {
-        i2b(p, hand, ingot, block, hand.getDurability());
-    }
-
-    public void i2b(Player p, ItemStack hand, Material ingot, Material block, short data) {
         int remainder = hand.getAmount() % 9;
         int amount = hand.getAmount() - remainder;
         int blocks = amount / 9;
         if (blocks > 0) {
             final ItemStack blocka = new ItemStack(block, blocks);
-            final ItemStack ingots = new ItemStack(ingot, amount, data);
+            final ItemStack ingots = new ItemStack(ingot, amount);
             p.getInventory().removeItem(ingots);
             final HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
             if (!left.isEmpty()) for (ItemStack s : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), s);
@@ -76,11 +72,15 @@ public class CmdIngot2Block extends TabCommand {
             case REDSTONE:
                 i2b(p, hand, Material.REDSTONE, Material.REDSTONE_BLOCK);
                 break;
-            case INK_SAC:
-                if (hand.getDurability() == 4) {
-                    i2b(p, hand, Material.INK_SAC, Material.LAPIS_BLOCK, (short) 4);
-                    break;
-                }
+            case LAPIS_LAZULI:
+                i2b(p, hand, Material.LAPIS_LAZULI, Material.LAPIS_BLOCK);
+                break;
+            case COPPER_INGOT:
+                i2b(p, hand, Material.COPPER_INGOT, Material.COPPER_BLOCK);
+                break;
+            case NETHERITE_INGOT:
+                i2b(p, hand, Material.NETHERITE_INGOT, Material.NETHERITE_BLOCK);
+                break;
             case WHEAT:
                 i2b(p, hand, Material.WHEAT, Material.HAY_BLOCK);
                 break;
