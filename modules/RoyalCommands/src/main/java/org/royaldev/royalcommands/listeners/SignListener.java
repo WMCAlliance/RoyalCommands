@@ -24,6 +24,8 @@ import org.royaldev.royalcommands.rcommands.CmdTime;
 import org.royaldev.royalcommands.rcommands.CmdWarp;
 import org.royaldev.royalcommands.rcommands.CmdWeather;
 import org.royaldev.royalcommands.rcommands.CmdWeather.WeatherType;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 // This code is so ancient... It *really* needs a rewrite.
 // TODO: Rewrite
@@ -98,7 +100,8 @@ public class SignListener implements Listener {
             if (warpLoc == null) {
                 return;
             }
-            RUtils.teleport(p, warpLoc);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+            rp.getTeleporter().teleport(warpLoc);
         }
 
         //Time signs
