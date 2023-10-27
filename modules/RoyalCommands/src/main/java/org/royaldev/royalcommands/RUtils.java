@@ -233,6 +233,23 @@ public final class RUtils {
     }
 
     /**
+     * Replaces processed color codes with raw color codes. Not to be confused with decolorize
+     * @param textToReverse
+     * @param altChar
+     * @return Processed string
+     */
+    public static String uncolorize(final String text) {
+        char[] chars = text.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == ChatColor.COLOR_CHAR && "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx".indexOf(chars[i + 1]) > -1) {
+                chars[i] = '&';
+                chars[i + 1] = Character.toLowerCase(chars[i + 1]);
+            }
+        }
+        return new String(chars);
+}
+
+    /**
      * Returns an empty inventory for use.
      *
      * @param handler May be null - owner of inventory

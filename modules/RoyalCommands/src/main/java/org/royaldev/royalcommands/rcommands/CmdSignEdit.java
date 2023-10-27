@@ -17,8 +17,10 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -51,7 +53,29 @@ public class CmdSignEdit extends TabCommand {
         }
 		Vector signDirection = new Vector(signFace.getModX(), signFace.getModY(), signFace.getModZ());
         Vector vector = p.getEyeLocation().toVector().subtract(s.getLocation().add(0.5, 0.5, 0.5).toVector());
-        p.openSign(s, vector.dot(signDirection) > 0 ? Side.FRONT : Side.BACK);
+        Side sSide = vector.dot(signDirection) > 0 ? Side.FRONT : Side.BACK;
+        Boolean signChanged = false;
+        for (int i = 0; i < 4; i++) {
+            String oldLineText = s.getSide(sSide).getLine(i);
+            String newLineText = RUtils.uncolorize(oldLineText);
+            // Revert sign colours to & codes, otherwise they get stripped
+            if (oldLineText.compareTo(newLineText) != 0) {
+                s.getSide(sSide).setLine(i, newLineText);
+                signChanged = true;
+            }
+        }
+        if (signChanged) {
+            s.update();
+            // Delay by 5 ticks otherwise the Edit Sign UI contains the stripped message
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.openSign(s, sSide);
+                }
+            }.runTaskLater(plugin, 5);
+        } else {
+            p.openSign(s, sSide);
+        }
         return true;
     }
 }
