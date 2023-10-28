@@ -24,13 +24,6 @@ general:
 ###
 
 security:
-  hastebin:
-    # Should any caught command exceptions be pasted to Hastebin? If true, a handy link to the stack trace and other
-    # useful debug information will be generated for the player to give to the developers. It will also be output in the
-    # console.
-    errors: true
-    # Should any command that has copious amounts of data paste it to Hastebin rather than spam the console/player?
-    general: true
   # Disable /getip and /compareip?
   disable_getip: false
   # Use the rcmds.build perm?

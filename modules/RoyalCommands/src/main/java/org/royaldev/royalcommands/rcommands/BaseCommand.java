@@ -73,75 +73,6 @@ public abstract class BaseCommand implements CommandExecutor {
      */
     protected abstract boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args);
 
-    /**
-     * Gets a link to a Hastebin paste with the given content.
-     *
-     * @param paste Content to paste
-     * @return Link to Hastebin paste with the given content
-     * @throws IOException Upon any issue
-     */
-    private String hastebin(final String paste) throws IOException {
-        final URL url = new URL("https://hastebin.com/documents");
-        final HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-        huc.setRequestMethod("POST");
-        huc.setDoOutput(true);
-        final DataOutputStream dos = new DataOutputStream(huc.getOutputStream());
-        dos.writeBytes(paste);
-        dos.flush();
-        dos.close();
-        final BufferedReader br = new BufferedReader(new InputStreamReader(huc.getInputStream()));
-        String inputLine;
-        final StringBuilder sb = new StringBuilder();
-        while ((inputLine = br.readLine()) != null) sb.append(inputLine);
-        br.close();
-        final HastebinData hd = new Gson().fromJson(sb.toString(), HastebinData.class);
-        return "http://hastebin.com/" + hd.getKey() + ".txt";
-    }
-
-    /**
-     * Schedules a thread-safe implementation of {@link #hastebin(String)}.
-     *
-     * @param cs    CommandSender to send the generated link to
-     * @param paste Content to paste
-     */
-    private void scheduleErrorHastebin(final CommandSender cs, final String paste) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                String tempURL = null;
-                if (Config.hastebinErrors) {
-                    try {
-                        tempURL = BaseCommand.this.hastebin(paste);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        tempURL = null;
-                    }
-                }
-                final String url = tempURL;
-                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (url != null) {
-                            BaseCommand.this.plugin.getLogger().warning("Error paste: " + url);
-                            // @formatter:off
-                            new FancyMessage("Click ")
-                                    .color(MessageColor.NEGATIVE.cc())
-                                .then("here")
-                                    .color(MessageColor.NEUTRAL.cc())
-                                    .tooltip("Click here to find out more.")
-                                    .link(url)
-                                .then(" to find out more.")
-                                    .color(MessageColor.NEGATIVE.cc())
-                                .send(cs);
-                            // @formatter:on
-                        } else {
-                            new FancyMessage(Config.hastebinErrors ? "An error occurred while trying to paste the stack trace." : "Error pasting is disabled.").color(MessageColor.NEGATIVE.cc()).send(cs);
-                        }
-                    }
-                });
-            }
-        });
-    }
 
     private void showFlagHelp(final CommandSender cs, final Command cmd, final String label) {
         cs.sendMessage(cmd.getDescription());
@@ -183,7 +114,6 @@ public abstract class BaseCommand implements CommandExecutor {
     public String getName() {
         return this.name;
     }
-
     /**
      * Handles an exception. Generates a useful debug paste and sends it to the user if enabled. Also prints the stack
      * trace to the console and tells the user that an exception occurred.
@@ -198,43 +128,6 @@ public abstract class BaseCommand implements CommandExecutor {
     protected void handleException(final CommandSender cs, final Command cmd, final String label, final String[] args, final Throwable t, final String message) {
         new FancyMessage(message).color(MessageColor.NEGATIVE.cc()).send(cs);
         t.printStackTrace();
-        if (Config.hastebinErrors) {
-            final StringBuilder sb = new StringBuilder();
-            sb
-                .append("An error occurred while handling a command. Please report this to WizardCM.\n")
-                .append("---DEBUG INFO---\n\n");
-            try {
-                sb
-                    .append("RoyalCommands Version\n\t")
-                    .append(this.plugin.getDescription().getVersion());
-            } catch (final Throwable tt) {
-                sb.append("Could not get RoyalCommands version:\n");
-                final StringWriter sw = new StringWriter();
-                tt.printStackTrace(new PrintWriter(sw));
-                sb.append(sw.toString());
-            }
-            if (cs != null) {
-                sb
-                    .append("\n\nCommandSender\n")
-                    .append("\tName:\t\t").append(cs.getName()).append("\n")
-                    .append("\tClass:\t\t").append(cs.getClass().getName());
-            } else sb.append("CommandSender:\t\tnull");
-            if (cmd != null) {
-                sb
-                    .append("\n\nCommand\n")
-                    .append("\tName:\t\t").append(cmd.getName()).append("\n")
-                    .append("\tClass:\t\t").append(cmd.getClass().getName());
-            } else sb.append("\n\nCommand:\t\tnull");
-            sb.append("\n\nLabel\n\t").append(label);
-            sb.append("\n\nArguments");
-            if (args != null) {
-                for (final String arg : args) sb.append("\n\t").append(arg);
-            } else sb.append("\n\tnull");
-            final StringWriter sw = new StringWriter();
-            t.printStackTrace(new PrintWriter(sw));
-            sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());
-            this.scheduleErrorHastebin(cs, sb.toString());
-        }
     }
 
     protected void handleException(final CommandSender cs, final Command cmd, final String label, final String[] args, final Throwable t) {
@@ -281,48 +174,6 @@ public abstract class BaseCommand implements CommandExecutor {
             this.handleException(cs, cmd, label, args, t);
             return true;
         }
-    }
-
-    /**
-     * /**
-     * Schedules a thread-safe implementation of {@link #hastebin(String)}.
-     *
-     * @param cs            CommandSender to send the generated link to
-     * @param paste         Content to paste
-     * @param messageBefore Message before the URL
-     * @param urlMessage    Message for the URL
-     * @param messageAfter  Message after the URL
-     * @param urlTooltip    Tooltip for the URL (can be null for none)
-     */
-    protected void scheduleHastebin(final CommandSender cs, final String paste, final String messageBefore, final String urlMessage, final String messageAfter, final String urlTooltip) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                String tempURL = null;
-                if (Config.hastebinGeneral) {
-                    try {
-                        tempURL = BaseCommand.this.hastebin(paste);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        tempURL = null;
-                    }
-                }
-                final String url = tempURL;
-                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (url != null) {
-                            BaseCommand.this.plugin.getLogger().info("Paste: " + url);
-                            final FancyMessage fm = new FancyMessage(messageBefore).then(urlMessage);
-                            if (urlTooltip != null) fm.tooltip(urlTooltip);
-                            fm.link(url).then(messageAfter).send(cs);
-                        } else {
-                            new FancyMessage(Config.hastebinGeneral ? "An error occurred while trying to paste." : "Pasting is disabled.").color(MessageColor.NEGATIVE.cc()).send(cs);
-                        }
-                    }
-                });
-            }
-        });
     }
 
     public static class Flag<T> {
@@ -396,16 +247,6 @@ public abstract class BaseCommand implements CommandExecutor {
 
         public T getValue(final T defaultValue) {
             return this.value == null ? defaultValue : this.value;
-        }
-    }
-
-    private class HastebinData {
-
-        @SuppressWarnings("UnusedDeclaration")
-        private String key;
-
-        public String getKey() {
-            return this.key;
         }
     }
 

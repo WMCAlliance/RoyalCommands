@@ -65,7 +65,7 @@ public class CmdPrune extends CACommand {
         final StringBuilder sb = new StringBuilder();
         sb.append("The following userdata files (").append(deletedFiles.size()).append(")").append(" were purged by ").append(cs.getName()).append(" at ").append(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z").format(dateStarted)).append(".\n\n");
         for (final String fileName : deletedFiles) sb.append(fileName).append("\n");
-        this.scheduleHastebin(cs, sb.toString(), MessageColor.POSITIVE + "The userdata files deleted are listed ", MessageColor.NEUTRAL + "here", MessageColor.POSITIVE + ".", "Click here to see the files deleted.");
+        //this.scheduleHastebin(cs, sb.toString(), MessageColor.POSITIVE + "The userdata files deleted are listed ", MessageColor.NEUTRAL + "here", MessageColor.POSITIVE + ".", "Click here to see the files deleted.");
         return true;
     }
 }
