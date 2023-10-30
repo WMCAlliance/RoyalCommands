@@ -31,7 +31,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.5.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -68,7 +68,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M6</version>
+                <version>3.2.1</version>
                 <configuration>
                     <forkCount>1C</forkCount>
                     <workingDirectory>./</workingDirectory>
@@ -77,14 +77,14 @@
                     <dependency>
                         <groupId>org.apache.maven.surefire</groupId>
                         <artifactId>surefire-junit4</artifactId>
-                        <version>3.0.0-M6</version>
+                        <version>3.2.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -98,23 +98,14 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.github.wvengen</groupId>
                 <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>2.6.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.guardsquare</groupId>
                         <artifactId>proguard-base</artifactId>
-                        <version>7.2.1</version>
+                        <version>7.4.0</version>
                         <scope>runtime</scope>
                     </dependency>
                 </dependencies>
