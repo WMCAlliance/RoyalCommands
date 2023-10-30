@@ -465,6 +465,8 @@ public class PlayerListener implements Listener {
                     p.sendMessage(MessageColor.NEUTRAL + myName + MessageColor.POSITIVE + " is now asleep.");
                 }
             }
+        }
+        for (Player p : event.getPlayer().getWorld().getPlayers()) {
             FancyMessage fm = new FancyMessage("Players asleep: ")
 				.color(MessageColor.POSITIVE.cc())
                 .then(String.valueOf(sleepers.size()))
