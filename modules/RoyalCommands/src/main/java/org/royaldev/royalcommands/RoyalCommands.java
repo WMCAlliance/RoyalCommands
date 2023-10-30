@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -106,6 +107,7 @@ public class RoyalCommands extends JavaPlugin {
     private VanishPlugin vp = null;
     // private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
+	public PlaceholderAPIPlugin pa = null;
     private ProtocolListener pl = null;
 
     /**
@@ -538,7 +540,12 @@ public class RoyalCommands extends JavaPlugin {
         this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
         // this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
         this.lwc = (LWCPlugin) this.getServer().getPluginManager().getPlugin("LWC");
+        this.pa = (PlaceholderAPIPlugin) this.getServer().getPluginManager().getPlugin("PlaceholderAPI");
         RoyalCommands.mvc = (MultiverseCore) this.getServer().getPluginManager().getPlugin("Multiverse-Core");
+
+		//-- Set up PlaceholderAPI --//
+
+		if (this.pa != null) new PlaceholderHandler(this).register();
 
         //-- Register events --//
 

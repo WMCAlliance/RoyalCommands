@@ -153,6 +153,8 @@ public class Config {
     public static String negativeChatColor;
     public static String neutralChatColor;
     public static String resetChatColor;
+    public static String afkOnPlaceholder;
+    public static String afkOffPlaceholder;
 
     private final RoyalCommands plugin;
 
@@ -313,6 +315,8 @@ public class Config {
         negativeChatColor = c.getString("messages.options.colors.negative", "RED");
         neutralChatColor = c.getString("messages.options.colors.neutral", "GRAY");
         resetChatColor = c.getString("messages.options.colors.reset", "RESET");
+        afkOnPlaceholder = RUtils.colorize(c.getString("afk.placeholders.on", "&7[AFK]"));
+        afkOffPlaceholder = RUtils.colorize(c.getString("afk.placeholoders.off", ""));
 
         if (this.plugin.whl.exists()) whitelist = this.plugin.whl.getStringList("whitelist");
 

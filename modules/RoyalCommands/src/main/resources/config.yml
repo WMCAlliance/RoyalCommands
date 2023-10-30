@@ -501,6 +501,9 @@ afk:
       # Default is 300 (kicks after 5 minutes)
       # Disable by setting to 0
       kick: 300
+  placeholders:
+    on: '&7[AFK]'
+    off: ''
 
 ###
 # Commands #

@@ -77,7 +77,7 @@ public class CmdList extends TabCommand {
                 inGroup.add(MessageColor.NEUTRAL + "[HIDDEN]" + MessageColor.RESET + formatPrepend(p));
             else if (!CmdList.pluginInstance.isVanished(p)) {
                 if (AFKUtils.isAfk(p))
-                    inGroup.add(MessageColor.NEUTRAL + "[AFK]" + MessageColor.RESET + formatPrepend(p));
+                    inGroup.add(Config.afkOnPlaceholder + MessageColor.RESET + formatPrepend(p));
                 else inGroup.add(formatPrepend(p));
             }
             groups.put(group, inGroup);
