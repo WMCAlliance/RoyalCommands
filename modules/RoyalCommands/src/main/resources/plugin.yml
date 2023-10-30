@@ -2540,10 +2540,8 @@ permissions:
     children:
       rcmds.pluginmanager.delete: true
       rcmds.pluginmanager.disable: true
-      rcmds.pluginmanager.download: true
       rcmds.pluginmanager.downloadlink: true
       rcmds.pluginmanager.enable: true
-      rcmds.pluginmanager.findtag: true
       rcmds.pluginmanager.help: true
       rcmds.pluginmanager.info: true
       rcmds.pluginmanager.list: true
@@ -2565,10 +2563,6 @@ permissions:
     command: pluginmanager
     default: op
     description: Allows you to use PluginManager's disable feature.
-  rcmds.pluginmanager.download:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's download feature.
   rcmds.pluginmanager.downloadlink:
     command: pluginmanager
     default: op
@@ -2577,10 +2571,6 @@ permissions:
     command: pluginmanager
     default: op
     description: Allows you to use PluginManager's enable feature.
-  rcmds.pluginmanager.findtag:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's findtag feature.
   rcmds.pluginmanager.help:
     command: pluginmanager
     default: op
