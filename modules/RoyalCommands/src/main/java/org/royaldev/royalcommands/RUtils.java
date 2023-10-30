@@ -6,6 +6,9 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+
+import me.clip.placeholderapi.PlaceholderAPI;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
@@ -1199,7 +1202,10 @@ public final class RUtils {
     public static String replaceVars(final String orig, final Player p) {
         String repld = orig;
         repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
-        if (!RoyalCommands.getInstance().vh.usingVault()) return repld;
+        if (!RoyalCommands.getInstance().vh.usingVault()) {
+            if (RoyalCommands.getInstance().pa != null) repld = PlaceholderAPI.setPlaceholders(p, repld);
+            return repld;
+        }
         try {
             repld = repld.replace("{group}", RoyalCommands.getInstance().vh.getPermission().getPrimaryGroup(p));
         } catch (Exception ignored) {
@@ -1216,6 +1222,8 @@ public final class RUtils {
             String suffix = getRChatSuffix(p);
             if (suffix != null) repld = repld.replace("{suffix}", suffix);
         }
+
+        if (RoyalCommands.getInstance().pa != null) repld = PlaceholderAPI.setPlaceholders(p, repld);
         return repld;
     }
 
