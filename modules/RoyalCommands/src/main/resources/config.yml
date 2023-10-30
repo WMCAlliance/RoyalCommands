@@ -18,6 +18,8 @@ general:
   # Sleep majority?
   sleep_majority: true
   sleep_majority_percentage: 50.0
+  # How much AFK players count towards sleep majority (1 asleep, 0 awake)
+  sleep_majority_afk: 0.5
 
 ###
 # Security #

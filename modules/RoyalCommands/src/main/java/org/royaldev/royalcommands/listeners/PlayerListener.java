@@ -482,7 +482,12 @@ public class PlayerListener implements Listener {
         }
         if (Config.sleepMajority) {
             double sleep_percent = Config.sleepMajorityPercent / 100D;
-            double current_asleep = (double) sleepers.size() / event.getPlayer().getWorld().getPlayers().size();
+            List<Player> current_players = event.getPlayer().getWorld().getPlayers();
+            double afk_players = 0;
+            for (Player player : current_players) {
+                if (AFKUtils.isAfk(player)) afk_players += 0.5;
+            }
+            double current_asleep = (double) sleepers.size() / (current_players.size() - afk_players);
             if (current_asleep >= sleep_percent && current_asleep != 1.0) {
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {

@@ -88,6 +88,7 @@ public class Config {
     public static double globalTeleportCooldown;
     public static double maxNear;
     public static double sleepMajorityPercent;
+    public static double sleepMajorityAfk;
 
     //-- Floats --//
     public static float explodePower;
@@ -246,6 +247,7 @@ public class Config {
         globalTeleportCooldown = c.getDouble("teleports.options.global_cooldown", 0D);
         maxNear = c.getDouble("near.max_radius", 2000D);
         sleepMajorityPercent = c.getDouble("general.sleep_majority_percentage", 50D);
+        sleepMajorityAfk = c.getDouble("general.sleep_majority_afk", 0.5D);
 
         //-- Floats --//
 
