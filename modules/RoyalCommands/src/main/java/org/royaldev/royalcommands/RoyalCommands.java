@@ -96,7 +96,7 @@ public class RoyalCommands extends JavaPlugin {
     public Configuration whl;
     public String version = null;
     public String newVersion = null;
-    public Metrics m = null;
+
     public Config c;
     public Help h;
     private CommandMap cm = null;
@@ -175,19 +175,6 @@ public class RoyalCommands extends JavaPlugin {
             final Configuration cm = Configuration.getConfiguration(name);
             if (!cm.exists()) cm.createFile();
             cm.forceSave();
-        }
-    }
-
-    private void initializeMetrics() {
-        try {
-            this.m = new Metrics(this, 15550);
-            if (YamlConfiguration.loadConfiguration(new File(new File(this.getDataFolder().getParentFile(), "bStats"), "config.yml")).getBoolean("enabled", true)) {
-                this.getLogger().info("Metrics enabled. Thank you!");
-            } else {
-                this.getLogger().info("You have Metrics off, no hard feelings :(");
-            }
-        } catch (Exception ignore) {
-            this.getLogger().warning("Could not start Metrics!");
         }
     }
 
@@ -467,10 +454,6 @@ public class RoyalCommands extends JavaPlugin {
 
         this.initializeConfManagers();
 
-
-        //-- Hidendra's Metrics --//
-
-        this.initializeMetrics();
 
         //-- Get help --//
 
