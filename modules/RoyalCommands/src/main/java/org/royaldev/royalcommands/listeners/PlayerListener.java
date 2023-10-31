@@ -457,8 +457,9 @@ public class PlayerListener implements Listener {
 
 		String myName = event.getPlayer().getDisplayName();
         List<String> sleepers = new ArrayList<>(List.of(myName));
+        World world = event.getPlayer().getWorld();
 
-        for (Player p : event.getPlayer().getWorld().getPlayers()) {
+        for (Player p : world.getPlayers()) {
             if (p.isSleeping()) {
                 sleepers.add(p.getDisplayName());
                 if (event.getPlayer() != p) {
@@ -466,7 +467,7 @@ public class PlayerListener implements Listener {
                 }
             }
         }
-        for (Player p : event.getPlayer().getWorld().getPlayers()) {
+        for (Player p : world.getPlayers()) {
             FancyMessage fm = new FancyMessage("Players asleep: ")
 				.color(MessageColor.POSITIVE.cc())
                 .then(String.valueOf(sleepers.size()))
@@ -474,15 +475,18 @@ public class PlayerListener implements Listener {
                 .tooltip(MessageColor.NEUTRAL + String.join("\n", sleepers))
                 .then(" of ")
                 .color(MessageColor.POSITIVE.cc())
-                .then(String.valueOf(event.getPlayer().getWorld().getPlayers().size()))
+                .then(String.valueOf(world.getPlayers().size()))
                 .color(MessageColor.NEUTRAL.cc())
+                .then(" in ")
+				.color(MessageColor.POSITIVE.cc())
+                .then(RUtils.getMVWorldName(world))
                 .then(".")
                 .color(MessageColor.POSITIVE.cc());
             fm.send(p);
         }
         if (Config.sleepMajority) {
             double sleep_percent = Config.sleepMajorityPercent / 100D;
-            List<Player> current_players = event.getPlayer().getWorld().getPlayers();
+            List<Player> current_players = world.getPlayers();
             double afk_players = 0;
             for (Player player : current_players) {
                 if (AFKUtils.isAfk(player)) afk_players += 0.5;
