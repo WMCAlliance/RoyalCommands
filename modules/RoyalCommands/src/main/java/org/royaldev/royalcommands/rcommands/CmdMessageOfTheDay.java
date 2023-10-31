@@ -12,6 +12,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 @ReflectCommand
 public class CmdMessageOfTheDay extends TabCommand {
 
@@ -48,6 +50,7 @@ public class CmdMessageOfTheDay extends TabCommand {
             s = s.replace("{playerlist}", ps);
             s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
+            if (cs instanceof Player && CmdMessageOfTheDay.pluginInstance.pa != null) s = PlaceholderAPI.setPlaceholders((Player)cs, s);
             s = (CmdMessageOfTheDay.pluginInstance.getServer().getName() != null || !CmdMessageOfTheDay.pluginInstance.getServer().getName().isEmpty()) ? s.replace("{servername}", CmdMessageOfTheDay.pluginInstance.getServer().getName()) : s.replace("{servername}", "this server");
             cs.sendMessage(s);
         }
