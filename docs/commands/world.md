@@ -9,6 +9,7 @@ command:
   - teleportworld
   - worldteleport
   - tpw
+  - worlds
   configuration: []
   description: Teleports the player to the specified world.
   permissions:

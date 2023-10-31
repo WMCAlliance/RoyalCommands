@@ -11,5 +11,4 @@ layout: command
 title: /brewingstand
 ---
 
-
 ```/brewingstand``` Allows you to set and use the brewing stand remotely, before using ```[show]``` it is required for ```[set]``` to be used when looking at the brewing stand to be used remotely

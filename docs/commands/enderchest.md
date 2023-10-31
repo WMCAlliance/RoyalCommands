@@ -21,4 +21,6 @@ title: /enderchest
 In-depth content, and...
 
 ### Examples
+```/enderchest Notch skyblock``` - Shows the ender chest of ```Notch``` in ```skyblock```
+
 

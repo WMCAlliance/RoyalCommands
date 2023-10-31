@@ -3,6 +3,7 @@ command:
   added: Pre-0.2.7
   aliases:
   - whowas
+  - playerinfo
   configuration: []
   description: Looks up data on the specified player.
   permissions:
