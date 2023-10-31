@@ -6,10 +6,20 @@
 package org.royaldev.royalcommands;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.OfflinePlayer;
 
 public class PlaceholderHandler extends PlaceholderExpansion {
     private final RoyalCommands plugin;
+    private final String prefix = "royalcommands";
+
+    private final List<String> placeholders = Arrays.asList(
+        "afk"
+    );
 
     public PlaceholderHandler(RoyalCommands instance) {
         this.plugin = instance;
@@ -22,7 +32,7 @@ public class PlaceholderHandler extends PlaceholderExpansion {
 
     @Override
     public String getIdentifier() {
-        return "royalcommands";
+        return prefix;
     }
 
     @Override
@@ -33,6 +43,17 @@ public class PlaceholderHandler extends PlaceholderExpansion {
     @Override
     public boolean persist() {
         return true;
+    }
+
+    @Override
+    public List<String> getPlaceholders() {
+        List<String> ph = new ArrayList<>();
+
+        for (String pl : placeholders) {
+            ph.add("%" + prefix + "_" + pl + "%");
+        }
+
+        return ph;
     }
 
     @Override
