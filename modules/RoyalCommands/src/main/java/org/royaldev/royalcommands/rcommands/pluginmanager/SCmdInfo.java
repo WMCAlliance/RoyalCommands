@@ -42,42 +42,38 @@ public class SCmdInfo extends SubCommand<CmdPluginManager> {
             return true;
         }
         final String version = pdf.getVersion();
+		final String apiVersion = pdf.getAPIVersion();
         final List<String> authors = pdf.getAuthors();
         final String site = pdf.getWebsite();
         final List<String> softDep = pdf.getSoftDepend();
         final List<String> dep = pdf.getDepend();
         final String name = pdf.getName();
         final String desc = pdf.getDescription();
-        if (name != null && !name.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Name");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + name);
+        if (!name.isEmpty()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Name: " + MessageColor.NEUTRAL + name);
         }
-        if (version != null && !version.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Version");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + version);
+        if (!version.isEmpty()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Version: " + MessageColor.NEUTRAL + version);
+        }
+        if (apiVersion != null && !apiVersion.isEmpty()) {
+            cs.sendMessage(MessageColor.POSITIVE + "API: " + MessageColor.NEUTRAL + apiVersion);
         }
         if (site != null && !site.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Site");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + site);
+            cs.sendMessage(MessageColor.POSITIVE + "Site: " + MessageColor.NEUTRAL + site);
         }
         if (desc != null && !desc.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Description");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + desc.replaceAll("\r?\n", ""));
+            cs.sendMessage(MessageColor.POSITIVE + "Description: " + MessageColor.NEUTRAL + desc.replaceAll("\r?\n", ""));
         }
-        if (authors != null && !authors.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Author" + ((authors.size() > 1) ? "s" : "") + "");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + RUtils.join(authors, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+        if (!authors.isEmpty()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Author" + ((authors.size() > 1) ? "s" : "") + ": " + MessageColor.NEUTRAL + RUtils.join(authors, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
         }
-        if (softDep != null && !softDep.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Soft Dependencies");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + RUtils.join(softDep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+        if (!softDep.isEmpty()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Soft Dependencies: " + MessageColor.NEUTRAL + RUtils.join(softDep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
         }
-        if (dep != null && !dep.isEmpty()) {
-            cs.sendMessage(MessageColor.POSITIVE + "Dependencies");
-            cs.sendMessage("  " + MessageColor.NEUTRAL + RUtils.join(dep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+        if (!dep.isEmpty()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Dependencies: " + MessageColor.NEUTRAL + RUtils.join(dep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
         }
-        cs.sendMessage(MessageColor.POSITIVE + "Enabled");
-        cs.sendMessage("  " + MessageColor.NEUTRAL + ((p.isEnabled()) ? "Yes" : "No"));
+        cs.sendMessage(MessageColor.POSITIVE + "Enabled: " + MessageColor.NEUTRAL + ((p.isEnabled()) ? "Yes" : "No"));
         return true;
     }
 }
