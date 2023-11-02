@@ -53,7 +53,6 @@ public class Config {
     public static boolean separateInv;
     public static boolean separateXP;
     public static boolean showcommands;
-    public static boolean simpleList;
 	public static boolean sleepNotifications;
 	public static boolean sleepMajority;
     public static boolean smoothTime;
@@ -150,6 +149,7 @@ public class Config {
     public static String whitelistMessage;
     public static String whoFormat;
     public static String whoGroupFormat;
+	public static String whoGroupMode;
     public static String positiveChatColor;
     public static String negativeChatColor;
     public static String neutralChatColor;
@@ -210,7 +210,6 @@ public class Config {
         separateInv = c.getBoolean("worldmanager.inventory_separation.enabled", false);
         separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
         showcommands = c.getBoolean("commands.logging.view_commands", true);
-        simpleList = c.getBoolean("playerlist.simple", true);
 		sleepNotifications = c.getBoolean("general.sleep_notifications", true);
 		sleepMajority = c.getBoolean("general.sleep_majority", true);
         smoothTime = c.getBoolean("general.use_smooth_time", true);
@@ -313,6 +312,7 @@ public class Config {
         whitelistMessage = RUtils.colorize(c.getString("whitelist.message", "You are not whitelisted on this server!"));
         whoFormat = c.getString("playerlist.format", "{prefix}{dispname}");
         whoGroupFormat = c.getString("playerlist.group_format", "{prefix}{group}{suffix}");
+        whoGroupMode = c.getString("playerlist.group_mode", "simple");
         positiveChatColor = c.getString("messages.options.colors.positive", "BLUE");
         negativeChatColor = c.getString("messages.options.colors.negative", "RED");
         neutralChatColor = c.getString("messages.options.colors.neutral", "GRAY");

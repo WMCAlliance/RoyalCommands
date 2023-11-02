@@ -24,6 +24,11 @@ import org.royaldev.royalcommands.RoyalCommands;
 public class CmdList extends TabCommand {
 
     private static RoyalCommands pluginInstance;
+	
+	public enum ListMode {
+		PERMISSION_GROUP,
+		WORLD
+	};
 
     public CmdList(final RoyalCommands pluginInstance, final String name) {
         super(pluginInstance, name, true, new Short[]{});
@@ -60,19 +65,23 @@ public class CmdList extends TabCommand {
         return format;
     }
 
-    public static String[] getGroupList(CommandSender cs) {
+    public static String[] getGroupList(ListMode mode, CommandSender cs) {
         Map<String, List<String>> groups = new HashMap<>();
-        final StrBuilder sb = new StrBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (final Player p : CmdList.pluginInstance.getServer().getOnlinePlayers()) {
-            String group;
-            try {
-                if (!CmdList.pluginInstance.vh.usingVault()) throw new Exception();
-                group = CmdList.pluginInstance.vh.getPermission().getPrimaryGroup(p);
-            } catch (Exception e) {
-                group = "No Group";
-            }
-            if (group == null) group = "No Group";
-            List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
+            String group = "";
+			if (mode == ListMode.PERMISSION_GROUP) {
+				try {
+					if (!CmdList.pluginInstance.vh.usingVault()) throw new Exception();
+					group = CmdList.pluginInstance.vh.getPermission().getPrimaryGroup(p);
+				} catch (Exception e) {
+					group = "No Group";
+				}
+				if (group == null) group = "No Group";
+			} else if (mode == ListMode.WORLD) {
+				group = RUtils.getMVWorldName(p.getWorld());
+			}
+            List<String> inGroup = !group.isEmpty() && (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
             if (CmdList.pluginInstance.isVanished(p) && CmdList.pluginInstance.ah.isAuthorized(cs, "rcmds.seehidden"))
                 inGroup.add(MessageColor.NEUTRAL + "[HIDDEN]" + MessageColor.RESET + formatPrepend(p));
             else if (!CmdList.pluginInstance.isVanished(p)) {
@@ -86,7 +95,11 @@ public class CmdList extends TabCommand {
         for (Entry<String, List<String>> entry : groups.entrySet()) {
             List<String> inGroup = entry.getValue();
             if (inGroup.size() < 1) continue;
-            sb.append(groupPrepend(entry.getKey()));
+			if (mode == ListMode.PERMISSION_GROUP) {
+				sb.append(groupPrepend(entry.getKey()));
+			} else {
+				sb.append(entry.getKey());
+			}
             sb.append(MessageColor.RESET);
             sb.append(": ");
             for (String name : inGroup) {
@@ -95,11 +108,11 @@ public class CmdList extends TabCommand {
                 sb.append(", ");
             }
             if (sb.length() < 2) {
-                sb.clear();
+                sb.setLength(0);
                 continue;
             }
             toRet.add(sb.toString().substring(0, sb.length() - 2));
-            sb.clear();
+            sb.setLength(0);
         }
         for (String s : toRet) if (s == null) toRet.remove(null);
         return toRet.toArray(new String[toRet.size()]);
@@ -161,11 +174,15 @@ public class CmdList extends TabCommand {
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         cs.sendMessage(getNumOnline(cs));
-        if (Config.simpleList) {
-            String pList = getSimpleList(cs);
-            if (pList.equals("")) return true;
-            cs.sendMessage(pList);
-        } else cs.sendMessage(getGroupList(cs));
+		switch(Config.whoGroupMode) {
+			case "simple" -> {
+				String pList = getSimpleList(cs);
+				if (pList.equals("")) return true;
+				cs.sendMessage(pList);
+			}
+			case "group" -> cs.sendMessage(getGroupList(ListMode.PERMISSION_GROUP, cs));
+			case "world" -> cs.sendMessage(getGroupList(ListMode.WORLD, cs));
+		}
         return true;
     }
 }

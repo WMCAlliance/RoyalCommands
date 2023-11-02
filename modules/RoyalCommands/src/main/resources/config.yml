@@ -330,8 +330,8 @@ bans:
 playerlist:
   # /playerlist format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
   format: "{prefix}{dispname}"
-  # Display /playerlist as a simple list (true) or display it separated by groups (false)?
-  simple: true
+  # Display /playerlist as a "simple" list, group by role "group" or by "world"
+  group_mode: "simple"
   # How groups should be displayed if simple is false.
   # Only variables are {prefix}, {group}, and {suffix}
   group_format: "{prefix}{group}{suffix}"

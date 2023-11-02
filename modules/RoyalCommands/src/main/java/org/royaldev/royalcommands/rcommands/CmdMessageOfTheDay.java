@@ -25,7 +25,7 @@ public class CmdMessageOfTheDay extends TabCommand {
     }
 
     public static void showMotd(CommandSender cs) {
-        String ps = (Config.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
+        String ps = CmdList.getSimpleList(cs);
         int onnum = CmdMessageOfTheDay.pluginInstance.getServer().getOnlinePlayers().size();
         int hid = CmdMessageOfTheDay.pluginInstance.getNumberVanished();
         String onlinenum;
