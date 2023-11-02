@@ -29,12 +29,13 @@ public class SCmdList extends SubCommand<CmdPluginManager> {
         int disabled = 0;
         for (Plugin p : ps) {
             String name = p.getName();
+			String version = p.getDescription().getVersion();
+            list.append(MessageColor.NEUTRAL);
+            list.append(name).append(" ").append(version);
             if (!p.isEnabled()) {
-                name += MessageColor.NEGATIVE + " (disabled)";
+                list.append(MessageColor.NEGATIVE).append(" (disabled)");
                 disabled += 1;
             } else enabled += 1;
-            list.append(MessageColor.NEUTRAL);
-            list.append(name);
             list.append(MessageColor.RESET);
             list.append(", ");
         }
