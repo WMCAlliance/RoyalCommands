@@ -7,26 +7,14 @@ package org.royaldev.royalcommands;
 
 import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -52,27 +40,26 @@ import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.gui.inventory.listeners.ClickListener;
 import org.royaldev.royalcommands.gui.inventory.listeners.InventoryGUIEventListener;
-import org.royaldev.royalcommands.listeners.BackpackListener;
-import org.royaldev.royalcommands.listeners.BlockListener;
-import org.royaldev.royalcommands.listeners.EntityListener;
-import org.royaldev.royalcommands.listeners.MonitorListener;
-import org.royaldev.royalcommands.listeners.PlayerListener;
-import org.royaldev.royalcommands.listeners.ServerListener;
-import org.royaldev.royalcommands.listeners.SignListener;
+import org.royaldev.royalcommands.listeners.*;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.BaseCommand;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
 import org.royaldev.royalcommands.rcommands.trade.TradeListener;
-import org.royaldev.royalcommands.runners.AFKWatcher;
-import org.royaldev.royalcommands.runners.FreezeWatcher;
-import org.royaldev.royalcommands.runners.MailRunner;
-import org.royaldev.royalcommands.runners.UserdataRunner;
-import org.royaldev.royalcommands.runners.WarnWatcher;
+import org.royaldev.royalcommands.runners.*;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.FancyConfiguration;
 import org.royaldev.royalcommands.spawninfo.ItemListener;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
 
-// import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // TODO: Add banning for no-UUID players? Wait for Bukkit to fix? Investigate.
 // TODO: Rewrite /gm
@@ -103,7 +90,7 @@ public class RoyalCommands extends JavaPlugin {
     private YamlConfiguration pluginYml = null;
     private RApiMain api;
     private VanishPlugin vp = null;
-    // private WorldGuardPlugin wg = null;
+    private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
 	public PlaceholderAPIPlugin pa = null;
     private ProtocolListener pl = null;
@@ -339,14 +326,12 @@ public class RoyalCommands extends JavaPlugin {
         return this.lwc == null || this.lwc.getLWC().canAccessProtection(p, b);
     }
 
-    @SuppressWarnings("unused")
-    public boolean canBuild(Player p, Location l) {
-        // return this.wg == null || this.wg.canBuild(p, l);
-        return true;
-    }
-
     public boolean canBuild(Player p, Block b) {
-        // return this.wg == null || this.wg.canBuild(p, b);
+        if(!(this.wg == null)){
+            RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+            com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(b.getLocation());
+            return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(p), Flags.BUILD);
+        }
         return true;
     }
 
@@ -489,7 +474,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Get dependencies --//
 
         this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
-        // this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
+        this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
         this.lwc = (LWCPlugin) this.getServer().getPluginManager().getPlugin("LWC");
         this.pa = (PlaceholderAPIPlugin) this.getServer().getPluginManager().getPlugin("PlaceholderAPI");
         RoyalCommands.mvc = (MultiverseCore) this.getServer().getPluginManager().getPlugin("Multiverse-Core");
