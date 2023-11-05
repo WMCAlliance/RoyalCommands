@@ -67,6 +67,7 @@ public class EntityListener implements Listener {
         Player p = e.getEntity();
         Location pLoc = p.getLocation();
         CmdBack.addBackLocation(p, pLoc);
+        if (Config.disabledBackWorlds.contains(pLoc.getWorld().getName())) return;
         if (plugin.ah.isAuthorized(p, "rcmds.back")) {
             FancyMessage fm = new FancyMessage("Type ")
                     .color(MessageColor.POSITIVE.cc())
