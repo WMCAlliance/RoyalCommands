@@ -103,7 +103,7 @@ public class CmdBack extends TabCommand {
                         .color(MessageColor.NEUTRAL.cc())
                     .then(" (")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(l.getWorld().getName())
+                    .then(RUtils.getMVWorldName(l.getWorld()))
                         .color(MessageColor.NEUTRAL.cc())
                     .then(", ")
                         .color(MessageColor.POSITIVE.cc())
