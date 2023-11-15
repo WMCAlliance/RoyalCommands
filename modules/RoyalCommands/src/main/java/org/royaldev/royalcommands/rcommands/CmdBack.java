@@ -22,6 +22,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.rcommands.back.Back;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
@@ -29,7 +30,7 @@ import org.royaldev.royalcommands.wrappers.player.RPlayer;
 @ReflectCommand
 public class CmdBack extends TabCommand {
 
-    private static final Map<UUID, List<Location>> backdb = new HashMap<>();
+    private static final Map<UUID, List<Back>> backdb = new HashMap<>();
     private final DecimalFormat df = new DecimalFormat("0.00");
 
     public CmdBack(final RoyalCommands instance, final String name) {
@@ -46,11 +47,11 @@ public class CmdBack extends TabCommand {
         if (Config.disabledBackWorlds.contains(toAdd.getWorld().getName())) return;
         int maxStack = Config.maxBackStack;
         synchronized (backdb) {
-            List<Location> backs = backdb.get(p.getUniqueId());
+            List<Back> backs = backdb.get(p.getUniqueId());
             if (backs == null) backs = new ArrayList<>();
             // remove last location if needed
             if (backs.size() > 0 && backs.size() >= maxStack) backs.remove(backs.size() - 1);
-            backs.add(0, toAdd);
+            backs.add(0, new Back(toAdd));
             backdb.put(p.getUniqueId(), backs);
         }
     }
@@ -60,7 +61,7 @@ public class CmdBack extends TabCommand {
 		if (!(cs instanceof Player)) return new ArrayList<>();
 		Player player = (Player) cs;
         synchronized (backdb) {
-            List<Location> backs = backdb.get(player.getUniqueId());
+            List<Back> backs = backdb.get(player.getUniqueId());
             if (backs == null) return new ArrayList<>();
 			String [] array = new String[backs.size()];
 			for (int a = 0; a < array.length; a++) {
@@ -83,39 +84,38 @@ public class CmdBack extends TabCommand {
             return true;
         }
         if ("backs".equalsIgnoreCase(label)) {
-            final List<Location> backs = backdb.get(p.getUniqueId());
+            final List<Back> backs = backdb.get(p.getUniqueId());
             cs.sendMessage(MessageColor.NEUTRAL + "/back locations:");
             for (int i = 0; i < backs.size(); i++) {
-                Location l = backs.get(i);
-                if (l == null) continue;
-                final Block b = l.getBlock().getRelative(BlockFace.DOWN);
+                Back b = backs.get(i);
+                if (b == null) continue;
                 // @formatter:off
                 RUtils.addCommandTo(new FancyMessage("  ")
                     .then(i + 1 + ": ")
                         .color(MessageColor.NEUTRAL.cc())
                     .then("on ")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(RUtils.getItemName(b.getType()))
+                    .then(b.getBlockName())
                         .color(MessageColor.NEUTRAL.cc())
                     .then(" in ")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(RUtils.getFriendlyEnumName(b.getBiome()))
+                    .then(b.getBiomeName())
                         .color(MessageColor.NEUTRAL.cc())
                     .then(" (")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(RUtils.getMVWorldName(l.getWorld()))
+                    .then(b.getWorldName())
                         .color(MessageColor.NEUTRAL.cc())
                     .then(", ")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(this.df.format(l.getX()))
+                    .then(this.df.format(b.getX()))
                         .color(MessageColor.NEUTRAL.cc())
                     .then(", ")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(this.df.format(l.getY()))
+                    .then(this.df.format(b.getY()))
                         .color(MessageColor.NEUTRAL.cc())
                     .then(", ")
                         .color(MessageColor.POSITIVE.cc())
-                    .then(this.df.format(l.getZ()))
+                    .then(this.df.format(b.getZ()))
                         .color(MessageColor.NEUTRAL.cc())
                     .then(")")
                         .color(MessageColor.POSITIVE.cc()), "/back " + (i + 1))
@@ -134,12 +134,12 @@ public class CmdBack extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "The back number was not a valid number!");
             return true;
         }
-        List<Location> backs = backdb.get(p.getUniqueId());
+        List<Back> backs = backdb.get(p.getUniqueId());
         if (index < 0 || index >= backs.size()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such back number!");
             return true;
         }
-        final String error = rp.getTeleporter().teleport(backs.get(index));
+        final String error = rp.getTeleporter().teleport(backs.get(index).getLoc());
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);
             return true;
