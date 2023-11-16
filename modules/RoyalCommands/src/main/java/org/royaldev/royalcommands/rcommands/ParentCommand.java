@@ -20,7 +20,9 @@ public class ParentCommand extends TabCommand {
     private final List<SubCommand> subcommands = new ArrayList<>();
 
     public ParentCommand(final RoyalCommands instance, final String name, final boolean checkPermissions) {
-        super(instance, name, checkPermissions, new Short[]{TabCommand.CompletionType.LIST.getShort()});
+        // Parent commands (if set, it breaks subcommands)
+        super(instance, name, checkPermissions, new Short[]{});
+        // Sub command completion (if excluded, breaks parent command completion too??)
         this.setAlwaysUse(CompletionType.LIST);
     }
 
