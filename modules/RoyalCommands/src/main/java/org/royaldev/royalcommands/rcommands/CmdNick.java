@@ -5,6 +5,10 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,21 +19,20 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.rcommands.TabCommand.CompletionType;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
-public class CmdNick extends CACommand {
-
-    private static final Flag CLEAR_FLAG = new Flag("clear", "c", "remove", "r", "disable", "d", "off", "o");
-    private static final Flag<String> TARGET_FLAG = new Flag<>(String.class, "target", "t", "player", "p");
-    private static final Flag<String> NICK_FLAG = new Flag<>(String.class, "nickname", "nick", "n");
+public class CmdNick extends TabCommand {
 
     public CmdNick(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
-        this.addExpectedFlag(CmdNick.TARGET_FLAG);
-        this.addExpectedFlag(CmdNick.CLEAR_FLAG);
-        this.addExpectedFlag(CmdNick.NICK_FLAG);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.LIST.getShort()});
+    }
+
+    @Override
+	protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList("clear"));
     }
 
     private void clearNick(final RPlayer rp, final CommandSender cs) {
@@ -90,12 +93,20 @@ public class CmdNick extends CACommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
-        if (!ca.hasContentFlag(CmdNick.TARGET_FLAG)) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
+
+        if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final RPlayer rpt = MemoryRPlayer.getRPlayer(ca.getFlag(CmdNick.TARGET_FLAG).getValue());
+
+        final RPlayer rpt = MemoryRPlayer.getRPlayer(args[0]);
+
+        if (rpt != null && args.length < 2) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+
         if (cs instanceof Player) {
             final boolean same = rpt.isSameAs((OfflinePlayer) cs);
             if (!same && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS) || rpt.isOnline() && this.ah.isAuthorized(rpt.getPlayer(), cmd, PermType.EXEMPT)) {
@@ -108,7 +119,8 @@ public class CmdNick extends CACommand {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;
         }
-        if (ca.hasFlag(CmdNick.CLEAR_FLAG)) {
+        String newNick = args[1];
+        if (args[1].equalsIgnoreCase("clear")) {
             this.clearNick(rpt, cs);
             return true;
         }
@@ -116,11 +128,6 @@ public class CmdNick extends CACommand {
             this.sendTimeMessage(cs, rpt);
             return true;
         }
-        if (!ca.hasContentFlag(CmdNick.NICK_FLAG)) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-        String newNick = ca.getFlag(CmdNick.NICK_FLAG).getValue();
         if (!this.matchesRegex(cs, newNick)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
             return true;

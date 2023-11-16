@@ -764,7 +764,7 @@ reflectcommands:
       - name
     class: CmdNick
     description: Sets the display name of a player.
-    usage: '/<command> -player [player] (-clear) -nick (nick)'
+    usage: '/<command> [player] [nick/clear]'
     version_added: Pre-0.2.7
   onehitkill:
     aliases:
