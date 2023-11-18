@@ -19,7 +19,7 @@ command:
   supports:
     name-completion: false
     time-format: false
-  usage: /nick -player [player] (-clear) -nick (nick)
+  usage: /nick [player] [nick/clear]
 layout: command
 title: /nick
 ---
