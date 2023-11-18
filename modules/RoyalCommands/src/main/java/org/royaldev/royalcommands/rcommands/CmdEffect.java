@@ -27,7 +27,7 @@ public class CmdEffect extends TabCommand {
         for (PotionEffectType pet : PotionEffectType.values()) {
             if (pet == null) continue;
             sb.append(MessageColor.NEUTRAL);
-            sb.append(pet.getName());
+            sb.append(pet.getName().toLowerCase());
             sb.append(MessageColor.RESET);
             sb.append(", ");
         }
