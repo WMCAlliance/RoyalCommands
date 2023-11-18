@@ -52,7 +52,7 @@ public class CmdClearInventory extends TabCommand {
         } else if (t.isOnline() && !Config.separateInv) {
             final Player p = (Player) t;
             p.getInventory().clear();
-            cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(RUtils.getWorld(world)) + MessageColor.POSITIVE + ".");
             if (!p.getName().equalsIgnoreCase(cs.getName()))
                 p.sendMessage(MessageColor.POSITIVE + "Your inventory for " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + " has been cleared by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
             return true;
@@ -68,7 +68,7 @@ public class CmdClearInventory extends TabCommand {
             final Player p = (Player) t;
             if (p.getWorld().getName().equalsIgnoreCase(world)) p.getInventory().setContents(i.getContents());
         }
-        cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + ".");
+        cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(RUtils.getWorld(world)) + MessageColor.POSITIVE + ".");
         if (t.isOnline() && !t.getName().equalsIgnoreCase(cs.getName()))
             ((Player) t).sendMessage(MessageColor.POSITIVE + "Your inventory for " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + " has been cleared by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
         return true;

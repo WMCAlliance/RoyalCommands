@@ -193,12 +193,12 @@ public class CmdMap extends TabCommand {
             mv.setWorld(w);
             updateMap(p, mv);
             p.getInventory().setItemInMainHand(hand);
-            cs.sendMessage(MessageColor.POSITIVE + "Set the world of map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Set the world of map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
             return true;
         } else if (subcommandMatches(subcommand, "info", "getinfo", "information", "getinformation")) {
             cs.sendMessage(MessageColor.POSITIVE + "Information about map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + ":");
             cs.sendMessage("  " + MessageColor.POSITIVE + "Center coordinates: " + MessageColor.NEUTRAL + mv.getCenterX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + mv.getCenterZ());
-            cs.sendMessage("  " + MessageColor.POSITIVE + "World: " + MessageColor.NEUTRAL + mv.getWorld().getName());
+            cs.sendMessage("  " + MessageColor.POSITIVE + "World: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(mv.getWorld()));
             cs.sendMessage("  " + MessageColor.POSITIVE + "Scale: " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(mv.getScale()));
             cs.sendMessage("  " + MessageColor.POSITIVE + "Lock: " + MessageColor.NEUTRAL + mv.isLocked());
             cs.sendMessage("  " + MessageColor.POSITIVE + "Tracking: " + MessageColor.NEUTRAL + mv.isTrackingPosition());

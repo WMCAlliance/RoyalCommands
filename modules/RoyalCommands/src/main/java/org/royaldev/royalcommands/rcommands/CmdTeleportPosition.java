@@ -55,9 +55,9 @@ public class CmdTeleportPosition extends TabCommand {
         }
         pLoc = new Location(w, x, y, z);
         if (!toTeleport.getName().equals(cs.getName())) {
-            cs.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + toTeleport.getName() + MessageColor.POSITIVE + " to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + toTeleport.getName() + MessageColor.POSITIVE + " to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
         }
-        toTeleport.sendMessage(MessageColor.POSITIVE + "Teleporting you to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
+        toTeleport.sendMessage(MessageColor.POSITIVE + "Teleporting you to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
         final RPlayer rp = MemoryRPlayer.getRPlayer(toTeleport);
         final String error = rp.getTeleporter().teleport(pLoc);
         if (!error.isEmpty()) {
