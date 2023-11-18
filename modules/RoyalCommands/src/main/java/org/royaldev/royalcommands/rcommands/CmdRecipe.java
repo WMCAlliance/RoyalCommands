@@ -54,7 +54,7 @@ public class CmdRecipe extends TabCommand {
     private void scheduleRecipeTask(final Player p, ItemStack is) {
         final List<Recipe> rs = this.plugin.getServer().getRecipesFor(new ItemStack(is.getType()));
         if (rs.size() < 1) {
-            p.sendMessage(MessageColor.NEGATIVE + "No recipes for that item!");
+            p.sendMessage(MessageColor.NEGATIVE + "No recipe for " + MessageColor.NEUTRAL + RUtils.getItemName(is.getType()) + MessageColor.NEGATIVE + ".");
             return;
         }
         final List<Inventory> workbenches = new ArrayList<>();
