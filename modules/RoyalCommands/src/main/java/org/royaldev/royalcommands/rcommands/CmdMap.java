@@ -130,16 +130,16 @@ public class CmdMap extends TabCommand {
             return true;
         }
         ItemStack hand = p.getInventory().getItemInMainHand();
-        MapMeta mapMeta = (MapMeta) hand.getItemMeta();
         if (hand == null || hand.getType() != Material.FILLED_MAP) {
-            cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
+            cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a filled map to use this subcommand!");
             return true;
         }
-        if (!mapMeta.hasMapView()) {
-            cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
-            return true;
-        }
+        MapMeta mapMeta = (MapMeta) hand.getItemMeta();
         MapView mv = mapMeta.getMapView();
+        if (mv == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This map seems to be corrupted/invalid.");
+            return true;
+        }
         if (subcommandMatches(subcommand, "scale", "scaling", "setscale", "setscaling")) {
             if (args.length < 2) {
                 cs.sendMessage(combineEnums(Scale.values()));
