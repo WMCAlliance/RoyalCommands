@@ -567,14 +567,6 @@ reflectcommands:
     description: Lists the kits available to you.
     usage: /<command>
     version_added: Pre-0.2.7
-  lag:
-    aliases:
-      - tps
-      - getlag
-    class: CmdLag
-    description: Displays the ticks per seconds over a period of time.
-    usage: /<command> (seconds to run)
-    version_added: Pre-0.2.7
   less:
     aliases:
       - fewer
@@ -1407,7 +1399,6 @@ permissions:
       rcmds.killall: true
       rcmds.kit: true
       rcmds.kits: true
-      rcmds.lag: true
       rcmds.less: true
       rcmds.level: true
       rcmds.list: true
@@ -2085,10 +2076,6 @@ permissions:
     command: kits
     default: op
     description: Allows you to list available kits.
-  rcmds.lag:
-    command: lag
-    default: op
-    description: Allows you to poll the ticks per second.
   rcmds.less:
     command: less
     default: op
@@ -2270,7 +2257,6 @@ permissions:
       rcmds.killall: true
       rcmds.kit: true
       rcmds.kits: true
-      rcmds.lag: true
       rcmds.less: true
       rcmds.level: true
       rcmds.list: true
