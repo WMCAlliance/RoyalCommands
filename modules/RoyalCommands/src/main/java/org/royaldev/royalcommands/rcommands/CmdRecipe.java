@@ -24,6 +24,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -118,7 +119,8 @@ public class CmdRecipe extends TabCommand {
                 if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
                 if (this.currentRecipe >= workbenches.size()) this.currentRecipe = 0;
                 this.setClosing(true);
-                p.openInventory(workbenches.get(this.currentRecipe));
+                InventoryView iv = p.openInventory(workbenches.get(this.currentRecipe));
+                iv.setTitle("Recipe: " + iv.getOriginalTitle());
                 this.setClosing(false);
                 this.currentRecipe++;
                 if (workbenches.size() == 1) this.display = false;
@@ -174,8 +176,9 @@ public class CmdRecipe extends TabCommand {
             final ItemStack is = e.getCurrentItem();
             if (is == null || is.getType() == Material.AIR) return;
             final InventoryType it = e.getInventory().getType();
-            if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
-            if (!(e.getInventory().getHolder() instanceof RecipeHolder)) return;
+            if (it.compareTo(InventoryType.WORKBENCH) != 0 && it.compareTo(InventoryType.FURNACE) != 0) return;
+            // TODO Replace title comparison with a check for the instance or view (potentially stored in a map)
+            if (!(e.getView().getTitle().startsWith("Recipe:"))) return;
             e.setCancelled(true);
             if (!(e.getWhoClicked() instanceof Player)) return;
             final Player p = (Player) e.getWhoClicked();
@@ -187,15 +190,16 @@ public class CmdRecipe extends TabCommand {
             if (!(e.getPlayer() instanceof Player)) return;
             final Player p = (Player) e.getPlayer();
             final InventoryType it = e.getInventory().getType();
-            if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
+            if (it.compareTo(InventoryType.WORKBENCH) != 0 && it.compareTo(InventoryType.FURNACE) != 0) return;
             if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
-            if (!(e.getInventory().getHolder() instanceof RecipeHolder)) return;
+            if (!(e.getView().getTitle().startsWith("Recipe:"))) return;
             final RecipeHolder rh = (RecipeHolder) e.getInventory().getHolder();
             if (rh.isClosing()) return;
             CmdRecipe.this.cancelTask(p);
         }
     }
 
+    // TODO Remove RecipeHolder entirely, not recommended these days
     private class RecipeHolder implements InventoryHolder {
 
         private boolean closing = false;
