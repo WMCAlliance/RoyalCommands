@@ -10,16 +10,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
 import org.royaldev.royalcommands.gui.inventory.GUIItem;
 import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.AddPartyCommand;
+import org.royaldev.royalcommands.rcommands.trade.clickhandlers.DoNothing;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.GiveHelpBook;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.RemindOtherParty;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.RemoveItem;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.ToggleTradeAcceptance;
 import org.royaldev.royalcommands.rcommands.trade.guiitems.AddCommandItem;
+import org.royaldev.royalcommands.rcommands.trade.guiitems.DoNothingItem;
 import org.royaldev.royalcommands.rcommands.trade.guiitems.HelpItem;
 import org.royaldev.royalcommands.rcommands.trade.guiitems.RemindItem;
 import org.royaldev.royalcommands.rcommands.trade.guiitems.ToggleAcceptanceItem;
@@ -128,16 +131,19 @@ public class Trade {
     private InventoryGUI makeInventoryGUI() {
         if (this.getInventoryGUI() != null) return null;
         final InventoryGUI inventoryGUI = new InventoryGUI(this.getTradeName());
-        inventoryGUI.addItem(
-            new AddPartyCommand(this, Party.TRADER),
-            5, 1,
-            new AddCommandItem(this, Party.TRADER)
-        );
-        inventoryGUI.addItem(
-            new AddPartyCommand(this, Party.TRADEE),
-            5, 2,
-            new AddCommandItem(this, Party.TRADEE)
-        );
+        if (Config.allowCommandsTrade) {
+            inventoryGUI.addItem(
+                    new AddPartyCommand(this, Party.TRADER),
+                    5, 1,
+                    new AddCommandItem(this, Party.TRADER));
+            inventoryGUI.addItem(
+                    new AddPartyCommand(this, Party.TRADEE),
+                    5, 2,
+                    new AddCommandItem(this, Party.TRADEE));
+        } else {
+            inventoryGUI.addItem(new DoNothing(), 5, 1, new DoNothingItem());
+            inventoryGUI.addItem(new DoNothing(), 5, 2, new DoNothingItem());
+        }
         inventoryGUI.addItem(
             this.acceptButtonUUID,
             new ToggleTradeAcceptance(this),

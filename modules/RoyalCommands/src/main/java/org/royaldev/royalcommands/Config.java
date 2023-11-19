@@ -19,6 +19,7 @@ import org.royaldev.royalcommands.opencsv.CSVReader;
 public class Config {
 
     //-- Booleans --//
+    public static boolean allowCommandsTrade;
     public static boolean assignPublicOnGeneric;
     public static boolean assignUseDisplayNames;
     public static boolean assignUseDurability;
@@ -176,6 +177,7 @@ public class Config {
 
         //-- Booleans --//
 
+        allowCommandsTrade = c.getBoolean("trade.allow_commands", false);
         assignPublicOnGeneric = c.getBoolean("assign.public.allow_on_generic_items", false);
         assignUseDisplayNames = c.getBoolean("assign.lore_and_display_names", true);
         assignUseDurability = c.getBoolean("assign.durability", false);

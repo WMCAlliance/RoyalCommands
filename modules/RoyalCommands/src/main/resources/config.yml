@@ -103,6 +103,8 @@ warps:
 trade:
   # Allow trades between players with different gamemodes?
   between_gamemodes: false
+  # Allow specifying commands to be run when a trade is successful?
+  allow_commands: false
   help: |
     <book>
     <title>Trade Help</title>
