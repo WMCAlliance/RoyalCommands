@@ -7,7 +7,10 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.World;
@@ -25,8 +28,13 @@ public class CmdTime extends TabCommand {
     private static RoyalCommands pluginInstance;
 
     public CmdTime(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.NONE.getShort(), CompletionType.WORLD.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.WORLD.getShort()});
         CmdTime.pluginInstance = instance;
+    }
+
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList("day", "midday", "midnight", "night", "sunrise", "sunset"));
     }
 
     public static Map<String, String> getRealTime(long ticks) {
