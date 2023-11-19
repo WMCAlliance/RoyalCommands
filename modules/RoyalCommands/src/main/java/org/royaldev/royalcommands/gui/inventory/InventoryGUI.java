@@ -10,6 +10,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -71,6 +72,7 @@ public class InventoryGUI {
         ItemMeta meta = is.getItemMeta();
         if(!meta.hasAttributeModifiers()){
             meta.addAttributeModifier(Attribute.GENERIC_FOLLOW_RANGE, new AttributeModifier(uuid, InventoryGUI.TAG_NAME, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             is.setItemMeta(meta);
         }return is;
 
