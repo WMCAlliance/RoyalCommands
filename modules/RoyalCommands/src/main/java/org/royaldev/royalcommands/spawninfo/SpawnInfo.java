@@ -6,22 +6,17 @@
 package org.royaldev.royalcommands.spawninfo;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.royaldev.royalcommands.attribute.NbtFactory;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.royaldev.royalcommands.RoyalCommands;
 
 /**
  * A class used in item-spawning to determine and store information about the spawn status of an item.
@@ -185,53 +180,6 @@ public class SpawnInfo implements Serializable {
     }
 
     public static final class SpawnInfoManager {
-
-        private static final UUID uuid = UUID.fromString("553ade7d-86cd-469e-a4ff-c6fbb564d961");
-        private static final UUID defaultUUID = UUID.fromString("4f0925a7-abf4-4a61-8c81-2028d453ff92");
-        private static final Map<Material, AttributeModifier> defaults = new HashMap<>();
-
-        static {
-            try {
-                defaults.put(Material.DIAMOND_AXE, createAttribute(6D, defaultUUID));
-                defaults.put(Material.DIAMOND_PICKAXE, createAttribute(5D, defaultUUID));
-                defaults.put(Material.DIAMOND_SHOVEL, createAttribute(4D, defaultUUID));
-                defaults.put(Material.DIAMOND_SWORD, createAttribute(7D, defaultUUID));
-                defaults.put(Material.GOLDEN_AXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.GOLDEN_PICKAXE, createAttribute(2D, defaultUUID));
-                defaults.put(Material.GOLDEN_SHOVEL, createAttribute(1D, defaultUUID));
-                defaults.put(Material.GOLDEN_SWORD, createAttribute(4D, defaultUUID));
-                defaults.put(Material.IRON_AXE, createAttribute(5D, defaultUUID));
-                defaults.put(Material.IRON_PICKAXE, createAttribute(4D, defaultUUID));
-                defaults.put(Material.IRON_SHOVEL, createAttribute(3D, defaultUUID));
-                defaults.put(Material.IRON_SWORD, createAttribute(6D, defaultUUID));
-                defaults.put(Material.STONE_AXE, createAttribute(4D, defaultUUID));
-                defaults.put(Material.STONE_PICKAXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.STONE_SHOVEL, createAttribute(2D, defaultUUID));
-                defaults.put(Material.STONE_SWORD, createAttribute(5D, defaultUUID));
-                defaults.put(Material.WOODEN_AXE, createAttribute(3D, defaultUUID));
-                defaults.put(Material.WOODEN_PICKAXE, createAttribute(2D, defaultUUID));
-                defaults.put(Material.WOODEN_SHOVEL, createAttribute(1D, defaultUUID));
-                defaults.put(Material.WOODEN_SWORD, createAttribute(4D, defaultUUID));
-            } catch (Exception ex) {
-                ex.printStackTrace(); // wtf is going on
-            }
-        }
-
-        /**
-         * Applies the default attributes on items (e.g. Diamond Sword: +7 attack damage).
-         *
-         * @param is ItemStack to apply default attributes to
-         * @return ItemStack with default attributes applied
-         */
-        public static ItemStack applyDefaultAttributes(ItemStack is) {
-            if (!defaults.containsKey(is.getType())) return is;
-            ItemMeta meta = is.getItemMeta();
-            if(!meta.hasAttributeModifiers()){
-                meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, defaults.get(is.getType()));
-                is.setItemMeta(meta);
-            } return is;
-        }
-
         /**
          * Applies spawn information to an ItemStack.
          * <br>
@@ -258,27 +206,20 @@ public class SpawnInfo implements Serializable {
          */
         public static ItemStack applySpawnInfo(ItemStack is, String s) {
             if (is.getType() == Material.AIR) return is; // air; do not apply
-            is = applyDefaultAttributes(is);
+            final ItemMeta im = is.getItemMeta();
+            im.getPersistentDataContainer().set(new NamespacedKey(RoyalCommands.getInstance(), "spawned"), PersistentDataType.STRING, s);
+            is.setItemMeta(im);
             return is;
         }
 
-        private static AttributeModifier createAttribute(double amount, UUID uuid) {
-            return new AttributeModifier(uuid, "default", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
-        }
-
         /**
-         * Retrieve the data stored in the item's attribute.
+         * Retrieve the data stored in the item's data container.
          *
          * @return The stored data, or defaultValue if not found.
          */
         public static String getData(ItemStack is) {
-            ItemMeta meta = is.getItemMeta();
-            if(meta.hasAttributeModifiers()) {
-                for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                    SpawnInfoManager.removeTagIfEmpty(is);
-                    return am != null ? am.getName() : null;
-                }
-            } return null;
+            ItemMeta im = is.getItemMeta();
+            return im.getPersistentDataContainer().get(new NamespacedKey(RoyalCommands.getInstance(), "spawned"), PersistentDataType.STRING);
         }
 
         /**
@@ -294,38 +235,21 @@ public class SpawnInfo implements Serializable {
         public static SpawnInfo getSpawnInfo(ItemStack is) {
             if (is.getType() == Material.AIR) return new SpawnInfo(); // air cannot contain NBT data
             String stored = SpawnInfoManager.getData(is);
-            if (stored == null) stored = "false/null/false/null";
+            if (stored == null || stored.isEmpty()) stored = "false/null/false/null";
             return new SpawnInfo(stored);
         }
 
         /**
-         * Removes the data stored in the attributes.
+         * Removes the data stored in the data container.
          */
-        public static void removeData(ItemStack is, UUID uuid) {
+        public static void removeData(ItemStack is) {
             ItemMeta meta = is.getItemMeta();
-            if (meta.hasAttributeModifiers()){
-                for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                    if (am.getUniqueId().equals(uuid)) {
-                        meta.removeAttributeModifier(Attribute.valueOf(am.getName()));
-                        SpawnInfoManager.removeTagIfEmpty(is);
-                    }
-                }is.setItemMeta(meta);
+            PersistentDataContainer dc = meta.getPersistentDataContainer();
+            NamespacedKey key = new NamespacedKey(RoyalCommands.getInstance(), "spawned");
+            if (dc.has(key, PersistentDataType.STRING)) {
+                dc.remove(key);
+                is.setItemMeta(meta);
             }
-        }
-
-        /**
-         * Removes the attributes applied in
-         * {@link SpawnInfo.SpawnInfoManager#applyDefaultAttributes(org.bukkit.inventory.ItemStack)}.
-         *
-         * @param is ItemStack to remove default attributes from
-         * @return ItemStack with default attributes removed
-         */
-        public static ItemStack removeDefaultAttributes(ItemStack is) {
-            ItemMeta meta = is.getItemMeta();
-            for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                if (am.getUniqueId().equals(defaultUUID)) {
-                    meta.removeAttributeModifier(Attribute.valueOf(am.getName()));}
-            }return is;
         }
 
         /**
@@ -336,17 +260,8 @@ public class SpawnInfo implements Serializable {
          */
         public static ItemStack removeSpawnInfo(ItemStack is) {
             if (is.getType() == Material.AIR) return is; // silly air
-            SpawnInfoManager.removeDefaultAttributes(is);
-            SpawnInfoManager.removeData(is, uuid);
+            SpawnInfoManager.removeData(is);
             return is;
         }
-
-        public static void removeTagIfEmpty(ItemStack is) {
-            if (is.getItemMeta().getAttributeModifiers().size() <= 0) return;
-            NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(is);
-            nbt.remove("AttributeModifiers");
-            if (nbt.isEmpty()) NbtFactory.setItemTag(is, null); // FIXME: null
-        }
-
     }
 }

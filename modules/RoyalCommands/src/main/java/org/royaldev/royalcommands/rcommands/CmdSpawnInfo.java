@@ -51,7 +51,7 @@ public class CmdSpawnInfo extends TabCommand {
         final SpawnInfo si = SpawnInfoManager.getSpawnInfo(hand);
         final String subcommand = eargs[0];
         if (subcommand.equalsIgnoreCase("check")) {
-            cs.sendMessage(MessageColor.POSITIVE + "Spawn information on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + ":" + hand.getDurability() + MessageColor.POSITIVE + ":");
+            cs.sendMessage(MessageColor.POSITIVE + "Spawn information on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ":");
             cs.sendMessage(MessageColor.POSITIVE + "  Is spawned: " + MessageColor.NEUTRAL + ((si.isSpawned()) ? "Yes" : "No"));
             if (si.isSpawned())
                 cs.sendMessage(MessageColor.POSITIVE + "  Spawned by: " + MessageColor.NEUTRAL + si.getSpawner());
