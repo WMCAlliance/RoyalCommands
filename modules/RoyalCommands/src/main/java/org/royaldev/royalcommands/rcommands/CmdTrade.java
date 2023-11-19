@@ -8,13 +8,17 @@ package org.royaldev.royalcommands.rcommands;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.rcommands.trade.Trade;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
@@ -82,48 +86,27 @@ public class CmdTrade extends TabCommand {
             return false;
         }
         final Player p = (Player) cs;
+        if (!Config.differentGamemodeTrade && p.getGameMode().equals(GameMode.CREATIVE)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You can't trade in Creative mode!");
+            return true;
+        }
+        final RPlayer otherRP = MemoryRPlayer.getRPlayer(args[0]);
+        final PlayerConfiguration otherPC = otherRP.getPlayerConfiguration();
+        if (!otherPC.exists()) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
+            return true;
+        }
         final RPlayer rp = MemoryRPlayer.getRPlayer(p);
-        final UUID other = MemoryRPlayer.getRPlayer(args[0]).getUUID();
+        final UUID other = otherRP.getUUID();
+        if (p.getUniqueId().equals(other)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You can't trade with yourself!");
+            return true;
+        }
         Trade trade = Trade.getTradeFor(rp.getUUID(), other);
         if (trade == null) {
             trade = new Trade(rp.getUUID(), other);
         }
         trade.showInventoryGUI(rp.getUUID());
         return true;
-        /*final Player p = (Player) cs;
-        final Player t = this.plugin.getServer().getPlayer(args[0]);
-        if (t == null || this.plugin.isVanished(t, cs)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
-            return true;
-        }
-        if (t.equals(p)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "You can't trade with yourself!");
-            return true;
-        }
-        if (!Config.differentGamemodeTrade && t.getGameMode() != p.getGameMode()) {
-            new FancyMessage("You cannot trade with ").color(MessageColor.NEGATIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(" because they have a different gamemode than you!").color(MessageColor.NEGATIVE.cc()).send(cs);
-            return true;
-        }
-        Inventory inv = CmdTrade.getTradeInv(p, t);
-        if (inv != null) {
-            new FancyMessage("Resumed trading with ").color(MessageColor.POSITIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE.cc()).send(p);
-            p.openInventory(inv);
-            return true;
-        }
-        if (CmdTrade.tradedb.containsKey(t.getUniqueId())) {
-            inv = this.plugin.getServer().createInventory(null, 36, "Trade");
-            p.sendMessage(MessageColor.POSITIVE + "Opened trading interface.");
-            p.openInventory(inv);
-            t.openInventory(inv);
-            final Map<UUID, UUID> trade = new HashMap<>();
-            trade.put(p.getUniqueId(), t.getUniqueId());
-            CmdTrade.trades.put(trade, inv);
-            CmdTrade.tradedb.remove(t.getUniqueId());
-            return true;
-        } else {
-            CmdTrade.sendTradeRequest(t, p);
-            new FancyMessage("Sent a trade request to ").color(MessageColor.POSITIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE.cc()).send(p);
-            return true;
-        }*/
     }
 }
