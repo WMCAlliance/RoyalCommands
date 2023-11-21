@@ -24,6 +24,7 @@ import org.royaldev.royalcommands.listeners.InventoryListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WorldManager {
@@ -32,7 +33,7 @@ public class WorldManager {
     private final List<String> loadedWorlds = new ArrayList<>();
     private final List<String> configuredWorlds = new ArrayList<>();
     private final Configuration config = Configuration.getConfiguration("worlds.yml");
-    private final Logger log = RoyalCommands.getInstance().getLogger();
+    private static final Logger log = RoyalCommands.getInstance().getLogger();
 
     public WorldManager() {
         il = new InventoryListener(RoyalCommands.getInstance());
@@ -82,7 +83,6 @@ public class WorldManager {
             config.set(path + "animalspawnticks", w.getTicksPerSpawns(SpawnCategory.ANIMAL));
             config.set(path + "monsterspawnticks", w.getTicksPerSpawns(SpawnCategory.MONSTER));
             config.set(path + "difficulty", w.getDifficulty().name());
-            config.set(path + "worldtype", w.getWorldType().name());
             config.set(path + "environment", w.getEnvironment().name());
             config.set(path + "gamemode", Bukkit.getServer().getDefaultGameMode().name());
             if (w.getGenerator() == null) config.set(path + "generator", "DefaultGen");
@@ -199,17 +199,17 @@ public class WorldManager {
                 try {
                     w = loadWorld(ws);
                 } catch (IllegalArgumentException e) {
-                    log.warning("Could not load world " + ws + " as specified in worlds.yml: " + e.getMessage());
+                    log.log(Level.WARNING, "Could not load world {0} as specified in worlds.yml: {1}", new Object[]{ws, e.getMessage()});
                     continue;
                 } catch (NullPointerException e) {
-                    log.warning("Could not load world " + ws + " as specified in worlds.yml: " + e.getMessage());
+                    log.log(Level.WARNING, "Could not load world {0} as specified in worlds.yml: {1}", new Object[]{ws, e.getMessage()});
                     continue;
                 }
             }
             if (!loadedWorlds.contains(ws)) continue;
             if (w == null) w = Bukkit.getWorld(ws);
             if (w == null) {
-                log.warning("Could not manage world " + ws + ": No such world");
+                log.log(Level.WARNING, "Could not manage world {0}: No such world", ws);
                 continue;
             }
             w.setSpawnFlags(config.getBoolean(path + "spawnmonsters", true), config.getBoolean(path + "spawnanimals", true));

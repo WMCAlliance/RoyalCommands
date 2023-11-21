@@ -106,13 +106,11 @@ public class EntityListener implements Listener {
         if (!(e instanceof Player)) return;
         Player p = (Player) e;
         if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("ohk")) return;
-        if (ed instanceof LivingEntity) {
-            LivingEntity le = (LivingEntity) ed;
+        if (ed instanceof LivingEntity le) {
             le.damage(le.getHealth() * 1000);
             le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
         }
-        if (ed instanceof EnderDragonPart) {
-            EnderDragonPart ldp = (EnderDragonPart) ed;
+        if (ed instanceof EnderDragonPart ldp) {
             LivingEntity le = ldp.getParent();
             le.damage(le.getHealth() * 1000);
             le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));

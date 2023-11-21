@@ -129,8 +129,7 @@ public class InventoryListener implements Listener {
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }
-        if (i instanceof PlayerInventory) {
-            PlayerInventory pi = (PlayerInventory) i;
+        if (i instanceof PlayerInventory pi) {
             pcm.set("inventory." + group + ".slot.helm", pi.getHelmet());
             pcm.set("inventory." + group + ".slot.chestplate", pi.getChestplate());
             pcm.set("inventory." + group + ".slot.leggings", pi.getLeggings());
@@ -353,8 +352,7 @@ public class InventoryListener implements Listener {
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }
-        if (i instanceof PlayerInventory) {
-            PlayerInventory pi = (PlayerInventory) i;
+        if (i instanceof PlayerInventory pi) {
             pcm.set("inventory." + group + ".slot.helm", pi.getHelmet());
             pcm.set("inventory." + group + ".slot.chestplate", pi.getChestplate());
             pcm.set("inventory." + group + ".slot.leggings", pi.getLeggings());

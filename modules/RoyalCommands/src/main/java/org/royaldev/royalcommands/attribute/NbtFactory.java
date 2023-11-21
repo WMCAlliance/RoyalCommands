@@ -99,6 +99,7 @@ public class NbtFactory {
     /**
      * Construct a new NBT list of an unspecified type.
      *
+	 * @param content
      * @return The NBT list.
      */
     public static NbtList createList(Object... content){
@@ -108,6 +109,7 @@ public class NbtFactory {
     /**
      * Construct a new NBT list of an unspecified type.
      *
+	 * @param iterable
      * @return The NBT list.
      */
     public static NbtList createList(Iterable<?> iterable){
@@ -266,72 +268,6 @@ public class NbtFactory {
         }
     }
 
-//    /**
-//     * Load the content of a file from a stream.
-//     * <p>
-//     * Use {@link Files#newInputStreamSupplier(java.io.File)} to provide a stream from a file.
-//     * @param stream - the stream supplier.
-//     * @param option - whether or not to decompress the input stream.
-//     * @return The decoded NBT compound.
-//     * @throws IOException If anything went wrong.
-//     */
-//    public static NbtCompound fromStream(InputSupplier<? extends InputStream> stream, StreamOptions option) throws IOException {
-//        InputStream input = null;
-//        DataInputStream data = null;
-//
-//        try {
-//            input = stream.getInput();
-//            data = new DataInputStream(new BufferedInputStream(
-//                option == StreamOptions.GZIP_COMPRESSION ? new GZIPInputStream(input) : input
-//            ));
-//
-//            return fromCompound(invokeMethod(get().LOAD_COMPOUND, null, data));
-//        } finally {
-//            if (data != null)
-//                Closeables.closeQuietly(data);
-//            if (input != null)
-//                Closeables.closeQuietly(input);
-//        }
-//    }
-
-    //    /**
-//     * Save the content of a NBT compound to a stream.
-//     * <p>
-//     * Use {@link Files#newOutputStreamSupplier(java.io.File)} to provide a stream supplier to a file.
-//     *
-//     * @param source - the NBT compound to save.
-//     * @param stream - the stream.
-//     * @param option - whether or not to compress the output.
-//     * @throws IOException If anything went wrong.
-//     */
-//    public static void saveStream(NbtCompound source, OutputSupplier<? extends OutputStream> stream, StreamOptions option) throws IOException {
-//        OutputStream output = null;
-//        DataOutputStream data = null;
-//
-//        try {
-//            output = stream.getOutput();
-//            data = new DataOutputStream(
-//                option == StreamOptions.GZIP_COMPRESSION ? new GZIPOutputStream(output) : output
-//            );
-//
-//            invokeMethod(get().SAVE_COMPOUND, null, source.getHandle(), data);
-//        } finally {
-//            if (data != null) {
-//                try {
-//                    data.close();
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//            if (output != null) {
-//                try {
-//                    output.close();
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//        }
-//    }
     private static Object getFieldValue(Field field, Object target){
         try{
             return field.get(target);
@@ -341,7 +277,7 @@ public class NbtFactory {
     }
 
     /**
-     * Search for the first publically and privately defined method of the given name and parameter count.
+     * Search for the first publicly and privately defined method of the given name and parameter count.
      *
      * @param requireMod - modifiers that are required.
      * @param bannedMod  - modifiers that are banned.
@@ -369,7 +305,7 @@ public class NbtFactory {
     }
 
     /**
-     * Search for the first publically and privately defined field of the given name.
+     * Search for the first publicly and privately defined field of the given name.
      *
      * @param instance  - an instance of the class with the field.
      * @param clazz     - an optional class to start with, or NULL to deduce it from instance.
@@ -393,13 +329,11 @@ public class NbtFactory {
         throw new IllegalStateException("Unable to find field " + fieldName + " in " + instance);
     }
 
-    @SuppressWarnings("unchecked")
     private Map<String, Object> getDataMap(Object handle){
         return (Map<String, Object>) getFieldValue(
                 getDataField(NbtType.TAG_COMPOUND, handle), handle);
     }
 
-    @SuppressWarnings("unchecked")
     private List<Object> getDataList(Object handle){
         return (List<Object>) getFieldValue(
                 getDataField(NbtType.TAG_LIST, handle), handle);
@@ -416,8 +350,8 @@ public class NbtFactory {
         if(value == null)
             return null;
 
-        if(value instanceof Wrapper){
-            return ((Wrapper) value).getHandle();
+        if(value instanceof Wrapper wrapper){
+            return wrapper.getHandle();
 
         } else if(value instanceof List){
             throw new IllegalArgumentException("Can only insert a WrappedList.");
@@ -444,15 +378,12 @@ public class NbtFactory {
         if(BASE_CLASS.isAssignableFrom(nms.getClass())){
             final NbtType type = getNbtType(nms);
 
-            // Handle the different types
-            switch(type){
-                case TAG_COMPOUND:
-                    return new NbtCompound(nms);
-                case TAG_LIST:
-                    return new NbtList(nms);
-                default:
-                    return getFieldValue(getDataField(type, nms), nms);
-            }
+			// Handle the different types
+			return switch (type) {
+				case TAG_COMPOUND -> new NbtCompound(nms);
+				case TAG_LIST -> new NbtList(nms);
+				default -> getFieldValue(getDataField(type, nms), nms);
+			};
         }
         throw new IllegalArgumentException("Unexpected type: " + nms);
     }
@@ -636,6 +567,9 @@ public class NbtFactory {
 
         /**
          * Method for when items are not created following NBTtag convention and have Integers where there should be Longs
+		 * @param key
+		 * @param defaultValue
+		 * @return 
          */
         public Long getIntegerOrLong(String key, Long defaultValue){
             if(!containsKey(key)) return defaultValue;
@@ -889,11 +823,12 @@ public class NbtFactory {
 
             return new Iterator<Entry<String, Object>>() {
 
+				@Override
                 public boolean hasNext(){
                     return proxy.hasNext();
                 }
 
-
+				@Override
                 public Entry<String, Object> next(){
                     Entry<String, Object> entry = proxy.next();
 
@@ -902,13 +837,14 @@ public class NbtFactory {
                     );
                 }
 
-
+				@Override
                 public void remove(){
                     proxy.remove();
                 }
             };
         }
 
+		@Override
         public Object getHandle(){
             return handle;
         }
@@ -963,7 +899,7 @@ public class NbtFactory {
             Object nbt = unwrapIncoming(element);
 
             // Set the list type if its the first element
-            if(size() == 0)
+            if(isEmpty())
                 setFieldValue(NBT_LIST_TYPE, handle, (byte) getNbtType(nbt).id);
             original.add(index, nbt);
         }
@@ -978,6 +914,7 @@ public class NbtFactory {
             return original.remove(unwrapIncoming(o));
         }
 
+		@Override
         public Object getHandle(){
             return handle;
         }

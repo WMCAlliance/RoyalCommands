@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public final class PlayerConfigurationManager {
 
-    static final Map<UUID, PlayerConfiguration> pcs = Collections.synchronizedMap(new HashMap<UUID, PlayerConfiguration>());
+    static final Map<UUID, PlayerConfiguration> pcs = Collections.synchronizedMap(new HashMap<>());
 
     public static int configurationsCreated() {
         synchronized (PlayerConfigurationManager.pcs) {

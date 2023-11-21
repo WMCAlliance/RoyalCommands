@@ -20,13 +20,6 @@ public class AuthorizationHandler {
         this.plugin = instance;
     }
 
-    private boolean chatLoaded() {
-        return this.plugin.vh.usingVault() && this.plugin.vh.getChat() != null;
-    }
-
-    private boolean economyLoaded() {
-        return this.plugin.vh.usingVault() && this.plugin.vh.getEconomy() != null;
-    }
 
     private boolean iABlockCommandSender(BlockCommandSender cb, String node) {
         return true;

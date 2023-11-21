@@ -105,7 +105,7 @@ public class Kit {
     private List<String> getLore(final ConfigurationNode item) {
         final List<String> lore = new ArrayList<>();
         if (item == null) return lore;
-        for (final String loreItem : item.getStringList("lore", new ArrayList<String>())) {
+        for (final String loreItem : item.getStringList("lore", new ArrayList<>())) {
             lore.add(RUtils.colorize(loreItem));
         }
         return lore;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,7 +67,7 @@ import org.royaldev.royalcommands.wrappers.player.RPlayer;
 public class PlayerListener implements Listener {
 
     private final RoyalCommands plugin;
-    private final Logger log = Logger.getLogger("Minecraft");
+    private static final Logger log = Logger.getLogger("Minecraft");
 
     public PlayerListener(final RoyalCommands instance) {
         this.plugin = instance;
@@ -114,7 +115,7 @@ public class PlayerListener implements Listener {
                     if (parts.length > 0) {
                         String command = parts[0].toLowerCase();
                         if (!Config.logBlacklist.contains(command.substring(1)))
-                            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": /" + s);
+                            log.log(Level.INFO, "[PLAYER_COMMAND] {0}: /{1}", new Object[]{event.getPlayer().getName(), s});
                     }
                 }
             }
@@ -272,7 +273,7 @@ public class PlayerListener implements Listener {
         if (publicAssigns != null) cmds.addAll(publicAssigns);
         if (cmds.isEmpty()) return;
         Player clicked = null;
-        if (e.getRightClicked() instanceof Player) clicked = (Player) e.getRightClicked();
+        if (e.getRightClicked() instanceof Player player) clicked = player;
         for (String s : cmds) {
             if (clicked != null) s = s.replace("{player}", clicked.getName());
             if (s.toLowerCase().trim().startsWith("c:")) e.getPlayer().chat(s.trim().substring(2));
@@ -283,7 +284,7 @@ public class PlayerListener implements Listener {
                     if (parts.length > 0) {
                         String command = parts[0].toLowerCase();
                         if (!Config.logBlacklist.contains(command.substring(1)))
-                            log.info("[PLAYER_COMMAND] " + e.getPlayer().getName() + ": /" + s);
+                            log.log(Level.INFO, "[PLAYER_COMMAND] {0}: /{1}", new Object[]{e.getPlayer().getName(), s});
                     }
                 }
             }
@@ -353,7 +354,7 @@ public class PlayerListener implements Listener {
                 howLong = " for " + MessageColor.NEUTRAL + RUtils.formatDateDiff(muteTime + mutedAt).substring(1) + MessageColor.NEGATIVE;
             }
             p.sendMessage(MessageColor.NEGATIVE + "You are muted and cannot speak" + howLong + ".");
-            plugin.getLogger().info(p.getName() + " is muted but tried to say \"" + event.getMessage() + "\"");
+            plugin.getLogger().log(Level.INFO, "{0} is muted but tried to say \"{1}\"", new Object[]{p.getName(), event.getMessage()});
             event.setFormat("");
             event.setCancelled(true);
         }
@@ -367,7 +368,7 @@ public class PlayerListener implements Listener {
         if (Config.showcommands) {
             String command = event.getMessage().split(" ")[0].toLowerCase();
             if (!Config.logBlacklist.contains(command.substring(1)))
-                log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
+                log.log(Level.INFO, "[PLAYER_COMMAND] {0}: {1}", new Object[]{p.getName(), event.getMessage()});
         }
         if (pcm.getBoolean("muted")) {
             if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime", "mutedat"))
@@ -376,14 +377,14 @@ public class PlayerListener implements Listener {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
                 p.sendMessage(MessageColor.NEGATIVE + "You are muted.");
-                log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is muted.");
+                log.log(Level.INFO, "[RoyalCommands] {0} tried to use that command, but is muted.", p.getName());
                 event.setCancelled(true);
             }
         }
 
         if (pcm.getBoolean("jailed")) {
             p.sendMessage(MessageColor.NEGATIVE + "You are jailed.");
-            log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is jailed.");
+            log.log(Level.INFO, "[RoyalCommands] {0} tried to use that command, but is jailed.", p.getName());
             event.setCancelled(true);
         }
     }
@@ -406,7 +407,7 @@ public class PlayerListener implements Listener {
             }
             pcm.setFirstJoin(false);
         } else {
-            log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
+            log.log(Level.INFO, "[RoyalCommands] Updating the IP for {0}.", event.getPlayer().getName());
             String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
             pcm.set("ip", playerip);
@@ -584,7 +585,7 @@ public class PlayerListener implements Listener {
         if (e.isCancelled()) return;
         String reason = e.getReason();
         if (!reason.endsWith("\00-silent")) return;
-        e.setLeaveMessage(null);
+        e.setLeaveMessage("");
         e.setReason(reason.replace("\00-silent", ""));
     }
 

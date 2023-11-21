@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.runners;
 
+import java.util.logging.Level;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.Config;
@@ -49,7 +50,7 @@ public class AFKWatcher implements Runnable {
                 try {
                     RUtils.scheduleKick(p, "You have been AFK for too long!");
                 } catch (IllegalArgumentException | NullPointerException e) {
-                    Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not kick " + p.getName() + " for being AFK: " + e.getMessage());
+                    Logger.getLogger("Minecraft").log(Level.WARNING, "[RoyalCommands] Could not kick {0} for being AFK: {1}", new Object[]{p.getName(), e.getMessage()});
                 }
             }
         }

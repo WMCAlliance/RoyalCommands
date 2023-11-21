@@ -34,22 +34,13 @@ public enum MessageColor {
 
     public ChatColor getChatColor() {
         final String s;
-        switch (this) {
-            case NEGATIVE:
-                s = Config.negativeChatColor;
-                break;
-            case NEUTRAL:
-                s = Config.neutralChatColor;
-                break;
-            case POSITIVE:
-                s = Config.positiveChatColor;
-                break;
-            case RESET:
-                s = Config.resetChatColor;
-                break;
-            default:
-                s = null;
-        }
+		s = switch (this) {
+			case NEGATIVE -> Config.negativeChatColor;
+			case NEUTRAL -> Config.neutralChatColor;
+			case POSITIVE -> Config.positiveChatColor;
+			case RESET -> Config.resetChatColor;
+			default -> null;
+		};
         return this.byStringOrDefault(s);
     }
 

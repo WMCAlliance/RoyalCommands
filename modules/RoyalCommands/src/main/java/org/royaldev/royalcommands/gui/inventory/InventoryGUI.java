@@ -262,7 +262,7 @@ public class InventoryGUI {
     public void setName(final UUID uuid, final String name) {
         final ItemStack is = this.getItemStack(uuid);
         if (is == null) throw new IllegalArgumentException("No such ItemStack UUID found");
-        this.replaceItemStack(uuid, this.setItemMeta(is, name, null));
+        this.replaceItemStack(uuid, this.setItemMeta(is, name));
     }
 
     /**

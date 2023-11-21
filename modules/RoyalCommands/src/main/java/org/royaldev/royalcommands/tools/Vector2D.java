@@ -6,7 +6,7 @@
 package org.royaldev.royalcommands.tools;
 
 /**
- * A two-dimsensional vector.
+ * A two-dimensional vector.
  */
 public class Vector2D {
 

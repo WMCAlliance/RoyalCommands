@@ -144,13 +144,6 @@ public class MonitorListener implements Listener {
         e.setCancelled(true);
     }
 
-    /*@EventHandler
-    public void onInvCloseMonitor(InventoryCloseEvent e) {
-        if (!MonitorListener.openInvs.contains(e.getPlayer().getName())) return;
-        e.getPlayer().openInventory(e.getInventory());
-    }*/
-    // Seems a bit harsh ^
-
     @EventHandler
     public void onInvCloseViewee(InventoryCloseEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
@@ -171,18 +164,17 @@ public class MonitorListener implements Listener {
         final Inventory i = e.getInventory();
         final Block b = RUtils.getTarget(p);
         switch (i.getType()) {
-            case WORKBENCH:
-                if (!b.getType().equals(Material.CRAFTING_TABLE)) return;
-                t.openWorkbench(b.getLocation(), false);
-                break;
-            case ENCHANTING:
-                if (!b.getType().equals(Material.ENCHANTING_TABLE)) return;
-                t.openEnchanting(b.getLocation(), false);
-                break;
-            case BREWING:
-            case CRAFTING:
-            case DISPENSER:
-                return;
+            case WORKBENCH -> {
+				if (!b.getType().equals(Material.CRAFTING_TABLE)) return;
+				t.openWorkbench(b.getLocation(), false);
+			}
+            case ENCHANTING -> {
+				if (!b.getType().equals(Material.ENCHANTING_TABLE)) return;
+				t.openEnchanting(b.getLocation(), false);
+			}
+            case BREWING, CRAFTING, DISPENSER -> {
+				return;
+			}
         }
         t.openInventory(e.getInventory());
         MonitorListener.openInvs.add(t.getName());

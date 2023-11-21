@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
@@ -55,7 +56,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.royaldev.royalchat.RoyalChat;
@@ -90,7 +90,6 @@ public final class RUtils {
     }
 
     public static FancyMessage addDataTo(FancyMessage fm, String[] fields, Object... values) {
-        final Iterator i = fm.iterator();
         for (final Object o : fm) {
             try {
                 RUtils.setFields(o, fields, values);
@@ -123,7 +122,7 @@ public final class RUtils {
 
     public static ItemStack applySpawnLore(ItemStack stack) {
         final ItemMeta im = stack.getItemMeta();
-        final List<String> lore = (im.hasLore()) ? im.getLore() : new ArrayList<String>();
+        final List<String> lore = (im.hasLore()) ? im.getLore() : new ArrayList<>();
         for (String s : Config.itemSpawnTagLore) lore.add(RUtils.colorize(s));
         im.setLore(lore);
         stack.setItemMeta(im);
@@ -238,8 +237,7 @@ public final class RUtils {
 
     /**
      * Replaces processed color codes with raw color codes. Not to be confused with decolorize
-     * @param textToReverse
-     * @param altChar
+	 * @param text
      * @return Processed string
      */
     public static String uncolorize(final String text) {
@@ -319,7 +317,7 @@ public final class RUtils {
                 continue;
             }
             if (!delete.delete()) {
-                RoyalCommands.getInstance().getLogger().warning("Could not delete " + delete.getAbsolutePath());
+                RoyalCommands.getInstance().getLogger().log(Level.WARNING, "Could not delete {0}", delete.getAbsolutePath());
                 success = false;
             }
         }
@@ -334,7 +332,7 @@ public final class RUtils {
      */
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
-        RoyalCommands.getInstance().getLogger().warning(cs.getName() + " was denied access to that!");
+        RoyalCommands.getInstance().getLogger().log(Level.WARNING, "{0} was denied access to that!", cs.getName());
     }
 
     /**
@@ -345,7 +343,7 @@ public final class RUtils {
      */
     public static void dispNoPerms(CommandSender cs, String message) {
         cs.sendMessage(message);
-        RoyalCommands.getInstance().getLogger().warning(cs.getName() + " was denied access to that!");
+        RoyalCommands.getInstance().getLogger().log(Level.WARNING, "{0} was denied access to that!", cs.getName());
     }
 
     public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {
@@ -359,7 +357,7 @@ public final class RUtils {
                 .formattedTooltip(tooltip)
             .send(cs);
         // @formatter:on
-        RoyalCommands.getInstance().getLogger().warning(cs.getName() + " was denied access to that!");
+        RoyalCommands.getInstance().getLogger().log(Level.WARNING, "{0} was denied access to that!", cs.getName());
     }
 
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
@@ -429,8 +427,7 @@ public final class RUtils {
         if (customNames) {
             ItemMeta im = is.getItemMeta();
             if (im != null) {
-                String displayName = im.getDisplayName();
-                if (displayName != null) path.append(".").append(displayName.replace('.', ',')).append(".");
+                if (im.hasDisplayName()) path.append(".").append(im.getDisplayName().replace('.', ',')).append(".");
                 List<String> lore = im.getLore();
                 if (lore != null && !lore.isEmpty()) {
                     for (String l : lore) {
@@ -449,6 +446,7 @@ public final class RUtils {
      * Gets a player backpack
      *
      * @param u UUID of player to get backpack for
+	 * @param w
      * @return Backpack - never null
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getBackpack}.
      */
@@ -496,6 +494,8 @@ public final class RUtils {
     }
 
     /**
+	 * @param p
+	 * @return 
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomes}.size()
      */
     @Deprecated
@@ -504,6 +504,8 @@ public final class RUtils {
     }
 
     /**
+	 * @param u
+	 * @return 
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomes}.size()
      */
     @Deprecated
@@ -567,6 +569,8 @@ public final class RUtils {
     }
 
     /**
+	 * @param p
+	 * @return 
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomeLimit}
      */
     @Deprecated
@@ -780,8 +784,7 @@ public final class RUtils {
             }
         }
         if (o instanceof Player) {
-            final Player p = (Player) o;
-            if (tooltip.size() > 0) { // Replace Offline Player with Player
+            if (!tooltip.isEmpty()) { // Replace Offline Player with Player
                 tooltip.remove(0);
                 tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
             }
@@ -796,7 +799,6 @@ public final class RUtils {
 
     public static List<FancyMessage> getItemTooltip(final Object o) {
         final List<FancyMessage> tooltip = new ArrayList<>();
-        final VaultHandler vh = RoyalCommands.getInstance().vh;
         if (o instanceof Material) {
             final Material item = (Material) o;
             tooltip.add(new FancyMessage("Item").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
@@ -1068,6 +1070,7 @@ public final class RUtils {
      * Kicks a player and sets the last kick for history writing.
      *
      * @param kicked Player to kick
+	 * @param kicker Who requested the kick
      * @param reason Reason for kick
      */
     public static void kickPlayer(final Player kicked, final CommandSender kicker, final String reason) {
@@ -1143,17 +1146,6 @@ public final class RUtils {
         return id;
     }
 
-    /**
-     * Makes a scheduled Bukkit task for watching a player when he's warming up for teleport.
-     *
-     * @param p Player to teleport when warmup is finished
-     * @param t Entity to teleport to when warmup is finished
-     * @return ID of Bukkit task
-     */
-    private static int makeTeleportRunner(final Player p, final Entity t) {
-        return makeTeleportRunner(p, t.getLocation());
-    }
-
     public static boolean nearEqual(double a, double b, double margin) {
         return Math.abs(a - b) < margin;
     }
@@ -1174,7 +1166,7 @@ public final class RUtils {
         try {
             toPlay = Sound.valueOf(Config.teleportSoundName);
         } catch (IllegalArgumentException e) {
-            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but " + Config.teleportSoundName + " was not a valid sound name!");
+            RoyalCommands.getInstance().getLogger().log(Level.WARNING, "A teleport sound was attempted, but {0} was not a valid sound name!", Config.teleportSoundName);
             return;
         }
         at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
@@ -1242,6 +1234,7 @@ public final class RUtils {
      * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
      *
      * @param u UUID of player to save backpack for
+	 * @param w World of the backpack
      * @param i Inventory to save as backpack
      */
     public static void saveBackpack(UUID u, World w, Inventory i) {
@@ -1548,7 +1541,6 @@ public final class RUtils {
      * @param len  Length to wrap at
      * @return Array of strings
      */
-    @SuppressWarnings("unchecked")
     public static String[] wrapText(String text, int len) {
         // return empty array for null text
         if (text == null) return new String[]{};
@@ -1557,7 +1549,7 @@ public final class RUtils {
         // return text if less than length
         if (text.length() <= len) return new String[]{text};
         char[] chars = text.toCharArray();
-        java.util.Vector lines = new java.util.Vector();
+        List<String> lines = new ArrayList<String>();
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
         for (char aChar : chars) {
@@ -1583,7 +1575,10 @@ public final class RUtils {
         if (line.length() > 0) lines.add(line.toString());
         String[] ret = new String[lines.size()];
         int c = 0; // counter
-        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) ret[c] = (String) e.nextElement();
+		for (String l : lines) {
+			ret[c] = l;
+			c++;
+		}
         return ret;
     }
 
@@ -1598,7 +1593,6 @@ public final class RUtils {
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) pcm.createFile();
         List<String> prevBans = pcm.getStringList("prevbans");
-        if (prevBans == null) prevBans = new ArrayList<>();
         // banner,banreason,bannedat,istempban
         prevBans.add(pcm.getString("banner") + "\u00b5" + pcm.getString("banreason") + "\u00b5" + pcm.getString("bannedat") + "\u00b5" + (pcm.get("bantime") != null));
         pcm.set("prevbans", prevBans);

@@ -81,10 +81,10 @@ public class BlockData {
         final Object o = ois.readObject();
         ois.close();
         if (!(o instanceof Map)) return;
-        final HashMap<String, Map<String, Object>> data = (HashMap<String, Map<String, Object>>) o;
+        final HashMap<String, Map<String, Object>> d = (HashMap<String, Map<String, Object>>) o;
         synchronized (BlockData.data) {
             BlockData.data.clear();
-            BlockData.data.putAll(data);
+            BlockData.data.putAll(d);
         }
         synchronized (this.thisData) {
             this.thisData.clear();

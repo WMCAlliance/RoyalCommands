@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.wrappers.teleport;
 
+import java.util.logging.Level;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -54,7 +55,7 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
         try {
             return Sound.valueOf(Config.teleportSoundName);
         } catch (final IllegalArgumentException e) {
-            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but " + Config.teleportSoundName + " was not a valid sound name!");
+            RoyalCommands.getInstance().getLogger().log(Level.WARNING, "A teleport sound was attempted, but {0} was not a valid sound name!", Config.teleportSoundName);
             return null;
         }
     }

@@ -58,6 +58,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -187,15 +188,15 @@ public class RoyalCommands extends JavaPlugin {
                     String currentVersion = useVersion.toString();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
-                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
+                        RoyalCommands.this.getLogger().log(Level.WARNING, "Currently installed: v{0}, newest: v{1}", new Object[]{currentVersion, dev});
                         RoyalCommands.this.getLogger().warning("Development builds are available at https://jenkins.blny.me/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
-                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        RoyalCommands.this.getLogger().log(Level.WARNING, "Currently installed: v{0}, newest: v{1}", new Object[]{currentVersion, stable});
                         RoyalCommands.this.getLogger().warning("Stable builds are available at https://www.spigotmc.org/resources/royalcommands.4113/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
-                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        RoyalCommands.this.getLogger().log(Level.WARNING, "Currently installed: v{0}, newest: v{1}", new Object[]{currentVersion, stable});
                         RoyalCommands.this.getLogger().warning("Stable builds are available at https://www.spigotmc.org/resources/royalcommands.4113/");
                     }
                 } catch (Exception ignored) {}
@@ -244,7 +245,7 @@ public class RoyalCommands extends JavaPlugin {
             pc.setUsage(this.getUsage(command));
             this.getCommandMap().register(this.getDescription().getName(), pc);
         } catch (Exception e) {
-            this.getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
+            this.getLogger().log(Level.WARNING, "Could not register command \"{0}\" - an error occurred: {1}.", new Object[]{command, e.getMessage()});
         }
     }
 
@@ -268,9 +269,9 @@ public class RoyalCommands extends JavaPlugin {
             playersToConvert.add(playerName);
         }
         final List<List<String>> partitions = this.partitionList(playersToConvert, 100);
-        this.getLogger().info("Converting " + playersToConvert.size() + " players in " + partitions.size() + " request" + (partitions.size() == 1 ? "" : "s") + ".");
+        this.getLogger().log(Level.INFO, "Converting {0} players in {1} request{2}.", new Object[]{playersToConvert.size(), partitions.size(), partitions.size() == 1 ? "" : "s"});
         for (List<String> lookup : partitions) {
-            this.getLogger().info("Converting next " + lookup.size() + " players.");
+            this.getLogger().log(Level.INFO, "Converting next {0} players.", lookup.size());
             final Map<String, UUID> uuids;
             try {
                 uuids = new UUIDFetcher(lookup).call();
@@ -283,10 +284,10 @@ public class RoyalCommands extends JavaPlugin {
                 if (!userFile.exists()) continue;
                 try {
                     Files.move(userFile.toPath(), new File(userdataFolder, e.getValue() + ".yml").toPath());
-                    this.getLogger().info("Converted " + e.getKey().toLowerCase() + ".yml to " + e.getValue() + ".yml");
+                    this.getLogger().log(Level.INFO, "Converted {0}.yml to {1}.yml", new Object[]{e.getKey().toLowerCase(), e.getValue()});
                     playersConverted.add(e.getKey().toLowerCase());
                 } catch (IOException ex) {
-                    this.getLogger().warning("Could not convert " + e.getKey() + ".yml: " + ex.getClass().getSimpleName() + " (" + ex.getMessage() + ")");
+                    this.getLogger().log(Level.WARNING, "Could not convert {0}.yml: {1} ({2})", new Object[]{e.getKey(), ex.getClass().getSimpleName(), ex.getMessage()});
                 }
             }
         }
@@ -297,9 +298,9 @@ public class RoyalCommands extends JavaPlugin {
             final UUID uuid = RUtils.getOfflinePlayer(name).getUniqueId();
             try {
                 Files.move(new File(userdataFolder, name + ".yml").toPath(), new File(userdataFolder, uuid + ".yml").toPath());
-                this.getLogger().info("Converted offline-mode player " + name + ".yml to " + uuid + ".yml");
+                this.getLogger().log(Level.INFO, "Converted offline-mode player {0}.yml to {1}.yml", new Object[]{name, uuid});
             } catch (IOException ex) {
-                this.getLogger().warning("Could not convert " + name + ".yml: " + ex.getClass().getSimpleName() + " (" + ex.getMessage() + ")");
+                this.getLogger().log(Level.WARNING, "Could not convert {0}.yml: {1} ({2})", new Object[]{name, ex.getClass().getSimpleName(), ex.getMessage()});
             }
         }
     }
@@ -409,7 +410,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Save all userdata --//
 
-        this.getLogger().info("Saving userdata and configurations (" + (PlayerConfigurationManager.configurationsCreated() + Configuration.configurationsCreated()) + " files in all)...");
+        this.getLogger().log(Level.INFO, "Saving userdata and configurations ({0}{1} files in all)...", new Object[]{PlayerConfigurationManager.configurationsCreated(), Configuration.configurationsCreated()});
         PlayerConfigurationManager.saveAllConfigurations();
         Configuration.saveAllConfigurations();
         this.getLogger().info("Userdata saved.");
@@ -420,7 +421,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- We're done! --//
 
-        this.getLogger().info("RoyalCommands v" + this.version + " disabled.");
+        this.getLogger().log(Level.INFO, "RoyalCommands v{0} disabled.", this.version);
     }
 
     @Override
@@ -454,7 +455,7 @@ public class RoyalCommands extends JavaPlugin {
 
         if (!versionCheck()) {
             this.getLogger().severe("This version of CraftBukkit is too old to run RoyalCommands!");
-            this.getLogger().severe("This version of RoyalCommands needs at least CraftBukkit " + this.minVersion + ".");
+            this.getLogger().log(Level.SEVERE, "This version of RoyalCommands needs at least CraftBukkit {0}.", this.minVersion);
             this.getLogger().severe("Disabling plugin. You can turn this check off in the config.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
@@ -522,7 +523,7 @@ public class RoyalCommands extends JavaPlugin {
                 if (!(o instanceof BaseCommand)) continue;
                 this.registerCommand((CommandExecutor) o, command);
             } catch (Exception e) {
-                this.getLogger().warning("Could not register command \"" + command + "\" - an error occurred (" + e.getClass().getSimpleName() + "): " + e.getMessage() + ".");
+                this.getLogger().log(Level.WARNING, "Could not register command \"{0}\" - an error occurred ({1}): {2}.", new Object[]{command, e.getClass().getSimpleName(), e.getMessage()});
             }
         }
 
@@ -536,7 +537,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- We're done! --//
 
-        this.getLogger().info("RoyalCommands v" + this.version + " initiated.");
+        this.getLogger().log(Level.INFO, "RoyalCommands v{0} initiated.", this.version);
     }
 
     private class BackpackConverter implements Listener {

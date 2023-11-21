@@ -33,15 +33,17 @@ import org.royaldev.royalcommands.wrappers.teleport.PlayerTeleporter;
  */
 public class MemoryRPlayer implements RPlayer {
 
-    private static final Map<UUID, RPlayer> players = Collections.synchronizedMap(new HashMap<UUID, RPlayer>());
+    private static final Map<UUID, RPlayer> players = Collections.synchronizedMap(new HashMap<>());
     private final UUID uuid;
     private final Nick nick;
 
+	@Deprecated
     private MemoryRPlayer(final OfflinePlayer op) {
         this.uuid = op.getUniqueId();
         this.nick = new Nick(this);
     }
 
+	@Deprecated
     private MemoryRPlayer(final String name) {
         this.uuid = RUtils.getOfflinePlayer(name).getUniqueId();
         this.nick = new Nick(this);
