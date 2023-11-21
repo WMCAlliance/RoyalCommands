@@ -19,7 +19,7 @@ command:
   supports:
     name-completion: false
     time-format: false
-  usage: /nick [player] [nick/clear]
+  usage: /nick (player) [nick/clear]
 layout: command
 title: /nick
 ---
@@ -30,12 +30,12 @@ title: /nick
 
 **Setting a nickname**
 
-```/nick -player jkcclemens -nick Developer``` – This would set ```jkcclemens```' nickname to ```Developer```
+```/nick jkcclemens Developer``` – This would set ```jkcclemens```' nickname to ```Developer```.
 
-```/nick -p jkcclemens -n Developer``` – This does the same as the above example but uses shorter flags.
+```/nick Developer``` – This would set the nickname of the sender to ```Developer```.
 
 **Clearing a nickname**
 
-```/nick -player jkcclemens -clear``` – This would clear ```jkcclemens```' nickname.
+```/nick jkcclemens clear``` – This would clear ```jkcclemens```' nickname.
 
-```/nick -p jkcclemens -c``` – This does the same as the above example but uses shorter flags.
+```/nick clear``` – This would clear the nickname of the sender.

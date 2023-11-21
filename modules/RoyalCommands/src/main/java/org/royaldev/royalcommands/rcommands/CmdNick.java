@@ -31,7 +31,7 @@ public class CmdNick extends TabCommand {
     }
 
     @Override
-	protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new ArrayList<>(Arrays.asList("clear"));
     }
 
@@ -100,30 +100,37 @@ public class CmdNick extends TabCommand {
             return false;
         }
 
-        final RPlayer rpt = MemoryRPlayer.getRPlayer(args[0]);
+        RPlayer rpt;
+        String newNick;
 
-        if (rpt != null && args.length < 2) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-
-        if (cs instanceof Player) {
-            final boolean same = rpt.isSameAs((OfflinePlayer) cs);
-            if (!same && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS) || rpt.isOnline() && this.ah.isAuthorized(rpt.getPlayer(), cmd, PermType.EXEMPT)) {
-                RUtils.dispNoPerms(cs);
+        if (args.length < 2) {
+            rpt = MemoryRPlayer.getRPlayer(cs.getName());
+            newNick = args[0];
+            if (args[0].equalsIgnoreCase("clear")) {
+                this.clearNick(rpt, cs);
+                return true;
+            }
+        } else {
+            rpt = MemoryRPlayer.getRPlayer(args[0]);
+            newNick = args[1];
+            if (cs instanceof Player) {
+                final boolean same = rpt.isSameAs((OfflinePlayer) cs);
+                if (!same && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS) || rpt.isOnline() && this.ah.isAuthorized(rpt.getPlayer(), cmd, PermType.EXEMPT)) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+            }
+            final PlayerConfiguration pcm = rpt.getPlayerConfiguration();
+            if (!pcm.exists()) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
+                return true;
+            }
+            if (args[1].equalsIgnoreCase("clear")) {
+                this.clearNick(rpt, cs);
                 return true;
             }
         }
-        final PlayerConfiguration pcm = rpt.getPlayerConfiguration();
-        if (!pcm.exists()) {
-            cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
-            return true;
-        }
-        String newNick = args[1];
-        if (args[1].equalsIgnoreCase("clear")) {
-            this.clearNick(rpt, cs);
-            return true;
-        }
+
         if (!this.hasTimePassed(cs, rpt)) {
             this.sendTimeMessage(cs, rpt);
             return true;
