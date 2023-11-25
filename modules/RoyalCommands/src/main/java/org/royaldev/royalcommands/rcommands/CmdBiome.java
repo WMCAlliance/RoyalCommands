@@ -79,8 +79,10 @@ public class CmdBiome extends TabCommand {
 
     public void sendBiomeList(CommandSender cs) {
         String biomes = "";
-        for (Biome b : Biome.values())
-            biomes = (biomes.equals("")) ? biomes.concat(b.name() + MessageColor.RESET) : biomes.concat(", " + b.name() + MessageColor.RESET);
+        for (Biome b : Biome.values()) {
+            String name = b.name().toLowerCase() + MessageColor.RESET;
+            biomes = (biomes.equals("")) ? biomes.concat(name) : biomes.concat(", " + name);
+        }
         cs.sendMessage(biomes);
     }
 }
