@@ -42,16 +42,11 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.royaldev:royalcommands-*</include>
-                                    <include>org.shininet.bukkit:ItemRenamer</include>
                                     <include>com.google.code.gson:gson</include>
                                     <!--<include>mkremins:fanciful</include>-->
                                 </includes>
                             </artifactSet>
                             <relocations>
-                                <relocation>
-                                    <pattern>org.shininet.bukkit</pattern>
-                                    <shadedPattern>org.royaldev.royalcommands.shaded.org.shininet.bukkit</shadedPattern>
-                                </relocation>
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.com.google.gson</shadedPattern>
