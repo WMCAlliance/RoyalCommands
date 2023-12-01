@@ -194,7 +194,7 @@ public class CmdRecipe extends TabCommand {
             if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
             if (!(e.getView().getTitle().startsWith("Recipe:"))) return;
             final RecipeHolder rh = (RecipeHolder) e.getInventory().getHolder();
-            if (rh.isClosing()) return;
+            if (rh != null && rh.isClosing()) return;
             CmdRecipe.this.cancelTask(p);
         }
     }
