@@ -721,7 +721,7 @@ reflectcommands:
       - silence
     class: CmdMute
     description: Stops a user from speaking.
-    usage: '/<command> [player] (time)'
+    usage: '/<command> [player] (time) (reason)'
     version_added: Pre-0.2.7
   muteall:
     aliases:

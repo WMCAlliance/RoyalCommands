@@ -19,11 +19,8 @@ import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 @ReflectCommand
 public class CmdMute extends CACommand {
 
-    private final Flag<String> reasonFlag = new Flag<>(String.class, "reason", "r", "message", "msg", "m");
-
     public CmdMute(final RoyalCommands instance, final String name) {
         super(instance, name, true);
-        this.addExpectedFlag(this.reasonFlag);
     }
 
     @Override
@@ -56,7 +53,7 @@ public class CmdMute extends CACommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid time format!");
             return true;
         }
-        final String reason = ca.hasContentFlag(this.reasonFlag) ? RUtils.colorize(ca.getFlag(this.reasonFlag).getValue()) : "";
+        final String reason = eargs.length > 2 ? RUtils.colorize(eargs[2]) : "";
         pcm.set("muted", !wasMuted);
         if (muteTime > 0L && !wasMuted) pcm.set("mutetime", muteTime);
         else if (wasMuted) pcm.set("mutetime", null);
