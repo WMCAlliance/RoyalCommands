@@ -816,7 +816,7 @@ reflectcommands:
       - pruneuserdata
     class: CmdPrune
     description: Prunes old userdata.
-    usage: '/<command> -[time,t] [time]'
+    usage: '/<command> [time]'
     version_added: 4.1.0
   publicassign:
     aliases:

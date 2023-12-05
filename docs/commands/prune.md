@@ -8,7 +8,7 @@ command:
   permissions:
   - rcmds.prune
   supports: {}
-  usage: /prune -[time,t] [time]
+  usage: /prune [time]
 layout: command
 title: /prune
 ---

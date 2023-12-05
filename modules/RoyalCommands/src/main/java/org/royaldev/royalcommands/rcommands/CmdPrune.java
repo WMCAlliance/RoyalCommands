@@ -22,21 +22,18 @@ import java.util.List;
 @ReflectCommand
 public class CmdPrune extends CACommand {
 
-    private final Flag<String> timeFlag = new Flag<>(String.class, "time", "t");
-
     public CmdPrune(final RoyalCommands instance, final String name) {
         super(instance, name, true);
-        this.addExpectedFlag(this.timeFlag);
     }
 
     @Override
     protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
-        if (!ca.hasContentFlag(this.timeFlag)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "You must include a time (-[t,time]) flag.");
+        if (eargs.length < 1) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You must include a time");
             return true;
         }
         final Date dateStarted = new Date();
-        final long since = RUtils.timeFormatToSeconds(ca.getFlag(this.timeFlag).getValue()) * 1000L;
+        final long since = RUtils.timeFormatToSeconds(eargs[0]) * 1000L;
         final File userdataDirectory = new File(this.plugin.getDataFolder(), "userdata");
         if (!userdataDirectory.isDirectory()) {
             cs.sendMessage(MessageColor.NEGATIVE + "The userdata location is not a directory!");
