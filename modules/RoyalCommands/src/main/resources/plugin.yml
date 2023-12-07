@@ -31,7 +31,7 @@ reflectcommands:
       - powertool
     class: CmdAssign
     description: Assigns a command to a certain block.
-    usage: '/<command> [command|-#|~]'
+    usage: '/<command> [subcommand]'
     version_added: Pre-0.2.7
   attributes:
     aliases:
