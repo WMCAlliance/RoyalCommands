@@ -32,8 +32,12 @@ differentiate between items with different display names (and lore) and differen
 
 ```/assign add jump``` - This will assign ```/jump``` to the item in the player's hand, allowing them to click and teleport
 to the block he is looking at.
+
 ```/assign add c:Hello!``` - This will assign the chat message ```Hello!``` to the item in the player's hand, allowing them
 to click and say ```Hello!```.
+
 ```/assign list``` - This will return the current commands/messages assigned to the item in the player's hand.
+
 ```/assign remove 1``` - This will remove the command/message in slot ```1``` of the item in the player's hand.
+
 ```/assign ``` - This will remove all the commands/messages assigned of the item in the player's hand.
