@@ -206,9 +206,9 @@ public class PlayerListener implements Listener {
         this.plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[ae]yskull!?", sb.toString()));
         e.setFormat("");
         final List<PotionEffect> effects = new ArrayList<>();
-        effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 2));
+        effects.add(new PotionEffect(PotionEffectType.STRENGTH, 1200, 2));
         effects.add(new PotionEffect(PotionEffectType.REGENERATION, 1200, 2));
-        effects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1200, 2));
+        effects.add(new PotionEffect(PotionEffectType.RESISTANCE, 1200, 2));
         effects.add(new PotionEffect(PotionEffectType.SPEED, 1200, 2));
         p.addPotionEffects(effects);
     }
