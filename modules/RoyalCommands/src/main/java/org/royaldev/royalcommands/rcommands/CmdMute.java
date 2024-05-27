@@ -53,7 +53,7 @@ public class CmdMute extends CACommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid time format!");
             return true;
         }
-        final String reason = eargs.length > 2 ? RUtils.colorize(eargs[2]) : "";
+        final String reason = eargs.length > 2 ? RUtils.colorize(RoyalCommands.getFinalArg(eargs, 2)) : "";
         pcm.set("muted", !wasMuted);
         if (muteTime > 0L && !wasMuted) pcm.set("mutetime", muteTime);
         else if (wasMuted) pcm.set("mutetime", null);
