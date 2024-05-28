@@ -12,12 +12,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class SCmdAdd extends SubCommand<CmdWhitelist> {
 
     public SCmdAdd(final RoyalCommands instance, final CmdWhitelist parent) {
-        super(instance, parent, "add", true, "Adds a player to the whitelist.", "<command> -p (player) -u (uuid)", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
+        super(instance, parent, "add", true, "Adds a player to the whitelist.", "<command> (player)", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
@@ -26,8 +27,10 @@ public class SCmdAdd extends SubCommand<CmdWhitelist> {
             cs.sendMessage(MessageColor.NEGATIVE + "The whitelist.yml file was invalid! Cannot use whitelist.");
             return true;
         }
-        final RPlayer rp = this.getParent().getRPlayer(ca, cs);
-        if (rp == null) return true;
+        if (eargs.length < 1){
+            return false;
+        }
+        final RPlayer rp = this.getParent().getRPlayer(RoyalCommands.getFinalArg(eargs, 0));
         final String uuid = rp.getUUID().toString();
         if (Config.whitelist.contains(uuid)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is already whitelisted!");

@@ -12,12 +12,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class SCmdCheck extends SubCommand<CmdWhitelist> {
 
     public SCmdCheck(final RoyalCommands instance, final CmdWhitelist parent) {
-        super(instance, parent, "check", true, "Checks if a player is in the whitelist.", "<command> -p (player) -u (uuid)", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
+        super(instance, parent, "check", true, "Checks if a player is in the whitelist.", "<command> (player)", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
@@ -26,8 +27,10 @@ public class SCmdCheck extends SubCommand<CmdWhitelist> {
             cs.sendMessage(MessageColor.NEGATIVE + "The whitelist.yml file was invalid! Cannot use whitelist.");
             return true;
         }
-        final RPlayer rp = this.getParent().getRPlayer(ca, cs);
-        if (rp == null) return true; // should never happen
+        if (eargs.length < 1){
+            return false;
+        }
+        final RPlayer rp = this.getParent().getRPlayer(RoyalCommands.getFinalArg(eargs, 0));
         final String uuid = rp.getUUID().toString();
         cs.sendMessage(
             Config.whitelist.contains(uuid)

@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
@@ -15,18 +16,16 @@ import org.royaldev.royalcommands.rcommands.whitelist.SCmdRemove;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @ReflectCommand
 public class CmdWhitelist extends ParentCommand {
 
-    public static final Flag<String> PLAYER_FLAG = new Flag<>(String.class, "player", "p", "name", "n");
-    public static final Flag<String> UUID_FLAG = new Flag<>(String.class, "uuid", "u");
-
     public CmdWhitelist(final RoyalCommands instance, final String name) {
         super(instance, name, false);
-        addExpectedFlag(UUID_FLAG);
-        addExpectedFlag(PLAYER_FLAG);
         this.addSubCommand(new SCmdAdd(this.plugin, this));
         this.addSubCommand(new SCmdCheck(this.plugin, this));
         this.addSubCommand(new SCmdRemove(this.plugin, this));
@@ -37,20 +36,13 @@ public class CmdWhitelist extends ParentCommand {
         super.addSubCommand(sc);
     }
 
-    public RPlayer getRPlayer(final CommandArguments ca, final CommandSender cs) {
+    public RPlayer getRPlayer(String player) {
         final RPlayer rp;
-        if (ca.hasContentFlag(CmdWhitelist.UUID_FLAG)) {
-            try {
-                final UUID uuid = UUID.fromString(ca.getFlag(CmdWhitelist.UUID_FLAG).getValue());
-                rp = MemoryRPlayer.getRPlayer(uuid);
-            } catch (final IllegalArgumentException ex) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Invalid UUID format!");
-                return null;
-            }
-        } else if (ca.hasContentFlag(CmdWhitelist.PLAYER_FLAG)) {
-            rp = MemoryRPlayer.getRPlayer(ca.getFlag(CmdWhitelist.PLAYER_FLAG).getValue());
+        if (player.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")) {
+            final UUID uuid = UUID.fromString(player);
+            rp = MemoryRPlayer.getRPlayer(uuid);
         } else {
-            rp = null;
+            rp = MemoryRPlayer.getRPlayer(player);
         }
         return rp;
     }
