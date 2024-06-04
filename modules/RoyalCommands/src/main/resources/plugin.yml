@@ -1001,6 +1001,11 @@ reflectcommands:
     description: Broadcasts you slapping another player.
     usage: '/<command> [player]'
     version_added: Pre-0.2.7
+  sleep:
+    class: CmdSleep
+    description: Sleep a player or the player themself.
+    usage: '/<command> (player)'
+    version_added: 5.3.0
   smoker:
     class: CmdSmoker
     description: Remotely manages a smoker you set.
@@ -1463,6 +1468,7 @@ permissions:
       rcmds.sign.*: true
       rcmds.signedit: true
       rcmds.slap: true
+      rcmds.sleep: true
       rcmds.smoker: true
       rcmds.spawn: true
       rcmds.spawn.other: true
@@ -1715,6 +1721,7 @@ permissions:
       rcmds.exempt.selectiveclearinventory: true
       rcmds.exempt.setarmor: true
       rcmds.exempt.slap: true
+      rcmds.exempt.sleep: true
       rcmds.exempt.speak: true
       rcmds.exempt.starve: true
       rcmds.exempt.strike: true
