@@ -198,6 +198,7 @@ pluginmanager:
 ###
 
 motd:
+  # /motd format ({servername}, {name}, {displayname}, {players}, {playerlist}, {maxplayers}, {time24h}, {time12h}, {world} supported, as well at text and color codes
   options:
     # Show /motd on login?
     display_on_login: true
