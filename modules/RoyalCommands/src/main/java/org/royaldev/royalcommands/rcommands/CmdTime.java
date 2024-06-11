@@ -5,11 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
@@ -37,24 +34,6 @@ public class CmdTime extends TabCommand {
         return new ArrayList<>(Arrays.asList("day", "midday", "midnight", "night", "sunrise", "sunset"));
     }
 
-    public static Map<String, String> getRealTime(long ticks) {
-        if (ticks > 24000L) ticks = ticks % 24000L;
-        if (ticks < 0L) ticks = 0L;
-        DecimalFormat df = new DecimalFormat("00");
-        df.setRoundingMode(RoundingMode.DOWN);
-        float thour = 1000F;
-        float tminute = 16F + (2F / 3F);
-        float hour = (ticks / thour) + 6F;
-        if (hour >= 24F) hour = hour - 24F;
-        float minute = (ticks % thour) / tminute;
-        String meridian = (hour >= 12F) ? "PM" : "AM";
-        float twelvehour = (hour > 12F) ? hour - 12F : hour;
-        if (df.format(twelvehour).equals("00")) twelvehour = 12F;
-        Map<String, String> toRet = new HashMap<>();
-        toRet.put("24h", df.format(hour) + ":" + df.format(minute));
-        toRet.put("12h", df.format(twelvehour) + ":" + df.format(minute) + " " + meridian);
-        return toRet;
-    }
 
     public static Long getValidTime(String time) {
         Long vtime;
@@ -101,14 +80,14 @@ public class CmdTime extends TabCommand {
             if (!(cs instanceof Player)) for (World w : this.plugin.getServer().getWorlds()) {
                 String name = RUtils.getMVWorldName(w);
                 long ticks = w.getTime();
-                Map<String, String> times = getRealTime(ticks);
+                Map<String, String> times = RUtils.getRealTime(ticks);
                 cs.sendMessage(MessageColor.POSITIVE + "The current time in " + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " is " + MessageColor.NEUTRAL + ticks + " ticks" + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + times.get("24h") + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + times.get("12h") + MessageColor.POSITIVE + ").");
             }
             else {
                 Player p = (Player) cs;
                 World w = p.getWorld();
                 long ticks = w.getTime();
-                Map<String, String> times = getRealTime(ticks);
+                Map<String, String> times = RUtils.getRealTime(ticks);
                 cs.sendMessage(MessageColor.POSITIVE + "The current time in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + " is " + MessageColor.NEUTRAL + ticks + " ticks" + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + times.get("24h") + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + times.get("12h") + MessageColor.POSITIVE + ").");
             }
             return true;
@@ -133,14 +112,14 @@ public class CmdTime extends TabCommand {
             if (RUtils.getWorld(args[0]) != null) {
                 w = RUtils.getWorld(args[0]);
                 ticks = w.getTime();
-                Map<String, String> times = getRealTime(ticks);
+                Map<String, String> times = RUtils.getRealTime(ticks);
                 cs.sendMessage(MessageColor.POSITIVE + "The current time in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + " is " + MessageColor.NEUTRAL + ticks + " ticks" + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + times.get("24h") + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + times.get("12h") + MessageColor.POSITIVE + ").");
                 return true;
             }
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid time specified!");
             return true;
         }
-        Map<String, String> times = getRealTime(ticks);
+        Map<String, String> times = RUtils.getRealTime(ticks);
         if (w == null) {
             for (World ws : this.plugin.getServer().getWorlds()) {
                 if (Config.smoothTime) smoothTimeChange(ticks, ws);

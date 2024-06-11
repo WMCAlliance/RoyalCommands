@@ -206,7 +206,7 @@ motd:
   - "&dWelcome to {servername}, {dispname}!"
   - "&fThere are &8{players}&r players online:"
   - "{playerlist}"
-  - "You are in the world &8{world}&r."
+  - "You are in the world &8{world}&r. the time is &8{time12h}&r"
 
 ###
 # Kits #

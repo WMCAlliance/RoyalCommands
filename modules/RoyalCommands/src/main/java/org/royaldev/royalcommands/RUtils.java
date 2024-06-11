@@ -11,8 +11,10 @@ import me.clip.placeholderapi.PlaceholderAPI;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -495,7 +497,7 @@ public final class RUtils {
 
     /**
 	 * @param p
-	 * @return 
+	 * @return
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomes}.size()
      */
     @Deprecated
@@ -505,7 +507,7 @@ public final class RUtils {
 
     /**
 	 * @param u
-	 * @return 
+	 * @return
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomes}.size()
      */
     @Deprecated
@@ -570,7 +572,7 @@ public final class RUtils {
 
     /**
 	 * @param p
-	 * @return 
+	 * @return
      * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomeLimit}
      */
     @Deprecated
@@ -1596,5 +1598,50 @@ public final class RUtils {
         // banner,banreason,bannedat,istempban
         prevBans.add(pcm.getString("banner") + "\u00b5" + pcm.getString("banreason") + "\u00b5" + pcm.getString("bannedat") + "\u00b5" + (pcm.get("bantime") != null));
         pcm.set("prevbans", prevBans);
+    }
+
+    /**
+     * Returns the Real Time based on provided ticks
+     *
+     * @param ticks ticks to provide the time for
+     */
+
+    public static Map<String, String> getRealTime(long ticks) {
+        if (ticks > 24000L) ticks = ticks % 24000L;
+        if (ticks < 0L) ticks = 0L;
+        DecimalFormat df = new DecimalFormat("00");
+        df.setRoundingMode(RoundingMode.DOWN);
+        float thour = 1000F;
+        float tminute = 16F + (2F / 3F);
+        float hour = (ticks / thour) + 6F;
+        if (hour >= 24F) hour = hour - 24F;
+        float minute = (ticks % thour) / tminute;
+        String meridian = (hour >= 12F) ? "PM" : "AM";
+        float twelvehour = (hour > 12F) ? hour - 12F : hour;
+        if (df.format(twelvehour).equals("00")) twelvehour = 12F;
+        Map<String, String> toRet = new HashMap<>();
+        toRet.put("24h", df.format(hour) + ":" + df.format(minute));
+        toRet.put("12h", df.format(twelvehour) + ":" + df.format(minute) + " " + meridian);
+        return toRet;
+    }
+
+    /**
+     * Returns the 24-Hour time of a world
+     *
+     * @param w the world to return the time
+     */
+    public static String getWorldTime24Hour(World w){
+        Map<String, String> times = RUtils.getRealTime(w.getTime());
+        return times.get("24h");
+    }
+
+    /**
+     * Returns the 12-Hour time of a world
+     *
+     * @param w the world to return the time
+     */
+    public static String getWorldTime12Hour(World w){
+        Map<String, String> times = RUtils.getRealTime(w.getTime());
+        return times.get("12h");
     }
 }

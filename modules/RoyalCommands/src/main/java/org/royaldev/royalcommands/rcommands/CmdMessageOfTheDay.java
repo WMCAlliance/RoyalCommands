@@ -14,6 +14,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
+
 @ReflectCommand
 public class CmdMessageOfTheDay extends TabCommand {
 
@@ -48,6 +49,8 @@ public class CmdMessageOfTheDay extends TabCommand {
             s = (cs instanceof Player) ? s.replace("{dispname}", ((Player) cs).getDisplayName()) : s.replace("{dispname}", cs.getName());
             if (onlinenum != null) s = s.replace("{players}", onlinenum);
             s = s.replace("{playerlist}", ps);
+            s = (cs instanceof Player) ? s.replace("{time24h}", RUtils.getWorldTime24Hour(((Player) cs).getWorld())) : s.replace("{time24h}", "No Time");
+            s = (cs instanceof Player) ? s.replace("{time12h}", RUtils.getWorldTime12Hour(((Player) cs).getWorld())) : s.replace("{time12h}", "No Time");
             s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
             if (cs instanceof Player && CmdMessageOfTheDay.pluginInstance.pa != null) s = PlaceholderAPI.setPlaceholders((Player)cs, s);
