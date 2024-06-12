@@ -75,6 +75,7 @@ public class SignListener implements Listener {
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.warp")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -106,6 +107,7 @@ public class SignListener implements Listener {
 
         //Time signs
         if (line1.equalsIgnoreCase(ChatColor.stripColor("[time]"))) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.time")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -133,6 +135,7 @@ public class SignListener implements Listener {
 
         //Free signs
         if (line1.equalsIgnoreCase("[free]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.free")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -159,6 +162,7 @@ public class SignListener implements Listener {
 
         //Disposal signs
         if (line1.equalsIgnoreCase("[disposal]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.disposal")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -180,6 +184,7 @@ public class SignListener implements Listener {
 
         //Heal signs
         if (line1.equalsIgnoreCase("[heal]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.heal")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -201,6 +206,7 @@ public class SignListener implements Listener {
 
         //Weather signs
         if (line1.equalsIgnoreCase("[weather]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.weather")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -220,6 +226,7 @@ public class SignListener implements Listener {
 
         //Give signs
         if (line1.equalsIgnoreCase("[give]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.give")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -246,6 +253,7 @@ public class SignListener implements Listener {
 
         //Command signs
         if (line1.equalsIgnoreCase("[command]")) {
+            e.setCancelled(true);
             if (!this.plugin.ah.isAuthorized(p, "rcmds.sign.use.command")) {
                 RUtils.dispNoPerms(p);
                 return;
