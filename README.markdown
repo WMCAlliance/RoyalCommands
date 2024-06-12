@@ -19,7 +19,7 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 ### Contact
 
- * The WMA.IM Discord is the best place to find us, under the #development channel join us [here](https://discord.gg/5YWAavQt)
+ * The WMA.IM Discord is the best place to find us, under the #development channel join us [here](https://discord.gg/Va2gxfz3)
 
 
 ### Compiling
