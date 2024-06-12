@@ -1418,6 +1418,7 @@ permissions:
       rcmds.memory: true
       rcmds.message: true
       rcmds.messageoftheday: true
+      rcmds.messageoftheday.admin: true
       rcmds.messagespy: true
       rcmds.mobignore: true
       rcmds.modifyinventory: true
@@ -2143,6 +2144,10 @@ permissions:
     command: messageoftheday
     default: op
     description: Allows you to see the message of the day.
+  rcmds.messageoftheday.admin:
+    command: messageoftheday
+    default: op
+    description: Allows you to see the admin message of the day.
   rcmds.messagespy:
     command: messagespy
     default: op
@@ -2282,6 +2287,7 @@ permissions:
       rcmds.memory: true
       rcmds.message: true
       rcmds.messageoftheday: true
+      rcmds.messageoftheday.admin: true
       rcmds.messagespy: true
       rcmds.mobignore: true
       rcmds.modifyinventory: true

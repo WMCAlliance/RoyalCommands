@@ -17,6 +17,7 @@ general:
   sleep_notifications: true
   # Sleep majority?
   sleep_majority: true
+  # At what percentage of the players in a world asleep should majority trigger
   sleep_majority_percentage: 50.0
   # How much AFK players count towards sleep majority (1 asleep, 0 awake)
   sleep_majority_afk: 0.5
@@ -202,12 +203,25 @@ motd:
   options:
     # Show /motd on login?
     display_on_login: true
+    # Show different motd on first join
+    use_first_join: true
   # The message of the day
-  content:
-  - "&dWelcome to {servername}, {dispname}!"
-  - "&fThere are &8{players}&r players online:"
-  - "{playerlist}"
-  - "You are in the world &8{world}&r. the time is &8{time12h}&r"
+  general:
+    - "&dWelcome to {servername}, {dispname}!"
+    - "&fThere are &8{players}&r players online:"
+    - "{playerlist}"
+    - "You are in the world &8{world}&r. the time is &8{time12h}&r"
+  admin:
+    - "&dWelcome to {servername}, {dispname}!"
+    - "&fThere are &8{players}&r players online:"
+    - "{playerlist}"
+    - "You are in the world &8{world}&r. the time is &8{time12h}&r"
+    - "The current uptime is &8{uptime}&r"
+  firstjoin:
+    - "&dWelcome to {servername}, {dispname} for the first time!"
+    - "&fThere are &8{players}&r players online:"
+    - "Use the command &8/rules&r to see the rules"
+
 
 ###
 # Kits #

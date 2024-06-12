@@ -9,10 +9,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+
+import java.util.List;
 
 
 @ReflectCommand
@@ -25,7 +28,7 @@ public class CmdMessageOfTheDay extends TabCommand {
         CmdMessageOfTheDay.pluginInstance = instance;
     }
 
-    public static void showMotd(CommandSender cs) {
+    public static void showMotd(CommandSender cs, List<String> config) {
         String ps = CmdList.getSimpleList(cs);
         int onnum = CmdMessageOfTheDay.pluginInstance.getServer().getOnlinePlayers().size();
         int hid = CmdMessageOfTheDay.pluginInstance.getNumberVanished();
@@ -42,7 +45,7 @@ public class CmdMessageOfTheDay extends TabCommand {
         } catch (Exception e) {
             maxonl = null;
         }
-        for (String s : Config.motd) {
+        for (String s : config) {
             if (s == null) continue;
             s = RUtils.colorize(s);
             s = s.replace("{name}", cs.getName());
@@ -52,16 +55,23 @@ public class CmdMessageOfTheDay extends TabCommand {
             s = (cs instanceof Player) ? s.replace("{time24h}", RUtils.getWorldTime24Hour(((Player) cs).getWorld())) : s.replace("{time24h}", "No Time");
             s = (cs instanceof Player) ? s.replace("{time12h}", RUtils.getWorldTime12Hour(((Player) cs).getWorld())) : s.replace("{time12h}", "No Time");
             s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
+            s = s.replace("{uptime}", RUtils.formatDateDiff(pluginInstance.getStartTime()));
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
             if (cs instanceof Player && CmdMessageOfTheDay.pluginInstance.pa != null) s = PlaceholderAPI.setPlaceholders((Player)cs, s);
-            s = (CmdMessageOfTheDay.pluginInstance.getServer().getName() != null || !CmdMessageOfTheDay.pluginInstance.getServer().getName().isEmpty()) ? s.replace("{servername}", CmdMessageOfTheDay.pluginInstance.getServer().getName()) : s.replace("{servername}", "this server");
+            s = s.replace("{servername}", CmdMessageOfTheDay.pluginInstance.getServer().getName());
             cs.sendMessage(s);
         }
     }
 
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
-        CmdMessageOfTheDay.showMotd(cs);
+        List<String> config;
+        if (ah.isAuthorized(cs, "rcmds.messageoftheday.admin")) {
+            config = Config.motdAdmin;
+        } else {
+            config = Config.motdGeneral;
+        }
+        CmdMessageOfTheDay.showMotd(cs, config);
         return true;
     }
 }

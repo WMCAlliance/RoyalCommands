@@ -63,6 +63,7 @@ public class Config {
     public static boolean timeBroadcast;
     public static boolean updateCheck;
     public static boolean updateOldUserdata;
+    public static boolean useFirstJoinMotd;
     public static boolean useProtocolLib;
     public static boolean useVNP;
     public static boolean useWelcome;
@@ -113,7 +114,9 @@ public class Config {
     public static List<String> hiddenWorlds;
     public static List<String> itemSpawnTagLore;
     public static List<String> logBlacklist;
-    public static List<String> motd;
+    public static List<String> motdAdmin;
+    public static List<String> motdFirstJoin;
+    public static List<String> motdGeneral;
     public static List<String> muteCmds;
     public static List<String> onBanActions;
     public static List<String> whitelist;
@@ -221,6 +224,7 @@ public class Config {
         timeBroadcast = c.getBoolean("messages.options.broadcast_time_changes", false);
         updateCheck = c.getBoolean("updates.update_check", false);
         updateOldUserdata = c.getBoolean("userdata.update_old", true);
+        useFirstJoinMotd = c.getBoolean("motd.options.use_first_join", true);
         useProtocolLib = c.getBoolean("items.spawn.tag.plugins.protocollib", true);
         useVNP = c.getBoolean("plugins.use_vanish", true);
         useWelcome = c.getBoolean("messages.options.enable_welcome_message", true);
@@ -276,7 +280,9 @@ public class Config {
         hiddenWorlds = c.getStringList("teleports.worlds.hidden");
         itemSpawnTagLore = c.getStringList("items.spawn.tag.lore");
         logBlacklist = c.getStringList("commands.logging.blacklist");
-        motd = c.getStringList("motd.content");
+        motdGeneral = c.getStringList("motd.general");
+        motdAdmin = c.getStringList("motd.admin");
+        motdFirstJoin = c.getStringList("motd.firstjoin");
         muteCmds = c.getStringList("commands.mute_blocked");
         onBanActions = c.getStringList("bans.actions");
 

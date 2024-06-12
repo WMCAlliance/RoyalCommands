@@ -402,16 +402,16 @@ public final class RUtils {
 
     public static String formatDateDiff(Calendar fromDate, Calendar toDate) {
         boolean future = false;
-        if (toDate.equals(fromDate)) return " now";
+        if (toDate.equals(fromDate)) return "now";
         if (toDate.after(fromDate)) future = true;
         StringBuilder sb = new StringBuilder();
         int[] types = new int[]{Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE};
         String[] names = new String[]{"year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes"};
         for (int i = 0; i < types.length; i++) {
             int diff = dateDiff(types[i], fromDate, toDate, future);
-            if (diff > 0) sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
+            if (diff > 0) sb.append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
         }
-        if (sb.length() == 0) return " now";
+        if (sb.length() == 0) return "now";
         return sb.toString();
     }
 

@@ -577,7 +577,17 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void showMotd(PlayerJoinEvent e) {
         if (!Config.motdLogin) return;
-        CmdMessageOfTheDay.showMotd(e.getPlayer());
+        Player p = e.getPlayer();
+        List<String> motdConfig;
+        if (Config.useFirstJoinMotd && !p.hasPlayedBefore()) {
+            motdConfig = Config.motdFirstJoin;
+        } else if (plugin.ah.isAuthorized(p, "rcmds.messageoftheday.admin")) {
+            motdConfig = Config.motdAdmin;
+        } else {
+            motdConfig = Config.motdGeneral;
+        }
+        CmdMessageOfTheDay.showMotd(p, motdConfig);
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
