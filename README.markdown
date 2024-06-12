@@ -19,11 +19,8 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 ### Contact
 
- * Email: wizardcm@wma.im
- * Minecraft username: WizardCM
+ * The WMA.IM Discord is the best place to find us, under the #development channel join us [here](https://discord.gg/5YWAavQt)
 
- * Email: jkc.clemens@gmail.com / jkc.clemens@royaldev.org
- * Minecraft username: jkcclemens
 
 ### Compiling
 
