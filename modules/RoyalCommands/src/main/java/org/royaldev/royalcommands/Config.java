@@ -63,6 +63,7 @@ public class Config {
     public static boolean timeBroadcast;
     public static boolean updateCheck;
     public static boolean updateOldUserdata;
+    public static boolean useAdminMotd;
     public static boolean useFirstJoinMotd;
     public static boolean useProtocolLib;
     public static boolean useVNP;
@@ -224,7 +225,8 @@ public class Config {
         timeBroadcast = c.getBoolean("messages.options.broadcast_time_changes", false);
         updateCheck = c.getBoolean("updates.update_check", false);
         updateOldUserdata = c.getBoolean("userdata.update_old", true);
-        useFirstJoinMotd = c.getBoolean("motd.options.use_first_join", true);
+        useAdminMotd = c.getBoolean("motd.options.use_first_join_motd", true);
+        useFirstJoinMotd = c.getBoolean("motd.options.use_first_join_motd", true);
         useProtocolLib = c.getBoolean("items.spawn.tag.plugins.protocollib", true);
         useVNP = c.getBoolean("plugins.use_vanish", true);
         useWelcome = c.getBoolean("messages.options.enable_welcome_message", true);

@@ -204,7 +204,9 @@ motd:
     # Show /motd on login?
     display_on_login: true
     # Show different motd on first join
-    use_first_join: true
+    use_first_join_motd: true
+    # Show different motd for admin
+    use_admin_motd: true
   # The message of the day
   general:
     - "&dWelcome to {servername}, {dispname}!"

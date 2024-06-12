@@ -66,7 +66,7 @@ public class CmdMessageOfTheDay extends TabCommand {
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         List<String> config;
-        if (ah.isAuthorized(cs, "rcmds.messageoftheday.admin")) {
+        if (Config.useAdminMotd && ah.isAuthorized(cs, "rcmds.messageoftheday.admin")) {
             config = Config.motdAdmin;
         } else {
             config = Config.motdGeneral;

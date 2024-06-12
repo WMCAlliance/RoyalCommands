@@ -581,7 +581,7 @@ public class PlayerListener implements Listener {
         List<String> motdConfig;
         if (Config.useFirstJoinMotd && !p.hasPlayedBefore()) {
             motdConfig = Config.motdFirstJoin;
-        } else if (plugin.ah.isAuthorized(p, "rcmds.messageoftheday.admin")) {
+        } else if (Config.useAdminMotd && plugin.ah.isAuthorized(p, "rcmds.messageoftheday.admin")) {
             motdConfig = Config.motdAdmin;
         } else {
             motdConfig = Config.motdGeneral;
