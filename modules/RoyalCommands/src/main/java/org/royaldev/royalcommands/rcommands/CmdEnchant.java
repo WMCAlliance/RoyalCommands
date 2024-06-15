@@ -97,7 +97,7 @@ public class CmdEnchant extends TabCommand {
                 else if (args.length > 1 && args[1].equalsIgnoreCase("max")) level = -2;
                 else {
                     try {
-                        level = (int) Short.parseShort(args[1]);
+                        level = Short.parseShort(args[1]);
                     } catch (NumberFormatException e) {
                         cs.sendMessage(MessageColor.NEGATIVE + "The level supplied was not a number or greater than " + Short.MAX_VALUE + "!");
                         return true;
@@ -174,7 +174,7 @@ public class CmdEnchant extends TabCommand {
                 return true;
             }
             hand.removeEnchantment(toAdd);
-            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getKey().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + toAdd.getKey().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
         } else {
             int toApply = getRealLevel(toAdd, level);
             if (toApply > toAdd.getMaxLevel() && !this.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
