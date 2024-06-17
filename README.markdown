@@ -4,7 +4,7 @@ RoyalCommands
 
 ![RoyalCommands](https://www.spigotmc.org/attachments/royalcommandslogo-big-png.21832/)
 
-RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
+RoyalCommands is a general plugin with lots of commands. Yeah, that's the description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 
 RoyalCommands is coded in IntelliJ with the following libraries:
 
@@ -19,7 +19,7 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 ### Contact
 
- * The WMA.IM Discord is the best place to find us, under the #development channel join us [here](https://discord.gg/Va2gxfz3)
+ * The Worldwide Minecraft Alliance Discord is the best place to find us, under the #development channel join us [here](https://discord.gg/Va2gxfz3)
 
 
 ### Compiling
@@ -48,5 +48,6 @@ Make sure it follows these regulations:
  5. Please compile and test your changes before requesting them to be merged.
 
 ### About the original developer
+RoyalCommands was originally written by anna-is-cute (formerly known as jkcclemens), you can follow their stuff [here](https://github.com/anna-is-cute)
 
-My name is Kyle Clemens (jkcclemens). I write plugins in my free time.
+The Worldwide Minecraft Alliance has since taken over RoyalCommands (and the rest of the suite).
