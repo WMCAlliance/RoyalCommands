@@ -13,6 +13,8 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdFly extends TabCommand {
@@ -27,11 +29,12 @@ public class CmdFly extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length < 1 && cs instanceof Player) {
-            Player p = (Player) cs;
+        if (args.length < 1 && cs instanceof Player p) {
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             p.setAllowFlight(!p.getAllowFlight());
             String status = BooleanUtils.toStringOnOff(p.getAllowFlight());
             p.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
+            pcm.set("flying", p.getAllowFlight());
         } else {
             if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 RUtils.dispNoPerms(cs);
@@ -42,10 +45,12 @@ public class CmdFly extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             t.setAllowFlight(!t.getAllowFlight());
             String status = BooleanUtils.toStringOnOff(t.getAllowFlight());
             cs.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " on " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             t.sendMessage(MessageColor.POSITIVE + "You have had flight toggled to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
+            pcm.set("flying", t.getAllowFlight());
         }
         return true;
     }

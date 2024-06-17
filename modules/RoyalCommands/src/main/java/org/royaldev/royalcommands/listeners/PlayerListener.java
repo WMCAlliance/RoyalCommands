@@ -401,6 +401,7 @@ public class PlayerListener implements Listener {
             pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
             pcm.set("banreason", "");
             pcm.set("allow_tp", true);
+            pcm.set("flying", false);
             if (Config.stsNew) {
                 final RPlayer rp = MemoryRPlayer.getRPlayer(event.getPlayer());
                 rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()), true);
@@ -415,6 +416,11 @@ public class PlayerListener implements Listener {
         if (Config.sendToSpawn) {
 			final RPlayer rp = MemoryRPlayer.getRPlayer(event.getPlayer());
 			rp.getTeleporter().teleport(CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()), !Config.stsBack);
+        }
+        if (pcm.getBoolean("flying")){
+            Player p = event.getPlayer();
+            p.setAllowFlight(true);
+            p.setFlying(true);
         }
     }
 
