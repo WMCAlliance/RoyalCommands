@@ -77,7 +77,7 @@ public class RoyalCommands extends JavaPlugin {
     private static RoyalCommands instance;
     public final AuthorizationHandler ah = new AuthorizationHandler(this);
     public final VaultHandler vh = new VaultHandler(this);
-    private final int minVersion = 1200; // 1.20.0
+    private final int minVersion = 1205; // 1.20.5
 
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
     private final long startTime = System.currentTimeMillis();
