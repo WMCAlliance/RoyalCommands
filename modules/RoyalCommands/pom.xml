@@ -119,6 +119,25 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${basedir}/target/RoyalCommands" />
+                                <copy todir="${basedir}/target/RoyalCommands">
+                                    <fileset dir="${basedir}/src/main/resources" includes="**/*" />
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <repositories>
