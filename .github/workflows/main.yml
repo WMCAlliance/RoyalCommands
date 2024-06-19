@@ -1,4 +1,4 @@
-name: Maven Build
+name: RoyalCommands build
 
 on:
   push:
@@ -32,4 +32,4 @@ jobs:
         name: RoyalCommands (#${{ github.run_number }})
         path: |
           /home/runner/work/RoyalCommands/RoyalCommands/modules/RoyalCommands/target/*.jar
-          /home/runner/work/RoyalCommands/RoyalCommands/modules/RoyalCommands/target/RoyalCommands/
+          /home/runner/work/RoyalCommands/RoyalCommands/modules/RoyalCommands/target/RoyalCommands
