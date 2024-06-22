@@ -1,0 +1,141 @@
+###################
+# Variables!
+# {player} <- name of player who died
+# {dispplayer} <- display name of player who died (nicknames, etc)
+# {killer} <- what killed it (attacker name - PvP only)
+# {dispkiller} <- what killed it (attacker display name - PvP only)
+# {world} <- the world in which the player died
+# {mob} <- what killed it (if it's a monster)
+# {hand} <- what was in the killer's hand (PvP only, will use item name if available)
+# If the variable doesn't apply to the type of death in your message, it will not be
+# replaced.
+###################
+
+###################
+# Colors!
+# The default colors are HeroicDeath colors (if I recall correctly)
+# You can change them here
+# "var_color" is the color of the variables (those listed above)
+# "mes_color" is the color of the rest of the message.
+# Get all the colors here: http://jd.bukkit.org/apidocs/org/bukkit/ChatColor.html
+###################
+
+var_color: DARK_AQUA
+mes_color: RED
+
+###################
+# Sections!
+# pvp <- For player vs player combat death messages
+# lav <- Lava deaths
+# fir <- Fire deaths
+# dro <- Drowning deaths
+# con <- Contact deaths (cacti)
+# sta <- Starvation deaths
+# sui <- Suicide deaths
+# poi <- Poison deaths
+# lig <- Lightning deaths
+# fal <- Fall deaths
+# fab <- Falling block deaths
+# blo <- Block explosion deaths
+# cre <- Creeper explosion deaths
+# suf <- Suffocation deaths
+# voi <- Void deaths
+# mag <- Magic deaths (harming potions, etc)
+# mob <- Monster death messages
+# wit <- Wither death messages
+# tho <- Thorns death messages
+# oth <- Other death messages (unknown)
+###################
+
+pvp:
+  - "{player} was killed by {killer} wielding {hand}."
+  - "{player} was struck down by {killer} with {hand}."
+  - "{killer} bashed {player} to a pulp with {hand}."
+
+lav:
+  - "{player} tried to swim in lava."
+  - "{player} is now obsidian."
+  - "{player} mistook lava for water."
+
+fir:
+  - "{player} was burnt to a crisp."
+  - "{player} caught on fire."
+  - "{player} was burned alive."
+
+dro:
+  - "{player} is now one with the sea."
+  - "{player} is swimming with the fishies."
+  - "{player} tried to be a fish."
+
+con:
+  - "{player} hugged a cactus."
+  - "{player} forgot that cacti are sharp."
+
+sta:
+  - "{player} forgot to eat."
+  - "Starvation took {player} from us."
+
+sui:
+  - "{player} committed suicide."
+
+poi:
+  - "{player} has died from poison!"
+  - "{player} was poisoned!"
+
+lig:
+  - "{player} was smitten by Zeus."
+  - "{player} was struck by lightning."
+
+fal:
+  - "{player} fell off a plateau."
+  - "{player} fell off a cliff."
+  - "{player} hit the ground too hard."
+  - "{player} tried to fly."
+
+fab:
+  - "A block fell on {player}."
+  - "A block fell on {player}, crushing his hopes and dreams."
+  - "{player} got squished."
+
+blo:
+  - "{player} exploded."
+  - "{player} has an explosive personality."
+  - "{player} is now scattered around the floor in chunks."
+
+cre:
+  - "{player} hugged a creeper."
+  - "{player} got too close to a lil' creeper."
+
+suf:
+  - "{player} got caught in a block."
+  - "{player} suffocated."
+
+voi:
+  - "{player} fell into the void."
+  - "{player} fell out of the world."
+  - "{player} went past the space-time continuum."
+
+mag:
+  - "{player} got hit by a nasty potion."
+
+mob:
+  - "{player} was killed by a {mob}."
+  - "{player} was attacked by {mob}."
+  - "An angry {mob} killed {player}."
+
+wit:
+  - "{player} was killed by a wither!"
+  - "A wither annihilated {player}."
+
+tho:
+  - "{player} got a taste of his own medicine."
+  - "Reflected damage got the jump on {player}."
+
+dra:
+  - "{player} took on the dragon and didn't survive to tell the story"
+
+fro:
+  - "{player} froze because they couldn't let it go"
+
+oth:
+  - "{player} died of unknown causes."

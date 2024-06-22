@@ -689,3 +689,15 @@ items:
       # The lore to apply to spawned items. This allows for easy identification without /spawninfo.
       lore:
       - "&9Spawned"
+
+###
+# Death Message Options #
+###
+death:
+  # "use_custom_death" - Should custom death messages be used?
+  use_custom_death: true
+  # "show_interworld" - Should death messages from other worlds be displayed to players?
+  show_interworld: true
+  # "disabled_worlds" - List of worlds to disable death messages in
+  disabled_worlds:
+    - someworldhere

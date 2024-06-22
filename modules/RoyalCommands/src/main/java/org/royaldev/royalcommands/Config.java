@@ -64,6 +64,7 @@ public class Config {
     public static boolean updateCheck;
     public static boolean updateOldUserdata;
     public static boolean useAdminMotd;
+    public static boolean useCustomDeath;
     public static boolean useFirstJoinMotd;
     public static boolean useProtocolLib;
     public static boolean useVNP;
@@ -79,6 +80,7 @@ public class Config {
     public static boolean wmShowEmptyWorlds;
     public static boolean worldAccessPerm;
     public static boolean ymlConvert;
+    public static boolean interworld;
 
     //-- ConfigurationSections --//
     public static ConfigurationSection commandCooldowns;
@@ -110,6 +112,7 @@ public class Config {
     //-- String lists --//
     public static List<String> blockedItems;
     public static List<String> commandSpyBlacklist;
+    public static List<String> deathMessages;
     public static List<String> disabledBackWorlds;
     public static List<String> disabledCommands;
     public static List<String> hiddenWorlds;
@@ -121,6 +124,7 @@ public class Config {
     public static List<String> muteCmds;
     public static List<String> onBanActions;
     public static List<String> whitelist;
+    public static List<String> disabledWorlds;
 
     //-- Longs --//
     public static long afkAutoTime;
@@ -161,6 +165,8 @@ public class Config {
     public static String resetChatColor;
     public static String afkOnPlaceholder;
     public static String afkOffPlaceholder;
+    public static String variableColor;
+    public static String messageColor;
 
     private final RoyalCommands plugin;
 
@@ -226,6 +232,7 @@ public class Config {
         updateCheck = c.getBoolean("updates.update_check", false);
         updateOldUserdata = c.getBoolean("userdata.update_old", true);
         useAdminMotd = c.getBoolean("motd.options.use_first_join_motd", true);
+        useCustomDeath = c.getBoolean("death.use_custom_death", true);
         useFirstJoinMotd = c.getBoolean("motd.options.use_first_join_motd", true);
         useProtocolLib = c.getBoolean("items.spawn.tag.plugins.protocollib", true);
         useVNP = c.getBoolean("plugins.use_vanish", true);
@@ -241,6 +248,7 @@ public class Config {
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
         ymlConvert = c.getBoolean("yml_convert", false);
+        interworld = c.getBoolean("show_interworld", true);
 
         //-- ConfigurationSections --//
 
@@ -287,6 +295,7 @@ public class Config {
         motdFirstJoin = c.getStringList("motd.firstjoin");
         muteCmds = c.getStringList("commands.mute_blocked");
         onBanActions = c.getStringList("bans.actions");
+        disabledWorlds = c.getStringList("death.disabled_worlds");
 
         //-- Longs --//
 
@@ -329,8 +338,12 @@ public class Config {
         resetChatColor = c.getString("messages.options.colors.reset", "RESET");
         afkOnPlaceholder = RUtils.colorize(c.getString("afk.placeholders.on", "&7[AFK]"));
         afkOffPlaceholder = RUtils.colorize(c.getString("afk.placeholoders.off", ""));
+        variableColor = c.getString("death.var_color", "DARK_AQUA");
+        messageColor = c.getString("death.mes_color", "RED");
 
         if (this.plugin.whl.exists()) whitelist = this.plugin.whl.getStringList("whitelist");
+
+        if (this.plugin.dm.exists()) deathMessages = this.plugin.dm.getStringList("deathmessages");
 
         this.plugin.h.reloadHelp();
 
