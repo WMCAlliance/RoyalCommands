@@ -248,7 +248,7 @@ public class Config {
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
         ymlConvert = c.getBoolean("yml_convert", false);
-        interworld = c.getBoolean("show_interworld", true);
+        interworld = c.getBoolean("death.show_interworld", true);
 
         //-- ConfigurationSections --//
 

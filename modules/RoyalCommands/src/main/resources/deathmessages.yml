@@ -12,18 +12,6 @@
 ###################
 
 ###################
-# Colors!
-# The default colors are HeroicDeath colors (if I recall correctly)
-# You can change them here
-# "var_color" is the color of the variables (those listed above)
-# "mes_color" is the color of the rest of the message.
-# Get all the colors here: http://jd.bukkit.org/apidocs/org/bukkit/ChatColor.html
-###################
-
-var_color: DARK_AQUA
-mes_color: RED
-
-###################
 # Death Causes
 ###################
 
