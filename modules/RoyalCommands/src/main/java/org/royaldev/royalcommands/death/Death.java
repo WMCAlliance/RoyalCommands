@@ -126,7 +126,7 @@ public class Death {
                 break;
         }
         return pullFrom;
-    }//A B C D E F G H I J K L M N O P Q R S T U V W X y Z
+    }
 
     private RoyalCommands getPlugin() {
         return this.plugin;
@@ -137,7 +137,6 @@ public class Death {
     }
 
     private String getRandomMessage() {
-        //final List<String> messages = this.getPlugin().getConfig().getStringList(this.getMessageType());
         final List<String> messages;
         Configuration cm = Configuration.getConfiguration("deathmessages.yml");
         if (!cm.exists()) return "";
