@@ -44,15 +44,24 @@ public class Death {
             case BLOCK_EXPLOSION:
                 pullFrom = "blo";
                 break;
+            case CAMPFIRE:
+                pullFrom = "cam";
+                break;
             case CONTACT:
                 pullFrom = "con";
                 break;
-            case ENTITY_ATTACK:
-            case PROJECTILE:
-                pullFrom = (this.getDeathType() == DeathType.PLAYER) ? "pvp" : "mob";
+            case CUSTOM:
+            case DRAGON_BREATH:
+                pullFrom = "dra";
                 break;
-            case SUFFOCATION:
-                pullFrom = "suf";
+            case DROWNING:
+                pullFrom = "dro";
+                break;
+            case ENTITY_ATTACK:
+                pullFrom = "mob";
+                break;
+            case ENTITY_EXPLOSION:
+                pullFrom = "cre";
                 break;
             case FALL:
                 pullFrom = "fal";
@@ -66,53 +75,58 @@ public class Death {
             case FIRE_TICK:
                 pullFrom = "fir";
                 break;
-            case LAVA:
-                pullFrom = "lav";
-                break;
-            case DROWNING:
-                pullFrom = "dro";
-                break;
-            case ENTITY_EXPLOSION:
-                pullFrom = "cre";
-                break;
-            case VOID:
-                pullFrom = "voi";
-                break;
-            case LIGHTNING:
-                pullFrom = "lig";
-                break;
-            case SUICIDE:
-                pullFrom = "sui";
-                break;
-            case STARVATION:
-                pullFrom = "sta";
-                break;
-            case POISON:
-                pullFrom = "poi";
-                break;
-            case MAGIC:
-                pullFrom = "mag";
-                break;
-            case WITHER:
-                pullFrom = "wit";
-                break;
-            case THORNS:
-                pullFrom = "tho";
-                break;
-            case DRAGON_BREATH:
-                pullFrom = "dra";
+            case FLY_INTO_WALL:
+                pullFrom = "fiw";
                 break;
             case FREEZE:
                 pullFrom = "fro";
                 break;
+            case HOT_FLOOR:
+                pullFrom = "hot";
+                break;
+            case LAVA:
+                pullFrom = "lav";
+                break;
+            case LIGHTNING:
+                pullFrom = "lig";
+                break;
+            case MAGIC:
+                pullFrom = "mag";
+                break;
             case MELTING:
-            case CUSTOM:
+            case POISON:
+                pullFrom = "poi";
+                break;
+            case PROJECTILE:
+                pullFrom = (this.getDeathType() == DeathType.PLAYER) ? "pvp" : "mob";
+                break;
+            case SONIC_BOOM:
+                pullFrom = "son";
+                break;
+            case STARVATION:
+                pullFrom = "sta";
+                break;
+            case SUFFOCATION:
+                pullFrom = "suf";
+                break;
+            case SUICIDE:
+                pullFrom = "sui";
+                break;
+            case THORNS:
+                pullFrom = "tho";
+                break;
+            case WITHER:
+                pullFrom = "wit";
+                break;
+            case VOID:
+                pullFrom = "voi";
+                break;
             default:
                 pullFrom = "oth";
                 break;
         }
         return pullFrom;
-    }
+    }//A B C D E F G H I J K L M N O P Q R S T U V W X y Z
 
     private RoyalCommands getPlugin() {
         return this.plugin;

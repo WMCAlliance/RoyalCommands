@@ -11,7 +11,7 @@ command:
   supports:
     name-completion: false
     time-format: false
-  usage: /kill [player]
+  usage: /kill [player] (cause)
 layout: command
 title: /kill
 ---

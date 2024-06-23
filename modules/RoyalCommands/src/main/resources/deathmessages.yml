@@ -24,118 +24,140 @@ var_color: DARK_AQUA
 mes_color: RED
 
 ###################
-# Sections!
-# pvp <- For player vs player combat death messages
-# lav <- Lava deaths
-# fir <- Fire deaths
-# dro <- Drowning deaths
-# con <- Contact deaths (cacti)
-# sta <- Starvation deaths
-# sui <- Suicide deaths
-# poi <- Poison deaths
-# lig <- Lightning deaths
-# fal <- Fall deaths
-# fab <- Falling block deaths
-# blo <- Block explosion deaths
-# cre <- Creeper explosion deaths
-# suf <- Suffocation deaths
-# voi <- Void deaths
-# mag <- Magic deaths (harming potions, etc)
-# mob <- Monster death messages
-# wit <- Wither death messages
-# tho <- Thorns death messages
-# oth <- Other death messages (unknown)
+# Death Causes
 ###################
 
-pvp:
-  - "{player} was killed by {killer} wielding {hand}."
-  - "{player} was struck down by {killer} with {hand}."
-  - "{killer} bashed {player} to a pulp with {hand}."
+# blo <- Block explosion deaths
+blo:
+  - "{player} exploded."
+  - "{player} has an explosive personality."
+  - "{player} is now scattered around the floor in chunks."
 
-lav:
-  - "{player} tried to swim in lava."
-  - "{player} is now obsidian."
-  - "{player} mistook lava for water."
+# cam <- Campfire deaths
+cam:
+  - "{player} walked into the campfire."
+  - "{player} dropped a marshmallow into the campfire."
 
-fir:
-  - "{player} was burnt to a crisp."
-  - "{player} caught on fire."
-  - "{player} was burned alive."
+# con <- Contact deaths (cacti)
+con:
+  - "{player} hugged a cactus."
+  - "{player} forgot that cacti are sharp."
 
+# cre <- Creeper explosion deaths
+cre:
+  - "{player} hugged a creeper."
+  - "{player} got too close to a lil' creeper."
+
+# dra <- Dragon Breath deaths
+dra:
+  - "{player} took on the dragon and didn't survive to tell the story"
+
+# dro <- Drowning deaths
 dro:
   - "{player} is now one with the sea."
   - "{player} is swimming with the fishies."
   - "{player} tried to be a fish."
 
-con:
-  - "{player} hugged a cactus."
-  - "{player} forgot that cacti are sharp."
-
-sta:
-  - "{player} forgot to eat."
-  - "Starvation took {player} from us."
-
-sui:
-  - "{player} committed suicide."
-
-poi:
-  - "{player} has died from poison!"
-  - "{player} was poisoned!"
-
-lig:
-  - "{player} was smitten by Zeus."
-  - "{player} was struck by lightning."
-
+# fal <- Fall deaths
 fal:
   - "{player} fell off a plateau."
   - "{player} fell off a cliff."
   - "{player} hit the ground too hard."
   - "{player} tried to fly."
 
+# fab <- Falling block deaths
 fab:
   - "A block fell on {player}."
   - "A block fell on {player}, crushing his hopes and dreams."
   - "{player} got squished."
 
-blo:
-  - "{player} exploded."
-  - "{player} has an explosive personality."
-  - "{player} is now scattered around the floor in chunks."
+# fir <- Fire deaths
+fir:
+  - "{player} was burnt to a crisp."
+  - "{player} caught on fire."
+  - "{player} was burned alive."
 
-cre:
-  - "{player} hugged a creeper."
-  - "{player} got too close to a lil' creeper."
+# fiw <- Flying into wall deaths
+fiw:
+  - "{player} flew into a wall."
+  - "{player} hit the wall at warp speed."
 
-suf:
-  - "{player} got caught in a block."
-  - "{player} suffocated."
+# fro <- Frozen deaths
+fro:
+  - "{player} froze because they couldn't let it go"
 
-voi:
-  - "{player} fell into the void."
-  - "{player} fell out of the world."
-  - "{player} went past the space-time continuum."
+# hot <- Magma touch deaths
+hot:
+  - "Someone didn't tell {player} that the floor is lava."
 
+# lav <- Lava deaths
+lav:
+  - "{player} tried to swim in lava."
+  - "{player} is now obsidian."
+  - "{player} mistook lava for water."
+
+# lig <- Lightning deaths
+lig:
+  - "{player} was smitten by Zeus."
+  - "{player} was struck by lightning."
+
+# mag <- Magic deaths (harming potions, etc)
 mag:
   - "{player} got hit by a nasty potion."
 
+# mob <- Monster death messages
 mob:
   - "{player} was killed by a {mob}."
   - "{player} was attacked by {mob}."
   - "An angry {mob} killed {player}."
 
-wit:
-  - "{player} was killed by a wither!"
-  - "A wither annihilated {player}."
+# oth <- Other death messages (unknown)
+oth:
+  - "{player} died of unknown causes."
 
+# poi <- Poison deaths
+poi:
+  - "{player} has died from poison!"
+  - "{player} was poisoned!"
+
+# pvp <- For player vs player combat death messages
+pvp:
+  - "{player} was killed by {killer} wielding {hand}."
+  - "{player} was struck down by {killer} with {hand}."
+  - "{killer} bashed {player} to a pulp with {hand}."
+
+# sta <- Starvation deaths
+sta:
+  - "{player} forgot to eat."
+  - "Starvation took {player} from us."
+
+# son <- Warden sonic boom deaths
+son:
+  - "{player} couldn't handle the boom."
+  - "{player} ear drums popped."
+
+# sui <- Suicide deaths
+sui:
+  - "{player} committed suicide."
+
+# suf <- Suffocation deaths
+suf:
+  - "{player} got caught in a block."
+  - "{player} suffocated."
+
+# tho <- Thorns death messages
 tho:
   - "{player} got a taste of his own medicine."
   - "Reflected damage got the jump on {player}."
 
-dra:
-  - "{player} took on the dragon and didn't survive to tell the story"
+# voi <- Void deaths
+voi:
+  - "{player} fell into the void."
+  - "{player} fell out of the world."
+  - "{player} went past the space-time continuum."
 
-fro:
-  - "{player} froze because they couldn't let it go"
+# wit <- Wither death messages
+wit:
+  - "{player} was killed by a wither!"
+  - "A wither annihilated {player}."
 
-oth:
-  - "{player} died of unknown causes."

@@ -545,7 +545,7 @@ reflectcommands:
       - murder
     class: CmdKill
     description: Kills another player.
-    usage: '/<command> [player]'
+    usage: '/<command> [player] (cause)'
     version_added: Pre-0.2.7
   killall:
     aliases:
