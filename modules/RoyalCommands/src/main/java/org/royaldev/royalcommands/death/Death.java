@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.List;
@@ -149,9 +150,9 @@ public class Death {
         if (this.getKilled() == null) return message;
         final Player p = this.getKilled();
             return message
-                .replaceAll("(?i)\\{player}", RUtils.formatVariable(p.getName()))
-                .replaceAll("(?i)\\{dispplayer}", RUtils.formatVariable(p.getDisplayName()))
-                .replaceAll("(?i)\\{world}", RUtils.formatVariable(RUtils.getMVWorldName(p.getWorld())));
+                .replaceAll("(?i)\\{player}", MessageColor.NEGATIVE + p.getName() + MessageColor.NEUTRAL)
+                .replaceAll("(?i)\\{dispplayer}", MessageColor.NEGATIVE + p.getDisplayName() + MessageColor.NEUTRAL)
+                .replaceAll("(?i)\\{world}", MessageColor.NEGATIVE + RUtils.getMVWorldName(p.getWorld()) + MessageColor.NEUTRAL);
 
     }
 
@@ -160,10 +161,7 @@ public class Death {
         if (dt != null) {
             message = dt.replaceVariables(message, this.getLastEntityDamageEvent());
         }
-        return RUtils.getStringColor() +
-            this.replacePlayerVariables(
-                message
-            );
+        return MessageColor.NEUTRAL + this.replacePlayerVariables(message) ;
     }
 
     public DeathType getDeathType() {

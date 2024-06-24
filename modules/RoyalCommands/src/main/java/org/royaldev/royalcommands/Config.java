@@ -165,8 +165,6 @@ public class Config {
     public static String resetChatColor;
     public static String afkOnPlaceholder;
     public static String afkOffPlaceholder;
-    public static String variableColor;
-    public static String messageColor;
 
     private final RoyalCommands plugin;
 
@@ -232,7 +230,7 @@ public class Config {
         updateCheck = c.getBoolean("updates.update_check", false);
         updateOldUserdata = c.getBoolean("userdata.update_old", true);
         useAdminMotd = c.getBoolean("motd.options.use_first_join_motd", true);
-        useCustomDeath = c.getBoolean("death.use_custom_death", true);
+        useCustomDeath = c.getBoolean("deathmessages.enabled", true);
         useFirstJoinMotd = c.getBoolean("motd.options.use_first_join_motd", true);
         useProtocolLib = c.getBoolean("items.spawn.tag.plugins.protocollib", true);
         useVNP = c.getBoolean("plugins.use_vanish", true);
@@ -248,7 +246,7 @@ public class Config {
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
         ymlConvert = c.getBoolean("yml_convert", false);
-        interworld = c.getBoolean("death.show_interworld", true);
+        interworld = c.getBoolean("deathmessages.show_interworld", true);
 
         //-- ConfigurationSections --//
 
@@ -295,7 +293,7 @@ public class Config {
         motdFirstJoin = c.getStringList("motd.firstjoin");
         muteCmds = c.getStringList("commands.mute_blocked");
         onBanActions = c.getStringList("bans.actions");
-        disabledWorlds = c.getStringList("death.disabled_worlds");
+        disabledWorlds = c.getStringList("deathmessages.disabled_worlds");
 
         //-- Longs --//
 
@@ -338,8 +336,6 @@ public class Config {
         resetChatColor = c.getString("messages.options.colors.reset", "RESET");
         afkOnPlaceholder = RUtils.colorize(c.getString("afk.placeholders.on", "&7[AFK]"));
         afkOffPlaceholder = RUtils.colorize(c.getString("afk.placeholoders.off", ""));
-        variableColor = c.getString("death.var_color", "DARK_AQUA");
-        messageColor = c.getString("death.mes_color", "RED");
 
         if (this.plugin.whl.exists()) whitelist = this.plugin.whl.getStringList("whitelist");
 

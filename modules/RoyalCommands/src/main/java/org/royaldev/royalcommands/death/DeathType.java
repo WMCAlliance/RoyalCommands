@@ -6,6 +6,7 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 
 public enum DeathType {
@@ -14,7 +15,7 @@ public enum DeathType {
         @Override
         String replaceVariables(final String message, final EntityDamageEvent damageEvent) {
             final EntityDamageByEntityEvent edbee = (EntityDamageByEntityEvent) damageEvent;
-            return message.replaceAll("(?i)\\{(mob|entity)}", RUtils.formatVariable(edbee.getDamager().getType().name().toLowerCase().replace('_', ' ')));
+            return message.replaceAll("(?i)\\{(mob|entity)}", MessageColor.NEGATIVE + edbee.getDamager().getType().name().toLowerCase().replace('_', ' ') + MessageColor.NEUTRAL);
         }
     },
     PLAYER(EntityDamageByEntityEvent.class) {
@@ -23,9 +24,9 @@ public enum DeathType {
             final EntityDamageByEntityEvent edbee = (EntityDamageByEntityEvent) damageEvent;
             final Player p = (Player) edbee.getDamager();
             return message
-                .replaceAll("(?i)\\{hand}", RUtils.formatVariable(RUtils.getItemStackName(p.getInventory().getItemInMainHand())))
-                .replaceAll("(?i)\\{killer}", RUtils.formatVariable(p.getName()))
-                .replaceAll("(?i)\\{dispkiller}", RUtils.formatVariable(p.getDisplayName()));
+                .replaceAll("(?i)\\{hand}", MessageColor.NEGATIVE + RUtils.getItemStackName(p.getInventory().getItemInMainHand()) + MessageColor.NEUTRAL)
+                .replaceAll("(?i)\\{killer}", MessageColor.NEGATIVE + p.getName() + MessageColor.NEUTRAL)
+                .replaceAll("(?i)\\{dispkiller}", MessageColor.NEGATIVE + p.getDisplayName() + MessageColor.NEUTRAL);
         }
     },
     BLOCK(EntityDamageByBlockEvent.class) {

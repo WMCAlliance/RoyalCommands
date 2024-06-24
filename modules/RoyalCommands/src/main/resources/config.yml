@@ -693,21 +693,11 @@ items:
 ###
 # Death Message Options #
 ###
-death:
-  # "use_custom_death" - Should custom death messages be used?
-  use_custom_death: true
-  # "show_interworld" - Should death messages from other worlds be displayed to players?
+deathmessages:
+  # Should custom death messages be used, this will override the vanilla death messages
+  enabled: true
+  # Should death messages from other worlds be displayed to players?
   show_interworld: true
-  # "disabled_worlds" - List of worlds to disable death messages in
+  # List of worlds to disable death messages in
   disabled_worlds:
     - someworldhere
-  ###################
-  # Colors!
-  # The default colors are HeroicDeath colors (if I recall correctly)
-  # You can change them here
-  # "var_color" is the color of the variables (those listed above)
-  # "mes_color" is the color of the rest of the message.
-  # Get all the colors here: http://jd.bukkit.org/apidocs/org/bukkit/ChatColor.html
-  ###################
-  var_color: DARK_AQUA
-  mes_color: RED

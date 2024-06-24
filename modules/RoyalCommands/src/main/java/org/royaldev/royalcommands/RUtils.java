@@ -1645,25 +1645,6 @@ public final class RUtils {
         return times.get("12h");
     }
 
-    public static ChatColor getVariableColor() {
-        try {
-            return ChatColor.valueOf(Config.variableColor.toUpperCase());
-        } catch (final IllegalArgumentException e) {
-            return ChatColor.DARK_AQUA;
-        }
-    }
-
-    public static String formatVariable(final String variable) {
-        return RUtils.getVariableColor() + variable + RUtils.getStringColor();
-    }
-
-    public static ChatColor getStringColor() {
-        try {
-            return ChatColor.valueOf(Config.messageColor.toUpperCase());
-        } catch (final IllegalArgumentException e) {
-            return ChatColor.DARK_AQUA;
-        }
-    }
 
     public static String getCustomName(final ItemStack is) {
         if (!is.hasItemMeta()) return null;
