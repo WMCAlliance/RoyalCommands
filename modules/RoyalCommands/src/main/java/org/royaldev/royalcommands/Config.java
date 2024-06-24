@@ -80,7 +80,7 @@ public class Config {
     public static boolean wmShowEmptyWorlds;
     public static boolean worldAccessPerm;
     public static boolean ymlConvert;
-    public static boolean interworld;
+    public static boolean interworldDeathMessages;
 
     //-- ConfigurationSections --//
     public static ConfigurationSection commandCooldowns;
@@ -124,7 +124,8 @@ public class Config {
     public static List<String> muteCmds;
     public static List<String> onBanActions;
     public static List<String> whitelist;
-    public static List<String> disabledWorlds;
+    public static List<String> ignoredDeathMessageWorlds;
+    public static List<String> silencedDeathMessageWorlds;
 
     //-- Longs --//
     public static long afkAutoTime;
@@ -246,7 +247,7 @@ public class Config {
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
         ymlConvert = c.getBoolean("yml_convert", false);
-        interworld = c.getBoolean("deathmessages.show_interworld", true);
+        interworldDeathMessages = c.getBoolean("deathmessages.show_interworld", true);
 
         //-- ConfigurationSections --//
 
@@ -293,7 +294,8 @@ public class Config {
         motdFirstJoin = c.getStringList("motd.firstjoin");
         muteCmds = c.getStringList("commands.mute_blocked");
         onBanActions = c.getStringList("bans.actions");
-        disabledWorlds = c.getStringList("deathmessages.disabled_worlds");
+        ignoredDeathMessageWorlds = c.getStringList("deathmessages.ignored_worlds");
+        silencedDeathMessageWorlds = c.getStringList("deathmessages.silenced_worlds");
 
         //-- Longs --//
 

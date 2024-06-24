@@ -19,7 +19,7 @@ public class DeathListener implements Listener {
     }
 
     private void sendDeathMessage(final String message, final World in) {
-        final boolean interworld = Config.interworld;
+        final boolean interworld = Config.interworldDeathMessages;
         if (interworld) {
             this.plugin.getServer().broadcastMessage(message);
             return;
@@ -35,7 +35,11 @@ public class DeathListener implements Listener {
         if (!Config.useCustomDeath) return;
         if (event.getEntity() == null) return;
         final World in = event.getEntity().getWorld();
-        if (Config.disabledWorlds.contains(in.getName())) return;
+        if (Config.ignoredDeathMessageWorlds.contains(in.getName())) return;
+        if (Config.silencedDeathMessageWorlds.contains(in.getName())) {
+            event.setDeathMessage(null);
+            return;
+        }
         event.setDeathMessage(null);
         final Death death = new Death(this.plugin, event);
         this.sendDeathMessage(death.getNewDeathMessage(), in);
