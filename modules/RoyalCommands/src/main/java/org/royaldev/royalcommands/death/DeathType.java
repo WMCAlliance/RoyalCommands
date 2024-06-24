@@ -26,7 +26,7 @@ public enum DeathType {
             return message
                 .replaceAll("(?i)\\{hand}", MessageColor.NEGATIVE + RUtils.getItemStackName(p.getInventory().getItemInMainHand()) + MessageColor.NEUTRAL)
                 .replaceAll("(?i)\\{killer}", MessageColor.NEGATIVE + p.getName() + MessageColor.NEUTRAL)
-                .replaceAll("(?i)\\{dispkiller}", MessageColor.NEGATIVE + p.getDisplayName() + MessageColor.NEUTRAL);
+                .replaceAll("(?i)\\{kdispname}", MessageColor.NEGATIVE + p.getDisplayName() + MessageColor.NEUTRAL);
         }
     },
     BLOCK(EntityDamageByBlockEvent.class) {

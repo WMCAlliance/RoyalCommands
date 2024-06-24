@@ -1,9 +1,9 @@
 ###################
 # Variables!
 # {player} <- name of player who died
-# {dispplayer} <- display name of player who died (nicknames, etc)
+# {dispname} <- display name of player who died (nicknames, etc)
 # {killer} <- what killed it (attacker name - PvP only)
-# {dispkiller} <- what killed it (attacker display name - PvP only)
+# {kdispname} <- what killed it (attacker display name - PvP only)
 # {world} <- the world in which the player died
 # {mob} <- what killed it (if it's a monster)
 # {hand} <- what was in the killer's hand (PvP only, will use item name if available)

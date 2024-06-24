@@ -151,7 +151,7 @@ public class Death {
         final Player p = this.getKilled();
             return message
                 .replaceAll("(?i)\\{player}", MessageColor.NEGATIVE + p.getName() + MessageColor.NEUTRAL)
-                .replaceAll("(?i)\\{dispplayer}", MessageColor.NEGATIVE + p.getDisplayName() + MessageColor.NEUTRAL)
+                .replaceAll("(?i)\\{dispname}", MessageColor.NEGATIVE + p.getDisplayName() + MessageColor.NEUTRAL)
                 .replaceAll("(?i)\\{world}", MessageColor.NEGATIVE + RUtils.getMVWorldName(p.getWorld()) + MessageColor.NEUTRAL);
 
     }
