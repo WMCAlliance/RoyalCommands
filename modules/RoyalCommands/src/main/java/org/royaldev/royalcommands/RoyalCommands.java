@@ -82,6 +82,7 @@ public class RoyalCommands extends JavaPlugin {
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
     private final long startTime = System.currentTimeMillis();
     public Configuration whl;
+    public Configuration dm;
     public String version = null;
     public String newVersion = null;
 
@@ -158,7 +159,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private void initializeConfManagers() {
-        final String[] cms = new String[]{"whitelist.yml", "warps.yml", "publicassignments.yml"};
+        final String[] cms = new String[]{"whitelist.yml", "warps.yml", "publicassignments.yml", "deathmessages.yml"};
         for (final String name : cms) {
             final Configuration cm = Configuration.getConfiguration(name);
             if (!cm.exists()) cm.createFile();
@@ -392,6 +393,7 @@ public class RoyalCommands extends JavaPlugin {
         if (!new File(getDataFolder(), "rules.txt").exists()) saveResource("rules.txt", false);
         if (!new File(getDataFolder(), "help.txt").exists()) saveResource("help.txt", false);
         if (!new File(getDataFolder(), "warps.yml").exists()) saveResource("warps.yml", false);
+        if (!new File(getDataFolder(), "deathmessages.yml").exists()) saveResource("deathmessages.yml", false);
         final File file = new File(getDataFolder(), "userdata");
         if (!file.exists()) {
             try {
@@ -440,6 +442,7 @@ public class RoyalCommands extends JavaPlugin {
         this.pluginYml = YamlConfiguration.loadConfiguration(new InputStreamReader(this.getResource("plugin.yml"), Charsets.UTF_8));
         RoyalCommands.dataFolder = getDataFolder();
         this.whl = Configuration.getConfiguration("whitelist.yml");
+        this.dm = Configuration.getConfiguration("deathmessages.yml");
         RoyalCommands.commands = pluginYml.getConfigurationSection("reflectcommands");
         this.version = getDescription().getVersion();
 
@@ -506,6 +509,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new TradeListener(), this);
         pm.registerEvents(new InventoryGUIEventListener(), this);
+        pm.registerEvents(new DeathListener(this), this);
 
         //-- ProtocolLib things --//
 
