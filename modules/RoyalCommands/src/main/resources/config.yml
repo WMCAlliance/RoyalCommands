@@ -220,7 +220,7 @@ motd:
     - "You are in the world &8{world}&r. the time is &8{time12h}&r"
     - "The current uptime is &8{uptime}&r"
   firstjoin:
-    - "&dWelcome to {servername}, {dispname} for the first time!"
+    - "&dWelcome to {servername} for the first time {dispname}!"
     - "&fThere are &8{players}&r players online:"
     - "Use the command &8/rules&r to see the rules"
 
