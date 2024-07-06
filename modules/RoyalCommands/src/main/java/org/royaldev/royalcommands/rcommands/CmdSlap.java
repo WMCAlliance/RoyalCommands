@@ -43,6 +43,7 @@ public class CmdSlap extends TabCommand {
         push.setY(r.nextInt(2));
         push.setX(r.nextInt(4) - 2);
         push.setZ(r.nextInt(4) - 2);
+        t.sendHurtAnimation(r.nextInt(270));
         t.setVelocity(push);
         this.plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + MessageColor.RESET + " slaps " + MessageColor.NEGATIVE + t.getName() + MessageColor.RESET + "!");
         return true;
