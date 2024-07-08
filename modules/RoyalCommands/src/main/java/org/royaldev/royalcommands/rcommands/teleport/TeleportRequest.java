@@ -191,7 +191,7 @@ public class TeleportRequest {
                 return;
         }
         final boolean success = error.isEmpty();
-        final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? requester.getName() : target.getName()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? target.getName() : requester.getName()) + MessageColor.POSITIVE + " was accepted.";
+        final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? requester.getDisplayName() : target.getDisplayName()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? target.getDisplayName() : requester.getDisplayName()) + MessageColor.POSITIVE + " was accepted.";
         if (success) {
             requester.sendMessage(message);
             target.sendMessage(message);
@@ -211,10 +211,10 @@ public class TeleportRequest {
         this.expire();
         final Player requester = Bukkit.getPlayerExact(this.getRequester());
         final Player target = Bukkit.getPlayerExact(this.getTarget());
-        final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? this.getRequester() : this.getTarget()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? this.getTarget() : this.getRequester()) + MessageColor.POSITIVE + " was denied.";
-        if (requester != null)
-            requester.sendMessage(message.replace(MessageColor.POSITIVE.toString(), MessageColor.NEGATIVE.toString()));
-        if (target != null) target.sendMessage(message);
+        if (requester == null || target == null) return;
+        final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? requester.getDisplayName() : target.getDisplayName()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? target.getDisplayName() : requester.getDisplayName()) + MessageColor.POSITIVE + " was denied.";
+        requester.sendMessage(message.replace(MessageColor.POSITIVE.toString(), MessageColor.NEGATIVE.toString()));
+        target.sendMessage(message);
     }
 
     /**
@@ -270,13 +270,13 @@ public class TeleportRequest {
         }
 
         /**
-         * Formats the output of {@link #getRequestMessage()} with the name of the given CommandSender.
+         * Formats the output of {@link #getRequestMessage()} with the name of the given Player.
          *
-         * @param cs CommandSender to get name from to insert into the message
+         * @param p Player to get name from to insert into the message
          * @return Formatted message
          */
-        public String getMessage(final CommandSender cs) {
-            return this.getMessage(cs.getName());
+        public String getMessage(final Player p) {
+            return this.getMessage(p.getDisplayName());
         }
 
         /**
