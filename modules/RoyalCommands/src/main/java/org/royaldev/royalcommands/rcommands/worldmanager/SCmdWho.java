@@ -39,7 +39,7 @@ public class SCmdWho extends SubCommand<CmdWorldManager> {
             }
             for (final Player p : w.getPlayers()) {
                 sb.append(MessageColor.NEUTRAL);
-                sb.append(p.getName());
+                sb.append(p.getDisplayName());
                 sb.append(MessageColor.RESET);
                 sb.append(", ");
             }

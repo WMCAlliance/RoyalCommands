@@ -27,7 +27,7 @@ public class CmdQuit extends TabCommand {
         }
         Player p = (Player) cs;
         RUtils.silentKick(p, "You have left the game.");
-        this.plugin.getServer().broadcastMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " has left the game.");
+        this.plugin.getServer().broadcastMessage(MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.POSITIVE + " has left the game.");
         return true;
     }
 }
