@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWorldManager;
 import org.royaldev.royalcommands.rcommands.SubCommand;
@@ -48,6 +49,7 @@ public class SCmdInfo extends SubCommand<CmdWorldManager> {
         final World w = p.getWorld();
         cs.sendMessage(MessageColor.POSITIVE + "Information on this world:");
         cs.sendMessage(MessageColor.POSITIVE + "  Name: " + MessageColor.NEUTRAL + w.getName());
+        cs.sendMessage(MessageColor.POSITIVE + "  Display Name: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w));
         cs.sendMessage(MessageColor.POSITIVE + "  Environment: " + MessageColor.NEUTRAL + w.getEnvironment().name());
         return true;
     }
