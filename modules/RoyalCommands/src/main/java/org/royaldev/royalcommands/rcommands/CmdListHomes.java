@@ -69,13 +69,13 @@ public class CmdListHomes extends TabCommand {
             final World w = entry.getKey();
             final FancyMessage fm = new FancyMessage("  Homes for ")
 					.color(MessageColor.POSITIVE.cc())
-					.then(w == null ? "an invalid world" : w.getName())
+					.then(w == null ? "an invalid world" : RUtils.getMVWorldName((w)))
 					.color(MessageColor.NEUTRAL.cc())
-					.tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + w.getName());
+					.tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName((w)));
 			if (w != null) {
 				fm.command("/world " + w.getName()).then(":").color(MessageColor.POSITIVE.cc());
 			}
-			
+
             fm.send(cs);
             final FancyMessage fmh = new FancyMessage("    ");
             final Iterator<Home> homes = entry.getValue().iterator();
