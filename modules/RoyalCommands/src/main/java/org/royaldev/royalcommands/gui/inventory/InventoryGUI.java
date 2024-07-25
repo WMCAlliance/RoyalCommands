@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.gui.inventory;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.Material;
@@ -26,9 +27,9 @@ import java.util.UUID;
  */
 public class InventoryGUI {
 
-    private static final String TAG_NAME = "IG:Tag";
+    private static final String TAG_NAME = "ig-tag";
     private final Inventory base;
-    private final Map<UUID, ClickHandler> clickHandlers = new HashMap<>();
+    private final Map<NamespacedKey, ClickHandler> clickHandlers = new HashMap<>();
     private final UUID identifier = UUID.randomUUID();
 
     /**
@@ -64,14 +65,14 @@ public class InventoryGUI {
      * Tags an ItemStack with the given UUID, which can be used to quickly get the item again.
      *
      * @param is   ItemStack to tag
-     * @param uuid UUID to tag the item with
+     * @param key Key to tag the item with
      * @return The tagged ItemStack
      */
-    private ItemStack tagItem(final ItemStack is, final UUID uuid) {
+    private ItemStack tagItem(final ItemStack is, final NamespacedKey key) {
         if (is == null || is.getType() == Material.AIR) return is;
         ItemMeta meta = is.getItemMeta();
         if(!meta.hasAttributeModifiers()){
-            meta.addAttributeModifier(Attribute.GENERIC_FOLLOW_RANGE, new AttributeModifier(uuid, InventoryGUI.TAG_NAME, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+            meta.addAttributeModifier(Attribute.GENERIC_FOLLOW_RANGE, new AttributeModifier(key, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND.getGroup()));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             is.setItemMeta(meta);
         }return is;
@@ -88,26 +89,26 @@ public class InventoryGUI {
      * @param guiItem      Item to add
      */
     public void addItem(final ClickHandler clickHandler, final int x, final int y, final GUIItem guiItem) {
-        this.addItem(UUID.randomUUID(), clickHandler, x, y, guiItem);
+        this.addItem(new NamespacedKey(InventoryGUI.TAG_NAME, String.valueOf(UUID.randomUUID())), clickHandler, x, y, guiItem);
     }
 
     /**
      * Adds an item to the GUI. The given {@link ClickHandler} will be associated with this item. The item will be
      * tagged with the given UUID.
      *
-     * @param uuid         UUID to tag the item with
+     * @param key         Key to tag the item with
      * @param clickHandler ClickHandler to use for the item
      * @param x            X-coordinate of the position the item will be added at
      * @param y            Y-coordinate
      * @param guiItem      Item to add
      */
-    public void addItem(final UUID uuid, final ClickHandler clickHandler, final int x, final int y, final GUIItem guiItem) {
+    public void addItem(final NamespacedKey key, final ClickHandler clickHandler, final int x, final int y, final GUIItem guiItem) {
         final int slot = this.getSlot(x, y);
         if (slot > this.getBase().getSize() - 1) {
             throw new IllegalArgumentException("Location does not exist.");
         }
-        final ItemStack is = this.tagItem(guiItem.makeItemStack(), uuid);
-        this.getClickHandlers().put(uuid, clickHandler);
+        final ItemStack is = this.tagItem(guiItem.makeItemStack(), key);
+        this.getClickHandlers().put(key, clickHandler);
         this.getBase().setItem(slot, is);
     }
 
@@ -134,16 +135,16 @@ public class InventoryGUI {
      * @return ClickHandler or null if none is associated
      */
     public ClickHandler getClickHandler(final ItemStack is) {
-        final UUID uuid = this.getTag(is);
-        return uuid == null ? null : this.getClickHandlers().get(uuid);
+        final NamespacedKey key = this.getTag(is);
+        return key == null ? null : this.getClickHandlers().get(key);
     }
 
     /**
-     * Returns the map of UUID tags to ClickHandlers.
+     * Returns the map of Key tags to ClickHandlers.
      *
      * @return Map
      */
-    public Map<UUID, ClickHandler> getClickHandlers() {
+    public Map<NamespacedKey, ClickHandler> getClickHandlers() {
         return this.clickHandlers;
     }
 
@@ -159,13 +160,13 @@ public class InventoryGUI {
     /**
      * Gets an ItemStack from this GUI by its UUID tag.
      *
-     * @param uuid UUID tag of item
+     * @param key Key tag of item
      * @return ItemStack or null if no matching UUID
      */
-    public ItemStack getItemStack(final UUID uuid) {
-        if (uuid == null) return null;
+    public ItemStack getItemStack(final NamespacedKey key) {
+        if (key == null) return null;
         for (final ItemStack is : this.getBase()) {
-            if (!uuid.equals(this.getTag(is))) continue;
+            if (!key.equals(this.getTag(is))) continue;
             return is;
         }
         return null;
@@ -183,18 +184,18 @@ public class InventoryGUI {
     }
 
     /**
-     * Gets the UUID tag of the given ItemStack.
+     * Gets the Key tag of the given ItemStack.
      *
      * @param is ItemStack to get the tag of
-     * @return UUID or null if no tag
+     * @return Key or null if no tag
      */
-    public UUID getTag(final ItemStack is) {
+    public NamespacedKey getTag(final ItemStack is) {
         if (is == null || is.getType() == Material.AIR) return null;
         ItemMeta meta = is.getItemMeta();
         if(meta.hasAttributeModifiers()){
             for (final AttributeModifier a : meta.getAttributeModifiers().values()) {
-                if (!a.getName().equals(InventoryGUI.TAG_NAME)) continue;
-                return a.getUniqueId();
+                if (!a.getKey().getNamespace().equals(InventoryGUI.TAG_NAME)) continue;
+                return a.getKey();
             }
         }return null;
     }
@@ -222,17 +223,17 @@ public class InventoryGUI {
     }
 
     /**
-     * Replaces the ItemStack with the given UUID tag with the replacement ItemStack.
+     * Replaces the ItemStack with the given Key tag with the replacement ItemStack.
      *
-     * @param uuid        Tag of ItemStack to replace
+     * @param key        Tag of ItemStack to replace
      * @param replacement Replacement ItemStack
      */
-    public void replaceItemStack(final UUID uuid, final ItemStack replacement) {
-        if (uuid == null) throw new IllegalArgumentException("UUID cannot be null");
+    public void replaceItemStack(final NamespacedKey key, final ItemStack replacement) {
+        if (key == null) throw new IllegalArgumentException("UUID cannot be null");
         for (int i = 0; i < this.getBase().getSize(); i++) {
             final ItemStack is = this.getBase().getItem(i);
-            if (!uuid.equals(this.getTag(is))) continue;
-            this.getBase().setItem(i, this.tagItem(replacement, uuid));
+            if (!key.equals(this.getTag(is))) continue;
+            this.getBase().setItem(i, this.tagItem(replacement, key));
             break;
         }
     }
@@ -256,13 +257,13 @@ public class InventoryGUI {
     /**
      * Sets the name of the ItemStack tagged with the given UUID.
      *
-     * @param uuid UUID of the ItemStack
+     * @param key Key of the ItemStack
      * @param name New name
      */
-    public void setName(final UUID uuid, final String name) {
-        final ItemStack is = this.getItemStack(uuid);
+    public void setName(final NamespacedKey key, final String name) {
+        final ItemStack is = this.getItemStack(key);
         if (is == null) throw new IllegalArgumentException("No such ItemStack UUID found");
-        this.replaceItemStack(uuid, this.setItemMeta(is, name));
+        this.replaceItemStack(key, this.setItemMeta(is, name));
     }
 
     /**
