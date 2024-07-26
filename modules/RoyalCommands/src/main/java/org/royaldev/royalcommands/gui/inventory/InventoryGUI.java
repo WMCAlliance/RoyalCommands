@@ -62,7 +62,7 @@ public class InventoryGUI {
     }
 
     /**
-     * Tags an ItemStack with the given UUID, which can be used to quickly get the item again.
+     * Tags an ItemStack with the given Key, which can be used to quickly get the item again.
      *
      * @param is   ItemStack to tag
      * @param key Key to tag the item with
@@ -94,7 +94,7 @@ public class InventoryGUI {
 
     /**
      * Adds an item to the GUI. The given {@link ClickHandler} will be associated with this item. The item will be
-     * tagged with the given UUID.
+     * tagged with the given Key.
      *
      * @param key         Key to tag the item with
      * @param clickHandler ClickHandler to use for the item
@@ -158,10 +158,10 @@ public class InventoryGUI {
     }
 
     /**
-     * Gets an ItemStack from this GUI by its UUID tag.
+     * Gets an ItemStack from this GUI by its Key tag.
      *
      * @param key Key tag of item
-     * @return ItemStack or null if no matching UUID
+     * @return ItemStack or null if no matching Key
      */
     public ItemStack getItemStack(final NamespacedKey key) {
         if (key == null) return null;
@@ -229,7 +229,7 @@ public class InventoryGUI {
      * @param replacement Replacement ItemStack
      */
     public void replaceItemStack(final NamespacedKey key, final ItemStack replacement) {
-        if (key == null) throw new IllegalArgumentException("UUID cannot be null");
+        if (key == null) throw new IllegalArgumentException("Key cannot be null");
         for (int i = 0; i < this.getBase().getSize(); i++) {
             final ItemStack is = this.getBase().getItem(i);
             if (!key.equals(this.getTag(is))) continue;
@@ -255,14 +255,14 @@ public class InventoryGUI {
     }
 
     /**
-     * Sets the name of the ItemStack tagged with the given UUID.
+     * Sets the name of the ItemStack tagged with the given Key.
      *
      * @param key Key of the ItemStack
      * @param name New name
      */
     public void setName(final NamespacedKey key, final String name) {
         final ItemStack is = this.getItemStack(key);
-        if (is == null) throw new IllegalArgumentException("No such ItemStack UUID found");
+        if (is == null) throw new IllegalArgumentException("No such ItemStack Key found");
         this.replaceItemStack(key, this.setItemMeta(is, name));
     }
 
