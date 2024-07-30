@@ -6,6 +6,7 @@
 package org.royaldev.royalcommands.rcommands.trade;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -50,10 +51,11 @@ import java.util.UUID;
 public class Trade {
 
     private static final Map<Pair<UUID, UUID>, Trade> trades = new HashMap<>();
+    private static final String TAG_NAME = "ig-tag";
     private final Map<Party, UUID> parties = new HashMap<>();
     private final Map<Party, Boolean> acceptances = new HashMap<>();
     private final InventoryGUI inventoryGUI;
-    private final UUID acceptButtonUUID = UUID.randomUUID();
+    private final NamespacedKey acceptButtonUUID = new NamespacedKey(Trade.TAG_NAME, String.valueOf(this.acceptButtonUUID));
 
     public Trade(final UUID trader, final UUID tradee) {
         this.parties.put(Party.TRADER, trader);
