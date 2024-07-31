@@ -21,7 +21,7 @@ public class CmdCompass extends TabCommand {
     public CmdCompass(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort(), CompletionType.ONLINE_PLAYER.getShort()});
     }
-	
+
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new ArrayList<>(Arrays.asList("reset", "here", "player", "location"));
@@ -46,7 +46,7 @@ public class CmdCompass extends TabCommand {
                     cs.sendMessage(MessageColor.POSITIVE + "Your compass now points to your current location.");
                     return true;
                 } else if (command.equalsIgnoreCase("reset")) {
-                    p.setCompassTarget((p.getBedSpawnLocation() != null) ? p.getBedSpawnLocation() : CmdSpawn.getWorldSpawn(p.getWorld()));
+                    p.setCompassTarget((p.getRespawnLocation() != null) ? p.getRespawnLocation() : CmdSpawn.getWorldSpawn(p.getWorld()));
                     p.sendMessage(MessageColor.POSITIVE + "Reset your compass.");
                     return true;
                 } else {
