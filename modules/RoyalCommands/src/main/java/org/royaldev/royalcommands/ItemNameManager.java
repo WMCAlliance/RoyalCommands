@@ -8,6 +8,8 @@ package org.royaldev.royalcommands;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.tools.Pair;
 
 import java.util.ArrayList;
@@ -85,7 +87,9 @@ public class ItemNameManager {
         final ItemStack is = new ItemStack(itemstackData.getFirst(), 1, itemstackData.getSecond());
         if (data != null && !data.isEmpty()) {
             try {
-                is.setDurability(Short.parseShort(data));
+                ItemMeta isMeta = is.getItemMeta();
+                Damageable isDamageable = (Damageable)isMeta;
+                isDamageable.setDamage(Short.parseShort(data));
             } catch (NumberFormatException ignored) {}
         }
         return is;

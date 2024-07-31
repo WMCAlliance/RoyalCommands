@@ -28,6 +28,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -60,7 +62,7 @@ public class CmdUses extends TabCommand {
     }
 
     private boolean itemStackEquals(final ItemStack a, final ItemStack b) {
-        return !(a == null || b == null) && a.getType() == b.getType() && (a.getDurability() == -1 || a.getDurability() == Short.MAX_VALUE || a.getDurability() == b.getDurability());
+        return !(a == null || b == null) && a.getType() == b.getType() && (((Damageable)a.getItemMeta()).getDamage() == -1 || ((Damageable)a.getItemMeta()).getDamage() == Short.MAX_VALUE || ((Damageable)a.getItemMeta()).getDamage() == ((Damageable)b.getItemMeta()).getDamage());
     }
 
     private void scheduleUsesTask(final Player p, final ItemStack is) {
@@ -141,10 +143,14 @@ public class CmdUses extends TabCommand {
         this.tasks.put(p.getName(), taskID);
     }
 
-    private ItemStack syncDurabilities(final ItemStack base, final ItemStack copyDurability) {
-        if (base.getType() != copyDurability.getType()) return base;
-        if (base.getDurability() != -1 && base.getDurability() != Short.MAX_VALUE) return base;
-        base.setDurability(copyDurability.getDurability());
+    private ItemStack syncDurabilities(final ItemStack base, final ItemStack copy) {
+        if (base.getType() != copy.getType()) return base;
+        ItemMeta baseMeta = base.getItemMeta();
+        Damageable baseDamageable = (Damageable)baseMeta;
+        ItemMeta copyMeta = copy.getItemMeta();
+        Damageable copyDamageable = (Damageable)copyMeta;
+        if (baseDamageable.getDamage() != -1 && baseDamageable.getDamage() != Short.MAX_VALUE) return base;
+        baseDamageable.setDamage(copyDamageable.getDamage());
         return base;
     }
 

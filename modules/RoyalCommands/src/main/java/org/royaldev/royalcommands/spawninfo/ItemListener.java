@@ -8,6 +8,8 @@ package org.royaldev.royalcommands.spawninfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +23,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -86,11 +90,13 @@ public class ItemListener implements Listener {
             spawnedItems.add(component);
         }
         if (spawnedItems.isEmpty()) return;
-        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(ci.getResult());
+        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(Objects.requireNonNull(ci.getResult()));
         si.setHasComponents(true);
         for (ItemStack spawned : spawnedItems) {
             final SpawnInfo ssi = SpawnInfo.SpawnInfoManager.getSpawnInfo(spawned);
-            si.getComponents().add(String.format("{(%sx%s):%s}%s%s", spawned.getType().name(), spawned.getAmount(), spawned.getDurability(), ((ssi.isSpawned()) ? " Spawned by: " + ssi.getSpawner() + "." : ""), ((ssi.hasComponents()) ? " Had spawned components." : "")));
+            ItemMeta spawnedMeta = spawned.getItemMeta();
+            Damageable spawnedDamageable = (Damageable)spawnedMeta;
+            si.getComponents().add(String.format("{(%sx%s):%s}%s%s", spawned.getType().name(), spawned.getAmount(), spawnedDamageable.getDamage(), ((ssi.isSpawned()) ? " Spawned by: " + ssi.getSpawner() + "." : ""), ((ssi.hasComponents()) ? " Had spawned components." : "")));
         }
         ci.setResult(SpawnInfo.SpawnInfoManager.applySpawnInfo(ci.getResult(), si));
     }
