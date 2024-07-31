@@ -5,13 +5,11 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -56,7 +54,7 @@ public class CmdEnchant extends TabCommand {
 
     private void sendEnchantmentList(CommandSender cs) {
         StringBuilder sb = new StringBuilder();
-        List<Enchantment> ench = new ArrayList<>(Arrays.asList(Enchantment.values()));
+        List<Enchantment> ench = Registry.ENCHANTMENT.stream().toList();
         ench.sort(new Comparator<Enchantment>() {
             @Override
             public int compare(Enchantment e1, Enchantment e2) {
@@ -89,7 +87,7 @@ public class CmdEnchant extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Air cannot be enchanted!");
             return true;
         }
-        Enchantment toAdd = Enchantment.getByKey(new NamespacedKey("minecraft", args[0]));
+        Enchantment toAdd = Registry.ENCHANTMENT.get(new NamespacedKey("minecraft", args[0]));
         if (toAdd == null) {
             if (args[0].equalsIgnoreCase("all")) {
                 int level;
@@ -112,7 +110,7 @@ public class CmdEnchant extends TabCommand {
                     }
                 }
                 if (level == 0) {
-                    for (Enchantment e : Enchantment.values()) {
+                    for (Enchantment e : Registry.ENCHANTMENT) {
                         if (!hand.containsEnchantment(e)) continue;
                         hand.removeEnchantment(e);
                     }
@@ -123,7 +121,7 @@ public class CmdEnchant extends TabCommand {
                         return true;
                     }
                     boolean skipped = false;
-                    for (Enchantment e : Enchantment.values()) {
+                    for (Enchantment e : Registry.ENCHANTMENT) {
                         int toApply = getRealLevel(e, level);
                         if (toApply > e.getMaxLevel() && !this.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
                             skipped = true;

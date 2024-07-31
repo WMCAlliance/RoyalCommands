@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
@@ -121,10 +122,10 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 }
                 break;
 			case EFFECT:
-				for (PotionEffectType pet : PotionEffectType.values()) {
+                for (PotionEffectType pet : Registry.EFFECT) {
 					if (pet == null) continue;
-					if (!pet.getName().toLowerCase().startsWith(arg.toLowerCase())) continue;
-					possibilities.add(pet.getName().toLowerCase());
+					if (!pet.getKey().toString().startsWith(arg.toLowerCase())) continue;
+					possibilities.add(pet.getKey().toString().toLowerCase());
 				}
 				possibilities.add("clear");
 				break;
