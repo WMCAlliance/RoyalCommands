@@ -57,8 +57,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.Registry;
 import org.bukkit.util.Vector;
 import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalcommands.configuration.GeneralConfiguration;
@@ -559,7 +561,7 @@ public final class RUtils {
             } catch (NumberFormatException e) {
                 continue;
             }
-            Enchantment e = Enchantment.getByKey(new NamespacedKey("minecraft:", name.toLowerCase()));
+            Enchantment e = Registry.ENCHANTMENT.get(new NamespacedKey("minecraft:", name.toLowerCase()));
             if (e == null) continue;
             enchants.put(e, lvl);
         }
@@ -665,7 +667,9 @@ public final class RUtils {
         if (mat == null) return null;
         if (amount == null) amount = Config.defaultStack;
         ItemStack stack = new ItemStack(mat, amount);
-        if (data != null) stack.setDurability(data);
+        ItemMeta stackMeta = stack.getItemMeta();
+        Damageable stackDamageable = (Damageable)stackMeta;
+        if (data != null) stackDamageable.setDamage(data);
         return stack;
     }
 
