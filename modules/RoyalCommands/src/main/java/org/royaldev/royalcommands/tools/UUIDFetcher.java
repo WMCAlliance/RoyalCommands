@@ -14,6 +14,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     }
 
     private static HttpURLConnection createConnection(final int page) throws Exception {
-        final URL url = new URL(UUIDFetcher.PROFILE_URL + page);
+        final URL url = new URI(UUIDFetcher.PROFILE_URL + page).toURL();
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");

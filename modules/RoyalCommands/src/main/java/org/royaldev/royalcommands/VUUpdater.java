@@ -14,6 +14,8 @@ import org.json.simple.JSONValue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Matcher;
@@ -56,7 +58,7 @@ public final class VUUpdater {
         final VUUpdateInfo vuui;
         try {
             vuui = VUUpdater.getUpdateInfo(pluginID);
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             return UpdateStatus.ERROR;
         }
         final String pluginVersion = p.getDescription().getVersion();
@@ -72,8 +74,8 @@ public final class VUUpdater {
      * @return {@link org.royaldev.royalcommands.VUUpdater.VUUpdateInfo}
      * @throws IOException If any errors occur
      */
-    public static VUUpdateInfo getUpdateInfo(String pluginID) throws IOException {
-        final URLConnection conn = new URL("https://api.curseforge.com/servermods/files?projectIds=" + pluginID).openConnection();
+    public static VUUpdateInfo getUpdateInfo(String pluginID) throws IOException, URISyntaxException {
+        final URLConnection conn = new URI("https://api.curseforge.com/servermods/files?projectIds=" + pluginID).toURL().openConnection();
         conn.setConnectTimeout(5000);
         conn.setRequestProperty("User-Agent", "VU/1.0");
         conn.setDoOutput(true);

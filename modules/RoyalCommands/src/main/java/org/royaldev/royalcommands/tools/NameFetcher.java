@@ -11,6 +11,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class NameFetcher implements Callable<Map<UUID, String>> {
     public Map<UUID, String> call() throws Exception {
         Map<UUID, String> uuidStringMap = new HashMap<>();
         for (UUID uuid : uuids) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(PROFILE_URL + uuid.toString().replace("-", "")).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URI(PROFILE_URL + uuid.toString().replace("-", "")).toURL().openConnection();
             JSONObject response = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
             String name = (String) response.get("name");
             if (name == null) continue;

@@ -36,10 +36,7 @@ import org.royaldev.royalcommands.rcommands.pluginmanager.SCmdUpdateCheck;
 import org.royaldev.royalcommands.rcommands.pluginmanager.SCmdUpdateCheckAll;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +90,7 @@ public class CmdPluginManager extends ParentCommand {
         BufferedInputStream bis;
         final HttpURLConnection huc;
         try {
-            huc = (HttpURLConnection) new URL(url).openConnection();
+            huc = (HttpURLConnection) new URI(url).toURL().openConnection();
             huc.setInstanceFollowRedirects(true);
             huc.connect();
             bis = new BufferedInputStream(huc.getInputStream());
@@ -102,6 +99,9 @@ public class CmdPluginManager extends ParentCommand {
             return false;
         } catch (IOException e) {
             cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again. (" + MessageColor.NEUTRAL + e.getMessage() + MessageColor.NEGATIVE + ")");
+            return false;
+        } catch (URISyntaxException e) {
+            cs.sendMessage(MessageColor.NEGATIVE + "An unthinkable error happened. Please let the developer know.");
             return false;
         }
         String[] urlParts = huc.getURL().toString().split("(\\\\|/)");
@@ -228,7 +228,7 @@ public class CmdPluginManager extends ParentCommand {
         String tag = this.getCustomTag(name);
         if (tag == null) tag = name.toLowerCase();
         String pluginUrlString = "https://api.spigotmc.org/simple/0.2/index.php?action=getResource&id=" + tag;
-        URL url = new URL(pluginUrlString);
+        URL url = new URI(pluginUrlString).toURL();
         URLConnection request = url.openConnection();
         request.connect();
         JsonParser jp = new JsonParser();

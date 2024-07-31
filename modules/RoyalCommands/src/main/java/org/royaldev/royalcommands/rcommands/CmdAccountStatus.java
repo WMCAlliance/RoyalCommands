@@ -7,10 +7,9 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,11 +36,11 @@ public class CmdAccountStatus extends TabCommand {
         name = p.getName();
         URL u;
         try {
-            u = new URL("https://api.mojang.com/users/profiles/minecraft/" + URLEncoder.encode(name, "UTF-8"));
+            u = new URI("https://api.mojang.com/users/profiles/minecraft/" + URLEncoder.encode(name, StandardCharsets.UTF_8)).toURL();
         } catch (final MalformedURLException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "An unthinkable error happened. Please let the developer know.");
             return true;
-        } catch (final UnsupportedEncodingException ex) {
+        } catch (final URISyntaxException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "The UTF-8 encoding is not supported on this system!");
             return true;
         }
@@ -50,7 +49,7 @@ public class CmdAccountStatus extends TabCommand {
             HttpURLConnection connection = (HttpURLConnection)u.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
-            
+
             switch(connection.getResponseCode()) {
                 case 200:
                     isPremium = true;
