@@ -9,6 +9,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -67,6 +69,7 @@ public class SignListener implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getPlayer() == null) return;
         Sign s = (Sign) e.getClickedBlock().getState();
+        SignSide ss = s.getSide(Side.FRONT);
         Player p = e.getPlayer();
         String line1 = ChatColor.stripColor(s.getLine(0)).trim();
         String line2 = ChatColor.stripColor(s.getLine(1)).trim();
@@ -81,7 +84,7 @@ public class SignListener implements Listener {
                 return;
             }
             if (line2.isEmpty()) {
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 p.sendMessage(MessageColor.NEGATIVE + "No warp specified.");
                 return;
             }
@@ -89,10 +92,10 @@ public class SignListener implements Listener {
             Double charge = getCharge(line3);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                ss.setLine(2, ChatColor.DARK_GREEN + line3);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
@@ -113,7 +116,7 @@ public class SignListener implements Listener {
                 return;
             }
             if (line2.isEmpty() || (CmdTime.getValidTime(line2) == null)) {
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 p.sendMessage(MessageColor.NEGATIVE + "Invalid time specified!");
                 return;
             }
@@ -121,10 +124,10 @@ public class SignListener implements Listener {
             Double charge = getCharge(line3);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                ss.setLine(2, ChatColor.DARK_GREEN + line3);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
@@ -144,16 +147,16 @@ public class SignListener implements Listener {
             Double charge = getCharge(line3);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                ss.setLine(2, ChatColor.DARK_GREEN + line3);
                 if (!RUtils.chargePlayer(p, charge)) return;
             }
             line2 = line2.replace(" ", "_");
             ItemStack stack = RUtils.getItem(line2, null);
             if (stack == null) {
-                s.setLine(1, MessageColor.NEGATIVE + line2);
+                ss.setLine(1, MessageColor.NEGATIVE + line2);
                 p.sendMessage(MessageColor.NEGATIVE + "That material is invalid!");
                 return;
             } else s.setLine(1, line2.toLowerCase().replace("_", " "));
@@ -171,10 +174,10 @@ public class SignListener implements Listener {
             Double charge = getCharge(line2);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(1, ChatColor.DARK_GREEN + line2);
+                ss.setLine(1, ChatColor.DARK_GREEN + line2);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
@@ -193,10 +196,10 @@ public class SignListener implements Listener {
             Double charge = getCharge(line2);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(1, ChatColor.DARK_GREEN + line2);
+                ss.setLine(1, ChatColor.DARK_GREEN + line2);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
@@ -214,10 +217,10 @@ public class SignListener implements Listener {
             Double charge = getCharge(line3);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                ss.setLine(2, ChatColor.DARK_GREEN + line3);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
@@ -241,10 +244,10 @@ public class SignListener implements Listener {
             Double charge = getCharge(line4);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(3, ChatColor.DARK_GREEN + line4);
+                ss.setLine(3, ChatColor.DARK_GREEN + line4);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
@@ -262,15 +265,15 @@ public class SignListener implements Listener {
             Double charge = getCharge(line3);
             if (charge == null) {
                 p.sendMessage(MessageColor.NEGATIVE + "The cost is invalid!");
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 return;
             } else if (charge >= 0) {
-                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                ss.setLine(2, ChatColor.DARK_GREEN + line3);
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
             if (line2.isEmpty()) {
-                s.setLine(0, MessageColor.NEGATIVE + line1);
+                ss.setLine(0, MessageColor.NEGATIVE + line1);
                 p.sendMessage(MessageColor.NEGATIVE + "No command specified!");
                 return;
             }
