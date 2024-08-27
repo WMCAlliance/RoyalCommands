@@ -71,18 +71,19 @@ public class CmdAttributes extends TabCommand {
         if (subcommand.equalsIgnoreCase("list")) {
             if (meta.hasAttributeModifiers()) {
                 final FancyMessage fm = new FancyMessage("Item ").color(MessageColor.POSITIVE.cc())
-                        .then(hand.getType().name()).color(MessageColor.NEUTRAL.cc())
-                        .then(" has these Attribute Modifiers:").color(MessageColor.POSITIVE.cc());
+                    .then(hand.getType().name()).color(MessageColor.NEUTRAL.cc())
+                    .then(" has these Attribute Modifiers:").color(MessageColor.POSITIVE.cc());
                 fm.send(cs);
                 for (AttributeModifier am : meta.getAttributeModifiers().values()) {
+                    cs.sendMessage(am.toString());
                     final FancyMessage fma = new FancyMessage(am.getName()).color(MessageColor.NEUTRAL.cc())
-                            .tooltip(MessageColor.NEUTRAL
-                                    + "Attribute: " + MessageColor.RESET + am.getName() + "\n" + MessageColor.NEUTRAL
-                                    + "Operation: " + MessageColor.RESET + am.getOperation() + "\n" + MessageColor.NEUTRAL
-                                    + "Amount: " + MessageColor.RESET +am.getAmount() + "\n" + MessageColor.NEUTRAL
-                                    + "UUID: " + MessageColor.RESET + am.getUniqueId() + "\n"
-                                    + "click to copy the UUID")
-                            .clipboard(String.valueOf(am.getUniqueId()));
+                        .tooltip(MessageColor.NEUTRAL
+                            + "Attribute: " + MessageColor.RESET + am.getName() + "\n" + MessageColor.NEUTRAL
+                            + "Operation: " + MessageColor.RESET + am.getOperation() + "\n" + MessageColor.NEUTRAL
+                            + "Amount: " + MessageColor.RESET +am.getAmount() + "\n" + MessageColor.NEUTRAL
+                            + "UUID: " + MessageColor.RESET + am.getKey() + "\n"
+                            + "click to copy the UUID")
+                        .clipboard(String.valueOf(am.getKey()));
                     fma.send(cs);
                 }
             } else {
