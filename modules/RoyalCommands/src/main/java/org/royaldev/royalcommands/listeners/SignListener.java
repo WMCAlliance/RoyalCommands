@@ -69,12 +69,12 @@ public class SignListener implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getPlayer() == null) return;
         Sign s = (Sign) e.getClickedBlock().getState();
-        SignSide ss = s.getSide(Side.FRONT);
+        SignSide ss = ((Sign) e.getClickedBlock().getState()).getTargetSide(e.getPlayer());
         Player p = e.getPlayer();
-        String line1 = ChatColor.stripColor(s.getLine(0)).trim();
-        String line2 = ChatColor.stripColor(s.getLine(1)).trim();
-        String line3 = ChatColor.stripColor(s.getLine(2)).trim();
-        String line4 = ChatColor.stripColor(s.getLine(3)).trim();
+        String line1 = ChatColor.stripColor(ss.getLine(0)).trim();
+        String line2 = ChatColor.stripColor(ss.getLine(1)).trim();
+        String line3 = ChatColor.stripColor(ss.getLine(2)).trim();
+        String line4 = ChatColor.stripColor(ss.getLine(3)).trim();
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
