@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -29,8 +30,7 @@ public class CmdSuicide extends TabCommand {
         Player p = (Player) cs;
         p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, DamageCause.SUICIDE, 0D));
         p.setHealth(0);
-        // There may be a better solution idk
-        if(p.getServer().getPluginManager().getPlugin("RoyalDeath") == null){
+        if(!Config.useCustomDeath){
             this.plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
         }
         return true;
