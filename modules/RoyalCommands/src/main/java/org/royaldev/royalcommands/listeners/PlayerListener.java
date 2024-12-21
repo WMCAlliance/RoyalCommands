@@ -135,7 +135,7 @@ public class PlayerListener implements Listener {
                 setCooldown(command, p);
                 return;
             }
-            p.sendMessage(MessageColor.NEGATIVE + "You can't use that command for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(currentcd) + MessageColor.NEGATIVE + ".");
+            p.sendMessage(MessageColor.NEGATIVE + "You can't use that command for " + MessageColor.NEUTRAL + RUtils.formatDateDiff(currentcd) + MessageColor.NEGATIVE + ".");
             e.setCancelled(true);
             return;
         }
