@@ -72,7 +72,7 @@ public class InventoryGUI {
         if (is == null || is.getType() == Material.AIR) return is;
         ItemMeta meta = is.getItemMeta();
         if(!meta.hasAttributeModifiers()){
-            meta.addAttributeModifier(Attribute.GENERIC_FOLLOW_RANGE, new AttributeModifier(key, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND.getGroup()));
+            meta.addAttributeModifier(Attribute.FOLLOW_RANGE, new AttributeModifier(key, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND.getGroup()));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             is.setItemMeta(meta);
         }return is;

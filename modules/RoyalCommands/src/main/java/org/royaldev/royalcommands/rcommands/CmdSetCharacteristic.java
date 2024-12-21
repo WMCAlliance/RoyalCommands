@@ -22,12 +22,12 @@ public class CmdSetCharacteristic extends TabCommand {
     public CmdSetCharacteristic(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.LIST.getShort(), CompletionType.CUSTOM.getShort()});
     }
-	
+
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new ArrayList<>(Arrays.asList("maxhealth", "maxair", "exp", "canpickupitems"));
     }
-	
+
 	@Override
 	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
 		switch(args[1].toLowerCase()) {
@@ -36,7 +36,7 @@ public class CmdSetCharacteristic extends TabCommand {
 		}
 		return new ArrayList<>();
 	}
-	
+
     private Float toFloat(Object o) {
         try {
             return Float.parseFloat(o.toString());
@@ -83,7 +83,7 @@ public class CmdSetCharacteristic extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "Cannot set maxhealth to less than 1.");
                 return true;
             }
-            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(i);
+            p.getAttribute(Attribute.MAX_HEALTH).setBaseValue(i);
             cs.sendMessage(MessageColor.POSITIVE + "Set max health to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
         } else if (subcommand.equalsIgnoreCase("maxair")) {
             Integer i = toInt(args[2]);

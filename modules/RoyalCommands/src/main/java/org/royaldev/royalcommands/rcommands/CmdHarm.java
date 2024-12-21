@@ -37,8 +37,8 @@ public class CmdHarm extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "The damage must be a number!");
             return false;
         }
-        if (toDamage > t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() || toDamage <= 0) {
-            cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and " + t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() + "!");
+        if (toDamage > t.getAttribute(Attribute.MAX_HEALTH).getValue() || toDamage <= 0) {
+            cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and " + t.getAttribute(Attribute.MAX_HEALTH).getValue() + "!");
             return true;
         }
 

@@ -33,7 +33,7 @@ public class CmdGod extends TabCommand {
             }
             Player t = (Player) cs;
             PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
-			t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+			t.setHealth(t.getAttribute(Attribute.MAX_HEALTH).getValue());
             t.setFoodLevel(20);
             t.setSaturation(20F);
             if (!pcm.getBoolean("godmode")) {
@@ -60,7 +60,7 @@ public class CmdGod extends TabCommand {
                         cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                         return true;
                     }
-                    t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    t.setHealth(t.getAttribute(Attribute.MAX_HEALTH).getValue());
                     t.setFoodLevel(20);
                     t.setSaturation(20F);
                     t.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " has enabled godmode for you!");
@@ -68,7 +68,7 @@ public class CmdGod extends TabCommand {
                     pcm.set("godmode", true);
                     return true;
                 } else {
-                    t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                    t.setHealth(t.getAttribute(Attribute.MAX_HEALTH).getValue());
                     t.setFoodLevel(20);
                     t.setSaturation(20F);
                     t.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + " has disabled godmode for you!");
@@ -87,7 +87,7 @@ public class CmdGod extends TabCommand {
             }
             if (t2.isOnline()) {
                 Player pl = (Player) t2;
-                pl.setHealth(pl.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                pl.setHealth(pl.getAttribute(Attribute.MAX_HEALTH).getValue());
                 pl.setFoodLevel(20);
                 pl.setSaturation(20F);
                 pl.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " has enabled godmode for you!");
@@ -98,7 +98,7 @@ public class CmdGod extends TabCommand {
         } else {
             if (t2.isOnline()) {
                 Player pl = (Player) t2;
-                pl.setHealth(pl.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                pl.setHealth(pl.getAttribute(Attribute.MAX_HEALTH).getValue());
                 pl.setFoodLevel(20);
                 pl.setSaturation(20F);
                 pl.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + " has disabled godmode for you!");

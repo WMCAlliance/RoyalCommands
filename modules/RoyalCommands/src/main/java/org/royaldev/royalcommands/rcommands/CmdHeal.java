@@ -28,7 +28,7 @@ public class CmdHeal extends TabCommand {
             }
             Player t = (Player) cs;
             t.sendMessage(MessageColor.POSITIVE + "You have healed yourself!");
-            t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            t.setHealth(t.getAttribute(Attribute.MAX_HEALTH).getValue());
             return true;
         }
         Player t = this.plugin.getServer().getPlayer(args[0]);
@@ -38,7 +38,7 @@ public class CmdHeal extends TabCommand {
         }
         cs.sendMessage(MessageColor.POSITIVE + "You have healed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
         t.sendMessage(MessageColor.POSITIVE + "You have been healed by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + "!");
-        t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        t.setHealth(t.getAttribute(Attribute.MAX_HEALTH).getValue());
         return true;
     }
 }
