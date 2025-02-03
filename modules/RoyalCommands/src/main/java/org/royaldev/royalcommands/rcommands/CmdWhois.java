@@ -52,8 +52,8 @@ public class CmdWhois extends TabCommand {
         cs.sendMessage(MessageColor.POSITIVE + " Muted/Frozen/Jailed: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("muted")) + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("frozen")) + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("jailed")));
         long timestamp = RUtils.getTimeStamp(t, "seen");
         String lastseen = (timestamp < 0) ? "unknown" : RUtils.formatDateDiff(timestamp);
-        cs.sendMessage(MessageColor.POSITIVE + " Last seen:" + MessageColor.NEUTRAL + ((t.isOnline()) ? " now" : lastseen));
-        cs.sendMessage(MessageColor.POSITIVE + " First played:" + MessageColor.NEUTRAL + RUtils.formatDateDiff(t.getFirstPlayed()) + " ago");
+        cs.sendMessage(MessageColor.POSITIVE + " Last seen: " + MessageColor.NEUTRAL + ((t.isOnline()) ? "now" : lastseen));
+        cs.sendMessage(MessageColor.POSITIVE + " First played: " + MessageColor.NEUTRAL + RUtils.formatDateDiff(t.getFirstPlayed()) + "ago");
         if (t.isOnline()) {
             final Player p = (Player) t;
             cs.sendMessage(MessageColor.POSITIVE + " Gamemode: " + MessageColor.NEUTRAL + p.getGameMode().name().toLowerCase());
@@ -61,7 +61,7 @@ public class CmdWhois extends TabCommand {
             cs.sendMessage(MessageColor.POSITIVE + " Health/Hunger/Saturation: " + MessageColor.NEUTRAL + df.format(p.getHealth() / 2) + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + p.getFoodLevel() / 2 + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + p.getSaturation() / 2);
             cs.sendMessage(MessageColor.POSITIVE + " Total Exp/Exp %/Level: " + MessageColor.NEUTRAL + p.getTotalExperience() + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + df.format(p.getExp() * 100) + "%" + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + p.getLevel());
             cs.sendMessage(MessageColor.POSITIVE + " Item in hand: " + MessageColor.NEUTRAL + RUtils.getItemName(p.getInventory().getItemInMainHand()));
-            cs.sendMessage(MessageColor.POSITIVE + " Alive for:" + MessageColor.NEUTRAL + RUtils.formatDateDiff(new Date().getTime() - p.getTicksLived() * 50));
+            cs.sendMessage(MessageColor.POSITIVE + " Alive for: " + MessageColor.NEUTRAL + RUtils.formatDateDiff(new Date().getTime() - p.getTicksLived() * 50));
             Location l = p.getLocation();
             cs.sendMessage(MessageColor.POSITIVE + " Last position: " + "(" + MessageColor.NEUTRAL + df.format(l.getX()) + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + df.format(l.getY()) + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + df.format(l.getZ()) + MessageColor.POSITIVE + ") in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()));
         } else {
