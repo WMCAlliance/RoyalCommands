@@ -281,7 +281,7 @@
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalchat</artifactId>
-            <version>1.1.4</version>
+            <version>1.3.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
