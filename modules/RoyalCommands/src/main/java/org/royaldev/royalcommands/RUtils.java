@@ -5,7 +5,8 @@
  */
 package org.royaldev.royalcommands;
 
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import org.mvplugins.multiverse.core.world.LoadedMultiverseWorld;
+import org.mvplugins.multiverse.core.world.MultiverseWorld;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -715,7 +716,7 @@ public final class RUtils {
         if (w == null) throw new NullPointerException("w can't be null!");
         if (!Config.multiverseNames || RoyalCommands.mvc == null)
             return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
-        return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
+        return RoyalCommands.mvc.getApi().getWorldManager().getWorld(w).get().getAlias();
     }
 
     /**
@@ -971,8 +972,8 @@ public final class RUtils {
         w = Bukkit.getWorld(name);
         if (w != null) return w;
         if (RoyalCommands.mvc != null) {
-            MultiverseWorld mvw = RoyalCommands.mvc.getMVWorldManager().getMVWorld(name);
-            w = (mvw == null) ? null : mvw.getCBWorld();
+            LoadedMultiverseWorld mvw = RoyalCommands.mvc.getApi().getWorldManager().getLoadedWorld(name).get();
+            w = (mvw == null) ? null : mvw.getBukkitWorld().get();
             if (w != null) return w;
         }
         w = RoyalCommands.wm.getWorld(name);

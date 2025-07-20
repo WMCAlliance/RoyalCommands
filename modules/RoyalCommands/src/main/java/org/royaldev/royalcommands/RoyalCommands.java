@@ -7,7 +7,7 @@ package org.royaldev.royalcommands;
 
 import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
-import com.onarandombox.MultiverseCore.MultiverseCore;
+import org.mvplugins.multiverse.core.MultiverseCore;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
