@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.royaldev</groupId>
     <artifactId>royalcommands</artifactId>
-    <version>5.3.3-SNAPSHOT</version>
+    <version>5.4.0-SNAPSHOT</version>
     <name>RoyalCommands</name>
     <url>https://github.com/RoyalDev/RoyalCommands</url>
     <issueManagement>
@@ -231,9 +231,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.onarandombox.multiversecore</groupId>
-            <artifactId>Multiverse-Core</artifactId>
-            <version>4.3.12</version>
+            <groupId>org.mvplugins.multiverse.core</groupId>
+            <artifactId>multiverse-core</artifactId>
+            <version>5.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
