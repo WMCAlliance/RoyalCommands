@@ -23,9 +23,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.back.Back;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 
 @ReflectCommand
 public class CmdBack extends TabCommand {
@@ -55,7 +59,7 @@ public class CmdBack extends TabCommand {
             backdb.put(p.getUniqueId(), backs);
         }
     }
-	
+
 	@Override
 	protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
 		if (!(cs instanceof Player)) return new ArrayList<>();
@@ -89,38 +93,38 @@ public class CmdBack extends TabCommand {
             for (int i = 0; i < backs.size(); i++) {
                 Back b = backs.get(i);
                 if (b == null) continue;
-                // @formatter:off
-                RUtils.addCommandTo(new FancyMessage("  ")
-                    .then(i + 1 + ": ")
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then("on ")
-                        .color(MessageColor.POSITIVE.cc())
-                    .then(b.getBlockName())
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then(" in ")
-                        .color(MessageColor.POSITIVE.cc())
-                    .then(b.getBiomeName())
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then(" (")
-                        .color(MessageColor.POSITIVE.cc())
-                    .then(b.getWorldName())
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then(", ")
-                        .color(MessageColor.POSITIVE.cc())
-                    .then(this.df.format(b.getX()))
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then(", ")
-                        .color(MessageColor.POSITIVE.cc())
-                    .then(this.df.format(b.getY()))
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then(", ")
-                        .color(MessageColor.POSITIVE.cc())
-                    .then(this.df.format(b.getZ()))
-                        .color(MessageColor.NEUTRAL.cc())
-                    .then(")")
-                        .color(MessageColor.POSITIVE.cc()), "/back " + (i + 1))
-                    .send(cs);
-                // @formatter:on
+                BaseComponent[] message = new ComponentBuilder("  ")
+                        .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/back " + (i + 1)))
+                        .append(i + 1 + ": ")
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append("on ")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(b.getBlockName())
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(" in ")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(b.getBiomeName())
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(" (")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(b.getWorldName())
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(", ")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(this.df.format(b.getX()))
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(", ")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(this.df.format(b.getY()))
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(", ")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(this.df.format(b.getZ()))
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(")")
+                        .color(MessageColor.POSITIVE.bc())
+                        .create();
+                cs.spigot().sendMessage(message);
             }
             return true;
         }

@@ -6,13 +6,15 @@
 package org.royaldev.royalcommands.rcommands.teleport;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,23 +139,28 @@ public class TeleportRequest {
             TeleportRequest.teleportRequests.put(target.getName(), trs);
         }
         target.sendMessage(teleportType.getMessage(requester));
-        // @formatter:off
-        new FancyMessage("To accept, use ")
-                .color(MessageColor.POSITIVE.cc())
-            .then("/tpaccept")
-                .color(MessageColor.NEUTRAL.cc())
-                .tooltip("Click here to execute this command.")
-                .command("/tpaccept")
-            .then(". To decline, use ")
-                .color(MessageColor.POSITIVE.cc())
-            .then("/tpdeny")
-                .color(MessageColor.NEUTRAL.cc())
-                .tooltip("Click here to execute this command.")
-                .command("/tpdeny")
-            .then(".")
-                .color(MessageColor.POSITIVE.cc())
-            .send(target);
-        // @formatter:on
+        TextComponent tc = new TextComponent("To accept, use ");
+        tc.setColor(MessageColor.POSITIVE.bc());
+
+        TextComponent tcmd = new TextComponent("/tpaccept");
+        tcmd.setColor(MessageColor.NEUTRAL.bc());
+        tcmd.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaccept"));
+        tcmd.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click here to execute this command.")));
+        tc.addExtra(tcmd.duplicate());
+
+        TextComponent tc2 = new TextComponent(". To decline, use ");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tc.addExtra(tc2.duplicate());
+
+        tcmd.setText("/tpdeny");
+        tcmd.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpdeny"));
+        tc.addExtra(tcmd.duplicate());
+
+        tc2.setText(".");
+        tc.addExtra(tc2.duplicate());
+
+        target.spigot().sendMessage(tc);
+
         if (confirmation)
             requester.sendMessage(MessageColor.POSITIVE + "Request sent to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
     }

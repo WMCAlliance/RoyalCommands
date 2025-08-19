@@ -20,9 +20,13 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.rcommands.trade.Trade;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 @ReflectCommand
 public class CmdTrade extends TabCommand {
@@ -56,23 +60,31 @@ public class CmdTrade extends TabCommand {
 
     public static void sendTradeRequest(Player target, Player sender) {
         CmdTrade.tradedb.put(sender.getUniqueId(), target.getUniqueId());
-        // @formatter:off
-        new FancyMessage(sender.getName())
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getPlayerTooltip(sender))
-            .then(" has requested to trade with you.")
-                .color(MessageColor.POSITIVE.cc())
-            .send(target);
-        new FancyMessage("Type ")
-                .color(MessageColor.POSITIVE.cc())
-            .then("/trade " + sender.getName())
-                .color(MessageColor.NEUTRAL.cc())
-                .tooltip("Click to execute this command.")
-                .command("/trade " + sender.getName())
-            .then(" to accept.")
-                .color(MessageColor.POSITIVE.cc())
-            .send(target);
-        // @formatter:on
+        TextComponent tc = new TextComponent(sender.getName());
+        tc.setColor(MessageColor.NEUTRAL.bc());
+        tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(sender)));
+
+        TextComponent tc2 = new TextComponent(" has requested to trade with you.");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tc.addExtra(tc2.duplicate());
+
+        target.spigot().sendMessage(tc);
+
+        tc2.setText("Type ");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+
+        String tradeCmd = "/trade " + sender.getName();
+        TextComponent tcCmd = new TextComponent(tradeCmd);
+        tcCmd.setColor(MessageColor.NEUTRAL.bc());
+        tcCmd.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, tradeCmd));
+        tcCmd.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to execute this command.")));
+        tc2.addExtra(tcCmd);
+
+        TextComponent tc3 = new TextComponent(" to accept.");
+        tc3.setColor(MessageColor.POSITIVE.bc());
+        tc2.addExtra(tc3);
+
+        target.spigot().sendMessage(tc2);
     }
 
     @Override

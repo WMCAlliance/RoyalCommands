@@ -22,9 +22,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.home.Home;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 @ReflectCommand
 public class CmdListHomes extends TabCommand {
@@ -67,24 +71,34 @@ public class CmdListHomes extends TabCommand {
         cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + rp.getHomes().size() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         for (final Map.Entry<World, List<Home>> entry : sortedHomes.entrySet()) {
             final World w = entry.getKey();
-            final FancyMessage fm = new FancyMessage("  Homes for ")
-					.color(MessageColor.POSITIVE.cc())
-					.then(w == null ? "an invalid world" : RUtils.getMVWorldName((w)))
-					.color(MessageColor.NEUTRAL.cc())
-					.tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName((w)));
-			if (w != null) {
-				fm.command("/world " + w.getName()).then(":").color(MessageColor.POSITIVE.cc());
-			}
+            final TextComponent tc = new TextComponent("  Homes for ");
+            tc.setColor(MessageColor.POSITIVE.bc());
+            final TextComponent tcw = new TextComponent(w == null ? "an invalid world" : RUtils.getMVWorldName((w)));
+            tcw.setColor(MessageColor.NEUTRAL.bc());
+            Text wtt = new Text(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName((w)));
+            tcw.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, wtt));
+            if (w != null) {
+                tcw.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/world " + w.getName()));
+                TextComponent tcc = new TextComponent(":");
+                tcc.setColor(MessageColor.POSITIVE.bc());
+                tcw.addExtra(tcc);
+	        }
+            tc.addExtra(tcw);
 
-            fm.send(cs);
-            final FancyMessage fmh = new FancyMessage("    ");
+            cs.spigot().sendMessage(tc);
+            final TextComponent tch = new TextComponent("    ");
             final Iterator<Home> homes = entry.getValue().iterator();
             while (homes.hasNext()) {
                 final Home home = homes.next();
-                fmh.then(home.getName()).color(w == null ? MessageColor.NEGATIVE.cc() : MessageColor.NEUTRAL.cc()).tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName()).command("/home " + home.getFullName());
-                if (homes.hasNext()) fmh.then(MessageColor.RESET + ", "); // it's not a color OR a style
+                TextComponent tchh = new TextComponent(home.getName());
+                tchh.setColor(w == null ? MessageColor.NEGATIVE.bc() : MessageColor.NEUTRAL.bc());
+                Text htt = new Text(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName());
+                tchh.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, htt));
+                tchh.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/home " + home.getFullName()));
+                tch.addExtra(tchh);
+                if (homes.hasNext()) tch.addExtra(MessageColor.RESET + ", "); // it's not a color OR a style
             }
-            fmh.send(cs);
+            cs.spigot().sendMessage(tch);
         }
         return true;
     }

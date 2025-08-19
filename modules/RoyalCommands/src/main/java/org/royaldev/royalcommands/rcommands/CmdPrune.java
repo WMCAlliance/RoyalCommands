@@ -10,7 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -57,10 +59,25 @@ public class CmdPrune extends CACommand {
                 } else deletedFiles.add(f.getName());
             }
         }
-        new FancyMessage("Deleted ").color(MessageColor.POSITIVE.cc()).then(String.valueOf(deletedFiles.size())).color(MessageColor.NEUTRAL.cc()).then(" file" + (deletedFiles.size() == 1 ? "" : "s") + ".").color(MessageColor.POSITIVE.cc()).send(cs);
+        BaseComponent[] del = new ComponentBuilder("Deleted ")
+                .color(MessageColor.POSITIVE.bc())
+                .append(String.valueOf(deletedFiles.size()))
+                .color(MessageColor.NEUTRAL.bc())
+                .append(" file" + (deletedFiles.size() == 1 ? "" : "s") + ".")
+                .color(MessageColor.POSITIVE.bc())
+                .create();
+        cs.spigot().sendMessage(del);
         if (deletedFiles.size() < 1) return true;
         final StringBuilder sb = new StringBuilder();
-        sb.append("The following userdata files (").append(deletedFiles.size()).append(")").append(" were purged by ").append(cs.getName()).append(" at ").append(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z").format(dateStarted)).append(".\n\n");
+        sb
+                .append("The following userdata files (")
+                .append(deletedFiles.size())
+                .append(")")
+                .append(" were purged by ")
+                .append(cs.getName())
+                .append(" at ")
+                .append(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z").format(dateStarted))
+                .append(".\n\n");
         for (final String fileName : deletedFiles) sb.append(fileName).append("\n");
         //this.scheduleHastebin(cs, sb.toString(), MessageColor.POSITIVE + "The userdata files deleted are listed ", MessageColor.NEUTRAL + "here", MessageColor.POSITIVE + ".", "Click here to see the files deleted.");
         return true;

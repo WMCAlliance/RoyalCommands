@@ -14,9 +14,14 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 @ReflectCommand
 public class CmdWorld extends TabCommand {
@@ -38,14 +43,19 @@ public class CmdWorld extends TabCommand {
             }
             Iterator<World> worlds = this.plugin.getServer().getWorlds().iterator();
             cs.sendMessage(MessageColor.POSITIVE + "Worlds:");
-            final FancyMessage fm = new FancyMessage("");
+            BaseComponent bc = new TextComponent("");
             while (worlds.hasNext()) {
                 final World world = worlds.next();
                 if (Config.hiddenWorlds.contains(world.getName())) continue;
-                fm.then(RUtils.getMVWorldName(world)).color(MessageColor.NEUTRAL.cc()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName(world)).command("/tpw " + world.getName());
-                if (worlds.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
+                TextComponent tc = new TextComponent(RUtils.getMVWorldName(world));
+                tc.setColor(MessageColor.NEUTRAL.bc());
+                Text tt = new Text(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName(world));
+                tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt));
+                tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpw " + world.getName()));
+                bc.addExtra(tc);
+                if (worlds.hasNext()) bc.addExtra(MessageColor.RESET + ", "); // it's not a color OR a style
             }
-            fm.send(cs);
+            cs.spigot().sendMessage(bc);
             return true;
         }
         if (Config.hiddenWorlds.contains(w.getName())) return true;

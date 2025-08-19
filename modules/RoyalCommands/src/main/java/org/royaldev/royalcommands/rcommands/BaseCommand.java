@@ -7,6 +7,9 @@ package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+
+import net.md_5.bungee.api.chat.TextComponent;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
@@ -17,7 +20,6 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -126,7 +128,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @param t       The exception thrown
      */
     protected void handleException(final CommandSender cs, final Command cmd, final String label, final String[] args, final Throwable t, final String message) {
-        new FancyMessage(message).color(MessageColor.NEGATIVE.cc()).send(cs);
+        cs.spigot().sendMessage(TextComponent.fromLegacy(message, MessageColor.NEGATIVE.bc()));
         t.printStackTrace();
     }
 

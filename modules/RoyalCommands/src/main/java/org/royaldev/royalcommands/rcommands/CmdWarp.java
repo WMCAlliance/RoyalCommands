@@ -19,9 +19,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 @ReflectCommand
 public class CmdWarp extends TabCommand {
@@ -82,13 +86,18 @@ public class CmdWarp extends TabCommand {
             }
             Iterator<String> warps = opts.keySet().iterator();
             cs.sendMessage(MessageColor.POSITIVE + "Warps:");
-            final FancyMessage fm = new FancyMessage("");
+            final TextComponent tc = new TextComponent("");
             while (warps.hasNext()) {
                 final String warp = warps.next();
-                fm.then(warp).color(MessageColor.NEUTRAL.cc()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + warp).command("/warp " + warp);
-                if (warps.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
+                Text tt = new Text(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + warp);
+                TextComponent wtc = new TextComponent(warp);
+                wtc.setColor(MessageColor.NEUTRAL.bc());
+                wtc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt));
+                wtc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + warp));
+                tc.addExtra(wtc);
+                if (warps.hasNext()) tc.addExtra(MessageColor.RESET + ", "); // it's not a color OR a style
             }
-            fm.send(cs);
+            cs.spigot().sendMessage(tc);
             return true;
         }
         if (args.length == 1 && cs instanceof Player) {

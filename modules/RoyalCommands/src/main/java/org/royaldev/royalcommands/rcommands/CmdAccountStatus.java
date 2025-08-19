@@ -16,7 +16,9 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @ReflectCommand
 public class CmdAccountStatus extends TabCommand {
@@ -66,18 +68,26 @@ public class CmdAccountStatus extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
             return true;
         }
-        // @formatter:off
-        new FancyMessage(name)
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getPlayerTooltip(p))
-            .then(" has ")
-                .color(MessageColor.POSITIVE.cc())
-            .then(isPremium ? "paid" : "not paid")
-                .color(MessageColor.NEUTRAL.cc())
-            .then(" for Minecraft.")
-                .color(MessageColor.POSITIVE.cc())
-            .send(cs);
-        // @formatter:on
+
+        TextComponent tc = new TextComponent();
+
+        TextComponent neutral = new TextComponent(name);
+        neutral.setColor(MessageColor.NEUTRAL.bc());
+        neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(p)));
+        tc.addExtra(neutral.duplicate());
+
+        TextComponent positive = new TextComponent(" has ");
+        positive.setColor(MessageColor.POSITIVE.bc());
+        tc.addExtra(positive.duplicate());
+
+        neutral.setText(isPremium ? "paid" : "not paid");
+        neutral.setHoverEvent((HoverEvent) null);
+        tc.addExtra(neutral.duplicate());
+
+        positive.setText(" for Minecraft.");
+        tc.addExtra(positive.duplicate());
+
+        cs.spigot().sendMessage(tc);
         return true;
     }
 

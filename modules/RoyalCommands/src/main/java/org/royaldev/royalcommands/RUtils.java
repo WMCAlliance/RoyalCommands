@@ -31,6 +31,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.ItemTag;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Item;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -70,7 +78,6 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.CmdBack;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.tools.NameFetcher;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
@@ -89,22 +96,6 @@ public final class RUtils {
 
     private static final Map<String, Integer> teleRunners = new HashMap<>();
     private static final List<String> teleAllowed = new ArrayList<>();
-
-    public static FancyMessage addCommandTo(FancyMessage fm, String command) {
-        return RUtils.addDataTo(fm, new String[]{"clickActionName", "clickActionData"}, "run_command", command);
-    }
-
-    public static FancyMessage addDataTo(FancyMessage fm, String[] fields, Object... values) {
-        for (final Object o : fm) {
-            try {
-                RUtils.setFields(o, fields, values);
-            } catch (ReflectiveOperationException ex) {
-                ex.printStackTrace();
-                return fm;
-            }
-        }
-        return fm;
-    }
 
     /**
      * Adds lore to an ItemStack.
@@ -352,16 +343,21 @@ public final class RUtils {
     }
 
     public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {
-        final List<FancyMessage> tooltip = new ArrayList<>();
-        tooltip.add(new FancyMessage("Missing permissions").color(MessageColor.NEGATIVE.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-        for (final String missingPermission : permissionsNeeded)
-            tooltip.add(new FancyMessage(missingPermission).color(MessageColor.NEUTRAL.cc()));
-        // @formatter:off
-        new FancyMessage("You don't have permission for that!")
-                .color(MessageColor.NEGATIVE.cc())
-                .formattedTooltip(tooltip)
-            .send(cs);
-        // @formatter:on
+        TextComponent tt = new TextComponent("Missing permissions:");
+        tt.setColor(MessageColor.NEGATIVE.bc());
+        tt.setBold(true);
+        tt.setUnderlined(true);
+        for (final String missingPermission : permissionsNeeded) {
+            TextComponent mP = new TextComponent("\n " + missingPermission);
+            mP.setColor(MessageColor.NEUTRAL.bc());
+            mP.setBold(false);
+            mP.setUnderlined(false);
+            tt.addExtra(mP);
+        }
+        TextComponent msg =  new TextComponent("You don't have permission for that!");
+        msg.setColor(MessageColor.NEGATIVE.bc());
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tt)));
+        cs.spigot().sendMessage(msg);
         RoyalCommands.getInstance().getLogger().log(Level.WARNING, "{0} was denied access to that!", cs.getName());
     }
 
@@ -766,15 +762,34 @@ public final class RUtils {
         return op;
     }
 
-    public static List<FancyMessage> getPlayerTooltip(final Object o) {
-        final List<FancyMessage> tooltip = new ArrayList<>();
+    public static Text getPlayerTooltip(final Object o) {
+        List<BaseComponent> bc = new ArrayList<>();
+        TextComponent heading = new TextComponent("Offline Player");
         final VaultHandler vh = RoyalCommands.getInstance().vh;
         if (o instanceof OfflinePlayer) {
             final OfflinePlayer op = (OfflinePlayer) o;
-            if (tooltip.size() < 1)
-                tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL.cc()));
-            tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL.cc()));
+            if (bc.size() < 1) {
+                heading.setColor(MessageColor.NEUTRAL.bc());
+                bc.add(heading);
+                bc.add(new TextComponent("\n"));
+            }
+            TextComponent nameLabel = new TextComponent("Name: ");
+            nameLabel.setColor(MessageColor.POSITIVE.bc());
+            bc.add(nameLabel);
+
+            TextComponent name = new TextComponent(op.getName());
+            name.setColor(MessageColor.NEUTRAL.bc());
+            bc.add(name);
+            bc.add(new TextComponent("\n"));
+
+            TextComponent operatorLabel = new TextComponent("Operator: ");
+            operatorLabel.setColor(MessageColor.POSITIVE.bc());
+            bc.add(operatorLabel);
+
+            TextComponent operator = new TextComponent(op.isOp() ? "Yes" : "No");
+            operator.setColor(MessageColor.NEUTRAL.bc());
+            bc.add(operator);
+
             if (vh.usingVault() && vh.getPermission().hasGroupSupport()) {
                 final String group = vh.getPermission().getPrimaryGroup(null, op);
                 final Chat c = vh.getChat();
@@ -786,35 +801,43 @@ public final class RUtils {
                 if (suffix == null) suffix = "";
                 // TODO: Config format
                 if (!group.isEmpty()) {
-                    tooltip.add(new FancyMessage("Group: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).color(MessageColor.NEUTRAL.cc()).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
+                    bc.add(new TextComponent("\n"));
+                    TextComponent groupLabel = new TextComponent("Group: ");
+                    groupLabel.setColor(MessageColor.POSITIVE.bc());
+                    bc.add(groupLabel);
+
+                    TextComponent groupTxt = new TextComponent(group);
+                    groupTxt.setColor(MessageColor.NEUTRAL.bc());
+                    bc.add(groupTxt);
                 }
             }
+
+            // return new Text(op.getName());
         }
-        if (o instanceof Player) {
-            if (!tooltip.isEmpty()) { // Replace Offline Player with Player
-                tooltip.remove(0);
-                tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            }
+        if (o instanceof Player && bc.size() > 1) {
+            heading.setText("Player");
         }
         if (o instanceof ConsoleCommandSender) {
-            if (tooltip.size() < 1) {
-                tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            if (bc.size() < 1) {
+                heading.setText("Console");
+                bc.add(heading);
             }
         }
-        return tooltip.isEmpty() ? null : tooltip;
+
+        BaseComponent[] bcf = new BaseComponent[bc.size()];
+        for(int i = 0; i < bc.size(); i++) {
+            bcf[i] = bc.get(i);
+        }
+
+        return bc.size() == 0 ? null : new Text(bcf);
     }
 
-    public static List<FancyMessage> getItemTooltip(final Object o) {
-        final List<FancyMessage> tooltip = new ArrayList<>();
+    public static Item getItemTooltip(final Object o) {
         if (o instanceof Material) {
             final Material item = (Material) o;
-            tooltip.add(new FancyMessage("Item").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(getItemName(item)).color(MessageColor.NEUTRAL.cc()));
-            if(item.getMaxDurability() > 0) {
-                tooltip.add(new FancyMessage("Durability: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(String.valueOf(item.getMaxDurability())).color(MessageColor.NEUTRAL.cc()));
-            }
+            return new Item(item.getKeyOrNull().toString(), 1, null);
         }
-        return tooltip.isEmpty() ? null : tooltip;
+        return null;
     }
 
     public static Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {

@@ -24,7 +24,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.rcommands.CmdBack;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 @SuppressWarnings("unused")
 public class EntityListener implements Listener {
@@ -69,15 +75,20 @@ public class EntityListener implements Listener {
         CmdBack.addBackLocation(p, pLoc);
         if (Config.disabledBackWorlds.contains(pLoc.getWorld().getName())) return;
         if (plugin.ah.isAuthorized(p, "rcmds.back")) {
-            FancyMessage fm = new FancyMessage("Type ")
-                    .color(MessageColor.POSITIVE.cc())
-                    .then("/back")
-                    .color(MessageColor.NEUTRAL.cc())
-                    .tooltip(MessageColor.POSITIVE + "Click to teleport back")
-                    .command("/back")
-                    .then(" to go back to where you died.")
-                    .color(MessageColor.POSITIVE.cc());
-            fm.send(p);
+            TextComponent backC = new TextComponent("/back");
+            backC.setColor(MessageColor.NEUTRAL.bc());
+            Text tt = new Text(MessageColor.POSITIVE + "Click to teleport back");
+            backC.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt));
+            backC.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/back"));
+            BaseComponent[] bc = new ComponentBuilder("Type ")
+                    .color(MessageColor.POSITIVE.bc())
+                    .append(backC)
+                    .append(" to go back to where you died.")
+                    .color(MessageColor.POSITIVE.bc())
+                    .event((HoverEvent) null)
+                    .event((ClickEvent) null)
+                    .create();
+            p.spigot().sendMessage(bc);
         }
     }
 

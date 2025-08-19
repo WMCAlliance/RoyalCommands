@@ -24,6 +24,14 @@ public enum MessageColor {
         return this.getChatColor();
     }
 
+    /**
+     * Same as cc() but using Bungee colours for Components.
+     * @return
+     */
+    public net.md_5.bungee.api.ChatColor bc() {
+        return this.getChatColor().asBungee();
+    }
+
     protected ChatColor byStringOrDefault(final String s) {
         try {
             return ChatColor.valueOf(s.toUpperCase());

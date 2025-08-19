@@ -14,7 +14,10 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @ReflectCommand
 public class CmdMute extends CACommand {
@@ -58,25 +61,75 @@ public class CmdMute extends CACommand {
         if (muteTime > 0L && !wasMuted) pcm.set("mutetime", muteTime);
         else if (wasMuted) pcm.set("mutetime", null);
         pcm.set("mutedat", System.currentTimeMillis());
-        FancyMessage fm = new FancyMessage("You have toggled mute ").color(MessageColor.POSITIVE.cc()).then(wasMuted ? "off" : "on").color(MessageColor.NEUTRAL.cc()).then(" for ").color(MessageColor.POSITIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t));
+
+        long duration = System.currentTimeMillis() + (muteTime * 1000L);
+        BaseComponent timeText = TextComponent.fromLegacy(MessageColor.NEUTRAL + RUtils.formatDateDiff(duration).trim());
+
+        TextComponent tc = new TextComponent();
+
+        TextComponent positive = new TextComponent("You have toggled mute ");
+        positive.setColor(MessageColor.POSITIVE.bc());
+        tc.addExtra(positive.duplicate());
+
+        TextComponent neutral = new TextComponent(wasMuted ? "off" : "on");
+        neutral.setColor(MessageColor.NEUTRAL.bc());
+        tc.addExtra(neutral.duplicate());
+
+        positive.setText(" for ");
+        tc.addExtra(positive.duplicate());
+
+        neutral.setText(t.getName());
+        neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(t)));
+        tc.addExtra(neutral.duplicate());
+
         if (muteTime > 0L && !wasMuted) {
-            fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL.cc());
+            positive.setText(" for ");
+            tc.addExtra(positive.duplicate());
+            tc.addExtra(timeText);
         }
         if (!reason.isEmpty()) {
-            fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(reason).color(MessageColor.NEUTRAL.cc());
+            positive.setText(" for ");
+            tc.addExtra(positive.duplicate());
+            neutral.setText(reason);
+            neutral.setHoverEvent((HoverEvent) null);
+            tc.addExtra(neutral.duplicate());
         }
-        fm.then(".").color(MessageColor.POSITIVE.cc());
-        fm.send(cs);
+        positive.setText(".");
+        tc.addExtra(positive.duplicate());
+        cs.spigot().sendMessage(tc);
         if (t.isOnline()) {
-            fm = new FancyMessage("You have been ").color(MessageColor.POSITIVE.cc()).then(wasMuted ? "unmuted" : "muted").color(MessageColor.NEUTRAL.cc()).then(" by ").color(MessageColor.POSITIVE.cc()).then(cs.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(cs));
+            TextComponent tc2 = new TextComponent();
+
+            positive.setText("You have been ");
+            tc2.addExtra(positive.duplicate());
+
+            neutral.setText(wasMuted ? "unmuted" : "muted");
+            neutral.setHoverEvent((HoverEvent) null);
+            tc2.addExtra(neutral.duplicate());
+
+            positive.setText(" by ");
+            tc2.addExtra(positive.duplicate());
+
+            neutral.setText(cs.getName());
+            neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(cs)));
+            tc2.addExtra(neutral.duplicate());
+
+
             if (muteTime > 0L && !wasMuted) {
-                fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL.cc());
+                positive.setText(" for ");
+                tc2.addExtra(positive.duplicate());
+                tc2.addExtra(timeText);
             }
             if (!reason.isEmpty()) {
-                fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(reason).color(MessageColor.NEUTRAL.cc());
+                positive.setText(" for ");
+                tc2.addExtra(positive.duplicate());
+                neutral.setText(reason);
+                neutral.setHoverEvent((HoverEvent) null);
+                tc2.addExtra(neutral.duplicate());
             }
-            fm.then(".").color(MessageColor.POSITIVE.cc());
-            fm.send(t.getPlayer());
+            positive.setText(".");
+            tc2.addExtra(positive.duplicate());
+            t.getPlayer().spigot().sendMessage(tc2);
         }
         return true;
     }

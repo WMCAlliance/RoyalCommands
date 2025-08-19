@@ -10,7 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 @ReflectCommand
 public class CmdUptime extends BaseCommand {
@@ -22,14 +27,17 @@ public class CmdUptime extends BaseCommand {
     @Override
     protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         final long startTime = this.plugin.getStartTime();
-        new FancyMessage("The server started ")
-            .color(MessageColor.POSITIVE.cc())
-            .then(RUtils.formatDateDiff(startTime))
-            .color(MessageColor.NEUTRAL.cc())
-            .tooltip("Timestamp: " + startTime)
-            .then(" ago.")
-            .color(MessageColor.POSITIVE.cc())
-            .send(cs);
+        BaseComponent datetime = TextComponent.fromLegacy(RUtils.formatDateDiff(startTime), MessageColor.NEUTRAL.bc());
+        datetime.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Timestamp: " + startTime)));
+        BaseComponent[] message = new ComponentBuilder("The server started ")
+                .color(MessageColor.POSITIVE.bc())
+                .append(datetime)
+                .color(MessageColor.NEUTRAL.bc())
+                .append("ago.")
+                .color(MessageColor.POSITIVE.bc())
+                .event((HoverEvent)null)
+                .create();
+        cs.spigot().sendMessage(message);
         return true;
     }
 }

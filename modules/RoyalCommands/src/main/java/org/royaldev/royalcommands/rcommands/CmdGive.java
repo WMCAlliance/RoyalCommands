@@ -17,7 +17,9 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @ReflectCommand
 public class CmdGive extends TabCommand {
@@ -50,25 +52,38 @@ public class CmdGive extends TabCommand {
             target.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return false;
         }
-        // @formatter:off
-        new FancyMessage("Giving ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(String.valueOf(amount))
-                .color(MessageColor.NEUTRAL.cc())
-                .then(" of ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(RUtils.getItemName(m))
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getItemTooltip(m))
-                .then(" to ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(target.getName())
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getPlayerTooltip(target))
-                .then(".")
-                .color(MessageColor.POSITIVE.cc())
-                .send(target);
-        // @formatter:on
+
+
+        TextComponent tcS = new TextComponent("Giving ");
+        tcS.setColor(MessageColor.POSITIVE.bc());
+
+        TextComponent tc2 = new TextComponent(String.valueOf(amount));
+        tc2.setColor(MessageColor.NEUTRAL.bc());
+        tcS.addExtra(tc2.duplicate());
+
+        tc2.setText(" of ");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tcS.addExtra(tc2.duplicate());
+
+        TextComponent tci = new TextComponent(RUtils.getItemName(m));
+        tci.setColor(MessageColor.NEUTRAL.bc());
+        tci.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, RUtils.getItemTooltip(m)));
+        tcS.addExtra(tci);
+
+        tc2.setText(" to ");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tcS.addExtra(tc2.duplicate());
+
+        TextComponent tcp = new TextComponent(target.getDisplayName());
+        tcp.setColor(MessageColor.NEUTRAL.bc());
+        tcp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(target)));
+        tcS.addExtra(tcp);
+
+        tc2.setText(".");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tcS.addExtra(tc2.duplicate());
+
+        cs.spigot().sendMessage(tcS);
         if (Config.itemSpawnTag && cs != null)
             stack = RUtils.applySpawnLore(RUtils.setItemStackSpawned(stack, cs.getName(), true));
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
@@ -146,37 +161,48 @@ public class CmdGive extends TabCommand {
                 t.getWorld().dropItemNaturally(t.getLocation(), item);
             }
         }
-        // @formatter:off
-        new FancyMessage("Giving ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(String.valueOf(amount))
-                .color(MessageColor.NEUTRAL.cc())
-                .then(" of ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(RUtils.getItemName(m))
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getItemTooltip(m))
-                .then(" to ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(t.getName())
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getPlayerTooltip(t))
-                .then(".")
-                .color(MessageColor.POSITIVE.cc())
-                .send(cs);
-        new FancyMessage("You have been given ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(String.valueOf(amount))
-                .color(MessageColor.NEUTRAL.cc())
-                .then(" of ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(RUtils.getItemName(m))
-                .color(MessageColor.NEUTRAL.cc())
-                .formattedTooltip(RUtils.getItemTooltip(m))
-                .then(".")
-                .color(MessageColor.POSITIVE.cc())
-                .send(t);
-        // @formatter:on
+
+        TextComponent tcR = new TextComponent("You have been given ");
+        TextComponent tcS = new TextComponent("Giving ");
+        tcR.setColor(MessageColor.POSITIVE.bc());
+        tcS.setColor(MessageColor.POSITIVE.bc());
+
+        TextComponent tc2 = new TextComponent(String.valueOf(amount));
+        tc2.setColor(MessageColor.NEUTRAL.bc());
+        tcR.addExtra(tc2.duplicate());
+        tcS.addExtra(tc2.duplicate());
+
+        tc2.setText(" of ");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tcR.addExtra(tc2.duplicate());
+        tcS.addExtra(tc2.duplicate());
+
+        TextComponent tci = new TextComponent(RUtils.getItemName(m));
+        tci.setColor(MessageColor.NEUTRAL.bc());
+        tci.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, RUtils.getItemTooltip(m)));
+        tcR.addExtra(tci);
+        tcS.addExtra(tci);
+
+        tc2.setText(" to ");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tcS.addExtra(tc2.duplicate());
+
+        TextComponent tcp = new TextComponent(t.getDisplayName());
+        tcp.setColor(MessageColor.NEUTRAL.bc());
+        tcp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(t)));
+        tcS.addExtra(tcp);
+
+        tc2.setText(".");
+        tc2.setColor(MessageColor.POSITIVE.bc());
+        tcR.addExtra(tc2.duplicate());
+        tcS.addExtra(tc2.duplicate());
+
+
+        t.spigot().sendMessage(tcR);
+
+        if (!(cs instanceof Player) || !t.equals((Player)cs))
+            cs.spigot().sendMessage(tcS);
+
         return true;
     }
 }

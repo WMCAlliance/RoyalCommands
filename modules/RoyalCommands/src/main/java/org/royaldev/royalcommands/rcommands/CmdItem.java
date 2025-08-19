@@ -19,7 +19,9 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 
 @ReflectCommand
 public class CmdItem extends TabCommand {
@@ -111,24 +113,26 @@ public class CmdItem extends TabCommand {
         }
         toInv = CmdItem.applyMeta(toInv, ca, cs);
         if (toInv == null) return true; // display error message in applyMeta
-        // @formatter:off
-        new FancyMessage("Giving ")
-                .color(MessageColor.POSITIVE.cc())
-            .then(String.valueOf(amount))
-                .color(MessageColor.NEUTRAL.cc())
-            .then(" of ")
-                .color(MessageColor.POSITIVE.cc())
-            .then(RUtils.getItemName(m))
-                .color(MessageColor.NEUTRAL.cc())
-                //.itemTooltip(toInv)
-            .then(" to ")
-                .color(MessageColor.POSITIVE.cc())
-            .then(p.getName())
-                .color(MessageColor.NEUTRAL.cc())
-            .then(".")
-                .color(MessageColor.POSITIVE.cc())
-            .send(cs);
-        // @formatter:on
+
+        // TODO This command is very similar to give, it could probably just be a wrapper
+        BaseComponent[] message = new ComponentBuilder("Giving ")
+                .color(MessageColor.POSITIVE.bc())
+                .append(String.valueOf(amount))
+                .color(MessageColor.NEUTRAL.bc())
+                .append(" of ")
+                .color(MessageColor.POSITIVE.bc())
+                .append(RUtils.getItemName(m))
+                .color(MessageColor.NEUTRAL.bc())
+                // .itemTooltip(toInv)
+                .append(" to ")
+                .color(MessageColor.POSITIVE.bc())
+                .append(p.getName())
+                .color(MessageColor.NEUTRAL.bc())
+                .append(".")
+                .color(MessageColor.POSITIVE.bc())
+                .create();
+        cs.spigot().sendMessage(message);
+
         if (Config.itemSpawnTag) toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
         if (!left.isEmpty() && Config.dropExtras) {

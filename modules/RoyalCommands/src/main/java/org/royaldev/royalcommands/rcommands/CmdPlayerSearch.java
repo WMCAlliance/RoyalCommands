@@ -13,7 +13,12 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @ReflectCommand
 public class CmdPlayerSearch extends TabCommand {
@@ -45,29 +50,40 @@ public class CmdPlayerSearch extends TabCommand {
                     String opName = op.getName();
                     String lastseen = (op.isOnline()) ? " now"
                             : RUtils.formatDateDiff(seen) + MessageColor.POSITIVE + " ago";
-                    FancyMessage fm = new FancyMessage(String.valueOf(found))
-                        .color(MessageColor.POSITIVE.cc())
-                        .then(". ")
-                        .color(MessageColor.POSITIVE.cc())
-                        .then(opName)
-                        .formattedTooltip(RUtils.getPlayerTooltip(cs))
-                        .command("/whois " + opName)
-                        .color(MessageColor.NEUTRAL.cc())
-                        .then(" - Last seen")
-                        .color(MessageColor.POSITIVE.cc())
-                        .then(lastseen)
-                        .color(MessageColor.NEUTRAL.cc())
-                        .then(".")
-                        .color(MessageColor.POSITIVE.cc());
-                    fm.send(cs);
+
+                    TextComponent tc = new TextComponent();
+
+                    TextComponent neutral = new TextComponent(String.valueOf(found));
+                    neutral.setColor(MessageColor.NEUTRAL.bc());
+                    tc.addExtra(neutral.duplicate());
+
+                    TextComponent positive = new TextComponent(". ");
+                    positive.setColor(MessageColor.POSITIVE.bc());
+                    tc.addExtra(positive.duplicate());
+
+                    neutral.setText(opName);
+                    neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(cs)));
+                    neutral.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/whois " + opName));
+                    tc.addExtra(neutral.duplicate());
+
+                    positive.setText(" - Last seen");
+                    tc.addExtra(positive.duplicate());
+
+                    tc.addExtra(TextComponent.fromLegacy(MessageColor.NEUTRAL + lastseen));
+
+                    positive.setText(".");
+                    tc.addExtra(positive.duplicate());
+
+                    cs.spigot().sendMessage(tc);
                 }
-                FancyMessage fmR = new FancyMessage("Search completed. ")
-                        .color(MessageColor.POSITIVE.cc())
-                        .then(String.valueOf(found))
-                        .color(MessageColor.NEUTRAL.cc())
-                        .then(" results found.")
-                        .color(MessageColor.POSITIVE.cc());
-                fmR.send(cs);
+                BaseComponent[] bcR = new ComponentBuilder("Search completed. ")
+                        .color(MessageColor.POSITIVE.bc())
+                        .append(String.valueOf(found))
+                        .color(MessageColor.NEUTRAL.bc())
+                        .append(" results found.")
+                        .color(MessageColor.POSITIVE.bc())
+                        .create();
+                cs.spigot().sendMessage(bcR);
             }
         };
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);

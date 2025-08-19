@@ -60,9 +60,13 @@ import org.royaldev.royalcommands.rcommands.CmdMessageOfTheDay;
 import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 import org.royaldev.royalcommands.rcommands.CmdTime;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 public class PlayerListener implements Listener {
 
@@ -153,7 +157,25 @@ public class PlayerListener implements Listener {
         for (Player p : e.getPlayer().getServer().getOnlinePlayers()) {
             if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("commandspy", false)) continue;
             if (p.getName().equalsIgnoreCase(e.getPlayer().getName())) continue; // don't send to self
-            new FancyMessage(e.getPlayer().getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(e.getPlayer())).then(": ").color(MessageColor.POSITIVE.cc()).then(e.getMessage()).color(MessageColor.NEUTRAL.cc()).command(e.getMessage()).tooltip("Click here to execute this command.").send(p);
+
+            TextComponent tc = new TextComponent();
+
+            Player pl = e.getPlayer();
+            TextComponent neutral = new TextComponent(pl.getName());
+            neutral.setColor(MessageColor.NEUTRAL.bc());
+            neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(pl)));
+            tc.addExtra(neutral.duplicate());
+
+            TextComponent positive = new TextComponent(": ");
+            positive.setColor(MessageColor.POSITIVE.bc());
+            tc.addExtra(positive.duplicate());
+
+            neutral.setText(e.getMessage());
+            neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click here to execute this command.")));
+            neutral.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, e.getMessage()));
+            tc.addExtra(neutral.duplicate());
+
+            p.spigot().sendMessage(tc);
         }
     }
 
@@ -475,21 +497,34 @@ public class PlayerListener implements Listener {
             }
         }
         for (Player p : world.getPlayers()) {
-            FancyMessage fm = new FancyMessage("Players asleep: ")
-				.color(MessageColor.POSITIVE.cc())
-                .then(String.valueOf(sleepers.size()))
-                .color(MessageColor.NEUTRAL.cc())
-                .tooltip(MessageColor.NEUTRAL + String.join("\n", sleepers))
-                .then(" of ")
-                .color(MessageColor.POSITIVE.cc())
-                .then(String.valueOf(world.getPlayers().size()))
-                .color(MessageColor.NEUTRAL.cc())
-                .then(" in ")
-				.color(MessageColor.POSITIVE.cc())
-                .then(RUtils.getMVWorldName(world))
-                .then(".")
-                .color(MessageColor.POSITIVE.cc());
-            fm.send(p);
+            TextComponent tc = new TextComponent("Players asleep: ");
+            tc.setColor(MessageColor.POSITIVE.bc());
+
+            TextComponent tcc = new TextComponent(String.valueOf(sleepers.size()));
+            tcc.setColor(MessageColor.NEUTRAL.bc());
+            Text tt = new Text(MessageColor.NEUTRAL + String.join("\n", sleepers));
+            tcc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt));
+            tc.addExtra(tcc);
+
+            TextComponent tc2 = new TextComponent(" of ");
+            tc2.setColor(MessageColor.POSITIVE.bc());
+            tc.addExtra(tc2.duplicate());
+
+            tc2.setText(String.valueOf(world.getPlayers().size()));
+            tc2.setColor(MessageColor.NEUTRAL.bc());
+            tc.addExtra(tc2.duplicate());
+
+            tc2.setText(" in ");
+            tc2.setColor(MessageColor.POSITIVE.bc());
+            tc.addExtra(tc2.duplicate());
+
+            tc.addExtra(TextComponent.fromLegacy(MessageColor.NEUTRAL.bc() + RUtils.getMVWorldName(world)));
+
+            tc2.setText(".");
+            tc2.setColor(MessageColor.POSITIVE.bc());
+            tc.addExtra(tc2.duplicate());
+
+            p.spigot().sendMessage(tc);
         }
         if (Config.sleepMajority) {
             double sleep_percent = Config.sleepMajorityPercent / 100D;
