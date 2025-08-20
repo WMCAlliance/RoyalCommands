@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -84,14 +86,14 @@ public class CmdAttributes extends TabCommand {
                         .create();
                 cs.spigot().sendMessage(bc);
                 for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                    cs.sendMessage(am.toString());
+                    // cs.sendMessage(am.toString());
                     Text tt = new Text(MessageColor.NEUTRAL
-                            + "Attribute: " + MessageColor.RESET + am.getName() + "\n" + MessageColor.NEUTRAL
+                            + "Attribute: " + MessageColor.RESET + am.getKey().toString() + "\n" + MessageColor.NEUTRAL
                             + "Operation: " + MessageColor.RESET + am.getOperation() + "\n" + MessageColor.NEUTRAL
                             + "Amount: " + MessageColor.RESET + am.getAmount() + "\n" + MessageColor.NEUTRAL
                             + "UUID: " + MessageColor.RESET + am.getKey() + "\n"
                             + "click to copy the UUID");
-                    BaseComponent[] bca = new ComponentBuilder(am.getName())
+                    BaseComponent[] bca = new ComponentBuilder(am.getKey().toString())
                             .color(MessageColor.NEUTRAL.bc())
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt))
                             .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(am.getKey())))
@@ -136,11 +138,7 @@ public class CmdAttributes extends TabCommand {
 
         } else if (subcommand.equalsIgnoreCase("add")) {
             try {
-                for (Attribute a : Attribute.values()) {
-                    if (a.name().equalsIgnoreCase(eargs[1])) {
-                        ats = a;
-                    }
-                }
+                ats = Registry.ATTRIBUTE.getOrThrow(NamespacedKey.fromString(eargs[1]));
             } catch (IllegalArgumentException e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Enter a valid attribute type!");
                 return true;

@@ -8,6 +8,8 @@ package org.royaldev.royalcommands.wrappers.teleport;
 import java.util.logging.Level;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
@@ -53,7 +55,7 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
     private Sound getTeleportSound() {
         if (!Config.teleportSoundEnabled) return null;
         try {
-            return Sound.valueOf(Config.teleportSoundName);
+            return Registry.SOUNDS.getOrThrow(NamespacedKey.fromString(Config.teleportSoundName.toLowerCase().replaceAll("_", ".")));
         } catch (final IllegalArgumentException e) {
             RoyalCommands.getInstance().getLogger().log(Level.WARNING, "A teleport sound was attempted, but {0} was not a valid sound name!", Config.teleportSoundName);
             return null;

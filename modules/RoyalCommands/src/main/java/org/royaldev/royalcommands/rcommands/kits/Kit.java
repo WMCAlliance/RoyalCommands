@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands.kits;
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -57,7 +59,7 @@ public class Kit {
      * @return Enchantment (may be null)
      */
     private Enchantment getEnchantment(final ConfigurationNode enchantment) {
-        return Enchantment.getByName(enchantment.getString("type", "").toUpperCase());
+        return Registry.ENCHANTMENT.getOrThrow(new NamespacedKey("minecraft", enchantment.getString("type", "")));
     }
 
     /**

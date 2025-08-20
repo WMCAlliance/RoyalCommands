@@ -1194,7 +1194,7 @@ public final class RUtils {
         if (!Config.teleportSoundEnabled) return;
         Sound toPlay;
         try {
-            toPlay = Sound.valueOf(Config.teleportSoundName);
+            toPlay = Registry.SOUNDS.getOrThrow(NamespacedKey.fromString(Config.teleportSoundName.toLowerCase().replaceAll("_", ".")));
         } catch (IllegalArgumentException e) {
             RoyalCommands.getInstance().getLogger().log(Level.WARNING, "A teleport sound was attempted, but {0} was not a valid sound name!", Config.teleportSoundName);
             return;

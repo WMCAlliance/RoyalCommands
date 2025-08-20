@@ -40,7 +40,7 @@ public class CmdGetID extends TabCommand {
             cs.sendMessage(MessageColor.POSITIVE + "Enchantments:");
             for (Entry<Enchantment, Integer> entry : enchants.entrySet()) {
                 int lvl = entry.getValue();
-                cs.sendMessage(" " + MessageColor.NEUTRAL + entry.getKey().getKey() + " " + lvl);
+                cs.sendMessage(" " + MessageColor.NEUTRAL + entry.getKey().getKeyOrNull().getKey() + " " + lvl);
             }
         }
         return true;

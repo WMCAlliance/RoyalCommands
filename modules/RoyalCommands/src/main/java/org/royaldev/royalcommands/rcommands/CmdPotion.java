@@ -6,6 +6,8 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,8 +29,11 @@ public class CmdPotion extends TabCommand {
         String[] comp = s.split(",");
         if (comp.length < 3)
             throw new IllegalArgumentException(MessageColor.NEUTRAL + s + MessageColor.NEGATIVE + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
-        PotionEffectType pet = PotionEffectType.getByName(comp[0].toUpperCase());
-        if (pet == null) {
+
+        PotionEffectType pet;
+        try {
+            pet = Registry.EFFECT.getOrThrow(NamespacedKey.fromString(comp[0]));
+        } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(MessageColor.NEUTRAL + s + MessageColor.NEGATIVE + " is not a valid potion effect type.");
         }
         int duration, amplifier;
@@ -44,10 +49,10 @@ public class CmdPotion extends TabCommand {
 
     private void sendPotionTypes(CommandSender cs) {
         StringBuilder sb = new StringBuilder();
-        for (PotionEffectType pet : PotionEffectType.values()) {
+        for (PotionEffectType pet : Registry.EFFECT) {
             if (pet == null) continue;
             sb.append(MessageColor.NEUTRAL);
-            sb.append(pet.getName());
+            sb.append(pet.getKeyOrNull().getKey());
             sb.append(MessageColor.RESET);
             sb.append(", ");
         }
@@ -79,12 +84,13 @@ public class CmdPotion extends TabCommand {
         for (String arg : args) {
             if (arg.startsWith("main:")) {
                 arg = arg.substring(5);
-                PotionEffectType pet = PotionEffectType.getByName(arg.toUpperCase());
-                if (pet == null) {
+                try {
+                    PotionEffectType pet = Registry.EFFECT.getOrThrow(new NamespacedKey("minecraft", arg));
+                    pm.setMainEffect(pet);
+                } catch (IllegalArgumentException ex) {
                     cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + " is not a potion effect type.");
                     continue;
                 }
-                pm.setMainEffect(pet);
             } else if (arg.startsWith("effect:")) {
                 arg = arg.substring(7);
                 PotionEffect pe;
@@ -97,12 +103,13 @@ public class CmdPotion extends TabCommand {
                 pm.addCustomEffect(pe, true);
             } else if (arg.startsWith("remove:")) {
                 arg = arg.substring(7);
-                PotionEffectType pet = PotionEffectType.getByName(arg.toUpperCase());
-                if (pet == null) {
+                try {
+                    PotionEffectType pet = Registry.EFFECT.getOrThrow(new NamespacedKey("minecraft", arg));
+                    pm.removeCustomEffect(pet);
+                } catch (IllegalArgumentException ex) {
                     cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + " is not a potion effect type.");
                     continue;
                 }
-                pm.removeCustomEffect(pet);
             } else if (arg.startsWith("clear")) {
                 if (pm.clearCustomEffects()) cs.sendMessage(MessageColor.POSITIVE + "Cleared all custom effects.");
                 else cs.sendMessage(MessageColor.NEGATIVE + "Couldn't clear any custom effects.");

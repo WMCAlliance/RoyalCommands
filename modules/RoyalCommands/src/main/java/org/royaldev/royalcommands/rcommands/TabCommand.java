@@ -116,22 +116,22 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 }
                 break;
             case ATTRIBUTE:
-                for (final Attribute at : Attribute.values()) {
-                    if (!at.name().toLowerCase().startsWith(arg.toLowerCase())) continue;
-                    possibilities.add(at.name().toLowerCase());
+                for (final Attribute at : Registry.ATTRIBUTE) {
+                    if (!at.getKeyOrNull().toString().startsWith(arg.toLowerCase())) continue;
+                    possibilities.add(at.getKeyOrNull().toString().toLowerCase());
                 }
                 break;
 			case EFFECT:
                 for (PotionEffectType pet : Registry.EFFECT) {
 					if (pet == null) continue;
-					if (!pet.getKey().toString().startsWith(arg.toLowerCase())) continue;
-					possibilities.add(pet.getKey().toString().toLowerCase());
+					if (!pet.getKeyOrNull().toString().startsWith(arg.toLowerCase())) continue;
+					possibilities.add(pet.getKeyOrNull().toString().toLowerCase());
 				}
 				possibilities.add("clear");
 				break;
 			case ENCHANT:
-				for (Enchantment e : Enchantment.values()) {
-                    String k = e.getKey().getKey();
+				for (Enchantment e : Registry.ENCHANTMENT) {
+                    String k = e.getKeyOrNull().toString();
 					if (!k.toLowerCase().startsWith(arg.toLowerCase())) continue;
 					possibilities.add(k.toLowerCase());
 				}
@@ -166,8 +166,8 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 }
                 break;
 			case BIOME:
-				for (Biome b : Biome.values()) {
-                    final String name = b.name();
+				for (Biome b : Registry.BIOME) {
+                    final String name = b.getKeyOrNull().toString();
                     final String lowerCaseName = name.toLowerCase();
                     if (!lowerCaseName.startsWith(arg)) continue;
 					possibilities.add(lowerCaseName);

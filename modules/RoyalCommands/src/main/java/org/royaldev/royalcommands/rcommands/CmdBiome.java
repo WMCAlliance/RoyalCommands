@@ -6,6 +6,8 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Chunk;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -35,8 +37,8 @@ public class CmdBiome extends TabCommand {
         final Player p = (Player) cs;
         final Biome b;
         try {
-            b = Biome.valueOf(args[0].toUpperCase());
-        } catch (Exception e) {
+            b = Registry.BIOME.getOrThrow(NamespacedKey.fromString(args[0]));
+        } catch (IllegalArgumentException e) {
             p.sendMessage(MessageColor.NEGATIVE + "No such biome!");
             sendBiomeList(p);
             return true;
@@ -69,7 +71,7 @@ public class CmdBiome extends TabCommand {
                         ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
                     }
                 }
-                p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + b.name().toLowerCase().replace(" _ ", " ") + MessageColor.POSITIVE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + b.getKeyOrNull().toString() + MessageColor.POSITIVE + ".");
             }
         };
         p.sendMessage(MessageColor.POSITIVE + "Changing biomes. This may take a moment..");
@@ -79,8 +81,8 @@ public class CmdBiome extends TabCommand {
 
     public void sendBiomeList(CommandSender cs) {
         String biomes = "";
-        for (Biome b : Biome.values()) {
-            String name = b.name().toLowerCase() + MessageColor.RESET;
+        for (Biome b : Registry.BIOME) {
+            String name = MessageColor.NEUTRAL + b.getKeyOrNull().getKey() + MessageColor.RESET;
             biomes = (biomes.equals("")) ? biomes.concat(name) : biomes.concat(", " + name);
         }
         cs.sendMessage(biomes);

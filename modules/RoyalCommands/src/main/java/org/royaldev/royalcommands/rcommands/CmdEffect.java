@@ -6,7 +6,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.bukkit.Keyed;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,9 +16,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.Iterator;
-import java.util.List;
 
 @ReflectCommand
 public class CmdEffect extends TabCommand {
@@ -32,7 +29,7 @@ public class CmdEffect extends TabCommand {
         for (PotionEffectType pet : Registry.EFFECT) {
             if (pet == null) continue;
             sb.append(MessageColor.NEUTRAL);
-            sb.append(pet.getKey());
+            sb.append(pet.getKeyOrNull().getKey());
             sb.append(MessageColor.RESET);
             sb.append(", ");
         }
@@ -72,8 +69,10 @@ public class CmdEffect extends TabCommand {
                 continue;
             }
             String name = parts[0];
-            PotionEffectType pet = PotionEffectType.getByName(name.toUpperCase());
-            if (pet == null) {
+            PotionEffectType pet;
+            try {
+                pet = Registry.EFFECT.getOrThrow(NamespacedKey.fromString(name));
+            } catch (IllegalArgumentException ex) {
                 sendPotionTypes(cs);
                 cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + ": No such potion effect type!");
                 continue;
