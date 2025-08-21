@@ -19,16 +19,20 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+
+import com.google.common.collect.Multimap;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
 @ReflectCommand
@@ -71,7 +75,7 @@ public class CmdAttributes extends TabCommand {
         ItemMeta meta = hand.getItemMeta();
         Attribute ats = null;
         AttributeModifier.Operation o;
-        UUID uuid = null;
+        NamespacedKey nsKey = null;
         double amount;
 
         String subcommand = eargs[0];
@@ -79,26 +83,30 @@ public class CmdAttributes extends TabCommand {
             if (meta.hasAttributeModifiers()) {
                 final BaseComponent[] bc = new ComponentBuilder("Item ")
                         .color(MessageColor.POSITIVE.bc())
-                        .append(hand.getType().name())
+                        .append(RUtils.getItemName(hand))
                         .color(MessageColor.NEUTRAL.bc())
                         .append(" has these Attribute Modifiers:")
                         .color(MessageColor.POSITIVE.bc())
                         .create();
                 cs.spigot().sendMessage(bc);
-                for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                    // cs.sendMessage(am.toString());
-                    Text tt = new Text(MessageColor.NEUTRAL
-                            + "Attribute: " + MessageColor.RESET + am.getKey().toString() + "\n" + MessageColor.NEUTRAL
-                            + "Operation: " + MessageColor.RESET + am.getOperation() + "\n" + MessageColor.NEUTRAL
-                            + "Amount: " + MessageColor.RESET + am.getAmount() + "\n" + MessageColor.NEUTRAL
-                            + "UUID: " + MessageColor.RESET + am.getKey() + "\n"
-                            + "click to copy the UUID");
-                    BaseComponent[] bca = new ComponentBuilder(am.getKey().toString())
-                            .color(MessageColor.NEUTRAL.bc())
-                            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt))
-                            .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(am.getKey())))
-                            .create();
-                    cs.spigot().sendMessage(bca);
+                Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+                for (Attribute a : modifiers.keySet()) {
+                    String name = new TranslatableComponent(a.getTranslationKey()).toPlainText();
+                    for (AttributeModifier am : modifiers.get(a)) {
+                        String operation = RUtils.getFriendlyEnumName(am.getOperation());
+                        Text tt = new Text(
+                                MessageColor.POSITIVE + "Attribute: " + MessageColor.NEUTRAL + name + "\n" +
+                                MessageColor.POSITIVE + "Operation: " + MessageColor.NEUTRAL + operation + "\n" +
+                                MessageColor.POSITIVE + "Amount: " + MessageColor.NEUTRAL + am.getAmount() + "\n" +
+                                MessageColor.POSITIVE + "Key: " + MessageColor.NEUTRAL + am.getKey() + "\n" +
+                                MessageColor.NEUTRAL + "Click to copy the key");
+                        BaseComponent[] bca = new ComponentBuilder("  " + name + " " + operation + " " + am.getAmount())
+                                .color(MessageColor.NEUTRAL.bc())
+                                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt))
+                                .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(am.getKey())))
+                                .create();
+                        cs.spigot().sendMessage(bca);
+                    }
                 }
             } else {
                 cs.sendMessage(MessageColor.NEGATIVE + "Item has no Attribute Modifiers applied!");
@@ -118,11 +126,14 @@ public class CmdAttributes extends TabCommand {
         } else if (subcommand.equalsIgnoreCase("remove")) {
             if (meta.hasAttributeModifiers()) {
                 if (eargs.length == 2) {
-                    uuid = UUID.fromString(eargs[1]);
-                    for (AttributeModifier am : meta.getAttributeModifiers().values()) {
-                        if (am.getUniqueId().equals(uuid)) {
-                            meta.removeAttributeModifier(Attribute.valueOf(am.getName()));
-                            cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + am.getName() + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + hand.getType().name());
+                    Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+                    for (Attribute a : modifiers.keySet()) {
+                        nsKey = NamespacedKey.fromString(eargs[1]);
+                        for (AttributeModifier am : modifiers.get(a)) {
+                            if (am.getKey().equals(nsKey)) {
+                                meta.removeAttributeModifier(a, am);
+                                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + am.getKey().toString() + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand));
+                            }
                         }
                     }
                     hand.setItemMeta(meta);
@@ -157,18 +168,20 @@ public class CmdAttributes extends TabCommand {
             }
             if (eargs.length < 5) {
                 try {
-                    uuid = UUID.randomUUID();
+                    // String rand = RandomStringUtils.randomAlphanumeric(12);
+                    String rand = UUID.randomUUID().toString().replaceAll("-", "");
+                    nsKey = NamespacedKey.fromString(rand.substring(0, (int) Math.floor(rand.length() / 2)));
                 } catch (IllegalArgumentException e) {
-                    this.plugin.getLogger().warning("UUID failed for " + p.getDisplayName());
+                    this.plugin.getLogger().warning("Failed to generate attribute key for " + p.getDisplayName());
                 }
             } else {
-                uuid = UUID.fromString(eargs[3]);
+                nsKey = NamespacedKey.fromString(eargs[4]);
             }
-            if (ats != null && uuid != null) {
-                meta.addAttributeModifier(ats, new AttributeModifier(uuid, ats.name(), amount, o, EquipmentSlot.HAND));
+            if (ats != null && nsKey != null) {
+                meta.addAttributeModifier(ats, new AttributeModifier(nsKey, amount, o, EquipmentSlotGroup.MAINHAND));
                 hand.setItemMeta(meta);
                 p.getInventory().setItemInMainHand(hand);
-                cs.sendMessage(MessageColor.POSITIVE + "The attribute has been applied, it has a UUID of  "+ MessageColor.NEUTRAL + uuid);
+                cs.sendMessage(MessageColor.POSITIVE + "The attribute has been applied, with a key of "+ MessageColor.NEUTRAL + nsKey.toString());
             }
         } else cs.sendMessage(MessageColor.NEGATIVE + "No such subcommand!");
         return true;
