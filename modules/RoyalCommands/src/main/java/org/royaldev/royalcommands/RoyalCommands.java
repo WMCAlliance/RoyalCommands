@@ -190,7 +190,7 @@ public class RoyalCommands extends JavaPlugin {
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().log(Level.WARNING, "Currently installed: v{0}, newest: v{1}", new Object[]{currentVersion, dev});
-                        RoyalCommands.this.getLogger().warning("Development builds are available at https://jenkins.blny.me/");
+                        RoyalCommands.this.getLogger().warning("Development builds are available at https://github.com/WMCAlliance/RoyalCommands");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().log(Level.WARNING, "Currently installed: v{0}, newest: v{1}", new Object[]{currentVersion, stable});
