@@ -70,7 +70,7 @@ public class ItemNameManager {
     public ItemStack getItemStackFromAlias(String alias) {
         boolean found = false;
         String[] aliases = null;
-        String data = null;
+        // String data = null;
         /*if (alias.contains(":")) {
             String[] datas = alias.split(":");
             data = (datas.length > 1) ? datas[1] : "";
@@ -84,14 +84,20 @@ public class ItemNameManager {
             }
         if (!found) return null;
         final Pair<Material, Short> itemstackData = items.get(aliases);
-        final ItemStack is = new ItemStack(itemstackData.getFirst(), 1, itemstackData.getSecond());
-        if (data != null && !data.isEmpty()) {
+        final ItemStack is = new ItemStack(itemstackData.getFirst(), 1);
+        ItemMeta im = is.getItemMeta();
+        if (im instanceof Damageable) {
+            Damageable dim = (Damageable) im;
+            dim.setDamage(itemstackData.getSecond());
+            is.setItemMeta(dim);
+        }
+        /* if (data != null && !data.isEmpty()) {
             try {
                 ItemMeta isMeta = is.getItemMeta();
                 Damageable isDamageable = (Damageable)isMeta;
                 isDamageable.setDamage(Short.parseShort(data));
             } catch (NumberFormatException ignored) {}
-        }
+        } */
         return is;
     }
 

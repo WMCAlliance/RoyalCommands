@@ -44,7 +44,7 @@ public class CmdMap extends TabCommand {
     }
 
     @Override
-    protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+    protected Scale[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return Scale.values();
     }
 

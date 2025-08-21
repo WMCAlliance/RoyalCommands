@@ -8,8 +8,11 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.MenuType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
+
+import net.md_5.bungee.chat.TranslationRegistry;
 
 @ReflectCommand
 public class CmdWorkbench extends TabCommand {
@@ -25,7 +28,7 @@ public class CmdWorkbench extends TabCommand {
             return true;
         }
         final Player p = (Player) cs;
-        p.openWorkbench(null, true);
+        p.openInventory(MenuType.CRAFTING.create(p, TranslationRegistry.INSTANCE.translate("container.crafting")));
         p.sendMessage(MessageColor.POSITIVE + "Opened a workbench for you.");
         return true;
     }

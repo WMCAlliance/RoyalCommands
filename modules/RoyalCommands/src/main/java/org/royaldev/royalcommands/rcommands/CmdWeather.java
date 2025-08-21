@@ -47,7 +47,7 @@ public class CmdWeather extends TabCommand {
     }
 
     @Override
-    public Enum[] customEnum(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    public WeatherType[] customEnum(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         return WeatherType.values();
     }
 

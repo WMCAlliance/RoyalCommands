@@ -22,7 +22,7 @@ public class CmdGameMode extends TabCommand {
     }
 
     @Override
-    protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+    protected GameMode[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return GameMode.values();
     }
 

@@ -8,8 +8,11 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.MenuType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
+
+import net.md_5.bungee.chat.TranslationRegistry;
 
 @ReflectCommand
 public class CmdEnchantingTable extends TabCommand {
@@ -25,7 +28,7 @@ public class CmdEnchantingTable extends TabCommand {
             return true;
         }
         Player p = (Player) cs;
-        p.openEnchanting(null, true);
+        p.openInventory(MenuType.ENCHANTMENT.create(p, TranslationRegistry.INSTANCE.translate("container.enchant")));
         p.sendMessage(MessageColor.POSITIVE + "Opened an enchanting table for you.");
         return true;
     }

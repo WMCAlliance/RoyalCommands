@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Sign;
-import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -69,7 +68,7 @@ public class SignListener implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getPlayer() == null) return;
         Sign s = (Sign) e.getClickedBlock().getState();
-        SignSide ss = ((Sign) e.getClickedBlock().getState()).getTargetSide(e.getPlayer());
+        SignSide ss = s.getTargetSide(e.getPlayer());
         Player p = e.getPlayer();
         String line1 = ChatColor.stripColor(ss.getLine(0)).trim();
         String line2 = ChatColor.stripColor(ss.getLine(1)).trim();
@@ -159,7 +158,7 @@ public class SignListener implements Listener {
                 ss.setLine(1, MessageColor.NEGATIVE + line2);
                 p.sendMessage(MessageColor.NEGATIVE + "That material is invalid!");
                 return;
-            } else s.setLine(1, line2.toLowerCase().replace("_", " "));
+            } else ss.setLine(1, line2.toLowerCase().replace("_", " "));
             RUtils.showFilledChest(p, line2);
         }
 
