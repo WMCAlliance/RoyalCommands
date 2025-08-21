@@ -40,92 +40,34 @@ public class Death {
     }
 
     private String getMessageType() {
-        final String pullFrom;
-        switch (this.getLastDamageCause()) {
-            case BLOCK_EXPLOSION:
-                pullFrom = "blo";
-                break;
-            case CAMPFIRE:
-                pullFrom = "cam";
-                break;
-            case CONTACT:
-                pullFrom = "con";
-                break;
-            case CUSTOM:
-            case DRAGON_BREATH:
-                pullFrom = "dra";
-                break;
-            case DROWNING:
-                pullFrom = "dro";
-                break;
-            case ENTITY_ATTACK:
-                pullFrom = "mob";
-                break;
-            case ENTITY_EXPLOSION:
-                pullFrom = "cre";
-                break;
-            case FALL:
-                pullFrom = "fal";
-                break;
-            case FALLING_BLOCK:
-                pullFrom = "fab";
-                break;
-            case FIRE:
-                pullFrom = "fir";
-                break;
-            case FIRE_TICK:
-                pullFrom = "fir";
-                break;
-            case FLY_INTO_WALL:
-                pullFrom = "fiw";
-                break;
-            case FREEZE:
-                pullFrom = "fro";
-                break;
-            case HOT_FLOOR:
-                pullFrom = "hot";
-                break;
-            case LAVA:
-                pullFrom = "lav";
-                break;
-            case LIGHTNING:
-                pullFrom = "lig";
-                break;
-            case MAGIC:
-                pullFrom = "mag";
-                break;
-            case MELTING:
-            case POISON:
-                pullFrom = "poi";
-                break;
-            case PROJECTILE:
-                pullFrom = (this.getDeathType() == DeathType.PLAYER) ? "pvp" : "mob";
-                break;
-            case SONIC_BOOM:
-                pullFrom = "son";
-                break;
-            case STARVATION:
-                pullFrom = "sta";
-                break;
-            case SUFFOCATION:
-                pullFrom = "suf";
-                break;
-            case SUICIDE:
-                pullFrom = "sui";
-                break;
-            case THORNS:
-                pullFrom = "tho";
-                break;
-            case WITHER:
-                pullFrom = "wit";
-                break;
-            case VOID:
-                pullFrom = "voi";
-                break;
-            default:
-                pullFrom = "oth";
-                break;
-        }
+        final String pullFrom = switch (this.getLastDamageCause()) {
+            case BLOCK_EXPLOSION -> "blo";
+            case CAMPFIRE -> "cam";
+            case CONTACT -> "con";
+            case CUSTOM, DRAGON_BREATH -> "dra";
+            case DROWNING -> "dro";
+            case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK -> "mob";
+            case ENTITY_EXPLOSION -> "cre";
+            case FALL -> "fal";
+            case FALLING_BLOCK -> "fab";
+            case FIRE, FIRE_TICK -> "fir";
+            case FLY_INTO_WALL -> "fiw";
+            case FREEZE -> "fro";
+            case HOT_FLOOR -> "hot";
+            case LAVA -> "lav";
+            case LIGHTNING -> "lig";
+            case MAGIC -> "mag";
+            case MELTING, POISON -> "poi";
+            case PROJECTILE -> (this.getDeathType() == DeathType.PLAYER) ? "pvp" : "mob";
+            case SONIC_BOOM -> "son";
+            case STARVATION -> "sta";
+            case SUFFOCATION -> "suf";
+            case SUICIDE -> "sui";
+            case THORNS -> "tho";
+            case WITHER -> "wit";
+            case VOID -> "voi";
+            default -> "oth";
+        };
         return pullFrom;
     }
 
