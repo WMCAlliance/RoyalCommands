@@ -7,7 +7,6 @@ package org.royaldev.royalcommands.rcommands.home;
 
 import org.bukkit.Location;
 import org.royaldev.royalcommands.RUtils;
-import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;

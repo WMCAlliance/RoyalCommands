@@ -6,7 +6,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.base.Preconditions;
-import com.google.gson.Gson;
 
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -16,19 +15,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.AuthorizationHandler;
-import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

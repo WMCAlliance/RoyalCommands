@@ -35,7 +35,6 @@ public class ItemListener implements Listener {
 
     private final RoyalCommands plugin;
 
-    @SuppressWarnings("unchecked")
     public ItemListener(RoyalCommands instance) {
         this.plugin = instance;
     }

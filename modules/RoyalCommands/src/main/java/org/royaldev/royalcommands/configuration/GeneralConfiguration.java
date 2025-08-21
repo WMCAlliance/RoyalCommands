@@ -7,9 +7,8 @@ package org.royaldev.royalcommands.configuration;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
 
-public interface GeneralConfiguration extends ConfigurationSection, Configuration {
+public interface GeneralConfiguration extends Configuration {
 
     float getFloat(String path);
 

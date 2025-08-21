@@ -6,7 +6,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 

@@ -5,10 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
-import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.whitelist.SCmdAdd;
 import org.royaldev.royalcommands.rcommands.whitelist.SCmdCheck;
@@ -16,9 +13,6 @@ import org.royaldev.royalcommands.rcommands.whitelist.SCmdRemove;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @ReflectCommand
