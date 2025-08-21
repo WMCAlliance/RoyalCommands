@@ -6,6 +6,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -56,7 +57,7 @@ public class CmdEnchant extends TabCommand {
 
     private void sendEnchantmentList(CommandSender cs) {
         StringBuilder sb = new StringBuilder();
-        List<Enchantment> ench = Registry.ENCHANTMENT.stream().toList();
+        List<Enchantment> ench = Registry.ENCHANTMENT.stream().collect(Collectors.toList());
         ench.sort(new Comparator<Enchantment>() {
             @Override
             public int compare(Enchantment e1, Enchantment e2) {
