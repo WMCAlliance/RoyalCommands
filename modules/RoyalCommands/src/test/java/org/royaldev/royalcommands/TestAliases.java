@@ -39,7 +39,8 @@ public class TestAliases {
         final File csv = new File("src/main/resources/items.csv");
         assertTrue("No items.csv found!", csv.exists());
         final Reader in = new FileReader(csv);
-        final ItemNameManager inm = new ItemNameManager(new CSVReader(in).readAll());
+        CSVReader r = new CSVReader(in);
+        final ItemNameManager inm = new ItemNameManager(r.readAll());
         boolean allAliasesExist = true;
         for (final Material m : Material.values()) {
             if (inm.aliasExists(m)) continue;
@@ -47,6 +48,7 @@ public class TestAliases {
             if (allAliasesExist) allAliasesExist = false;
             l.warning("Missing alias for Material " + m.name() + ".");
         }
+        r.close();
         assertTrue("Missing aliases!", allAliasesExist);
     }
 
