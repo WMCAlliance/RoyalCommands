@@ -121,7 +121,7 @@ public class CmdItem extends TabCommand {
                 .color(MessageColor.NEUTRAL.bc())
                 .append(" of ")
                 .color(MessageColor.POSITIVE.bc())
-                .append(RUtils.getItemName(m))
+                .append(RUtils.getItemName(toInv))
                 .color(MessageColor.NEUTRAL.bc())
                 // .itemTooltip(toInv)
                 .append(" to ")

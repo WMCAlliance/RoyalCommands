@@ -17,6 +17,8 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import net.md_5.bungee.api.chat.TranslatableComponent;
+
 @ReflectCommand
 public class CmdSpawner extends TabCommand {
 
@@ -71,7 +73,7 @@ public class CmdSpawner extends TabCommand {
             return true;
         }
         crs.setSpawnedType(ct);
-        cs.sendMessage(MessageColor.POSITIVE + "Spawner type set to " + MessageColor.NEUTRAL + crs.getSpawnedType().toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+        cs.sendMessage(MessageColor.POSITIVE + "Spawner type set to " + MessageColor.NEUTRAL + new TranslatableComponent(crs.getSpawnedType().getTranslationKey()).toPlainText() + MessageColor.POSITIVE + ".");
         return true;
     }
 }

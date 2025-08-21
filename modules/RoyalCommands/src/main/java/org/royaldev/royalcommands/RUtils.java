@@ -37,8 +37,10 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.ItemTag;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import net.md_5.bungee.chat.TranslationRegistry;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -50,6 +52,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -565,6 +568,11 @@ public final class RUtils {
         return enchants;
     }
 
+    /**
+     * Using getTranslationKey is recommended if available. Use this sparingly.
+     * @param e
+     * @return
+     */
     public static String getFriendlyEnumName(Enum e) {
         return e.name().toLowerCase().replace("_", " ");
     }
@@ -695,17 +703,12 @@ public final class RUtils {
      * @return Name of item (formatted)
      */
     public static String getItemName(ItemStack is) {
-        return getItemName(is.getType());
-    }
-
-    /**
-     * Returns formatted name of a Material
-     *
-     * @param m Material to get name for
-     * @return Name of item (formatted)
-     */
-    public static String getItemName(Material m) {
-        return m.name().toLowerCase().replace("_", " ");
+        // String displayName = is.getItemMeta().getDisplayName();
+        // if (!displayName.isBlank() && !displayName.isEmpty()) {
+        //     return displayName;
+        // }
+        TranslatableComponent translated = new TranslatableComponent(is.getTranslationKey());
+        return translated.toPlainText();
     }
 
     public static String getMVWorldName(World w) {
@@ -713,6 +716,16 @@ public final class RUtils {
         if (!Config.multiverseNames || RoyalCommands.mvc == null)
             return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
         return RoyalCommands.mvc.getApi().getWorldManager().getWorld(w).get().getAlias();
+    }
+
+    public static String getBiomeName(Biome b) {
+        String prefix = "biome.minecraft.";
+        String key = b.getKeyOrNull().getKey();
+        String biome = TranslationRegistry.INSTANCE.translate(prefix + key);
+        if (biome.isBlank() || biome.isEmpty()) {
+            biome = key.toLowerCase().replace("_", " ");
+        }
+        return biome;
     }
 
     /**
@@ -1683,6 +1696,7 @@ public final class RUtils {
         String name = is.getType().name().toLowerCase().replace('_', ' ');
         if (name.equalsIgnoreCase("air")) name = "fists";
         else if (name.equalsIgnoreCase("bow")) name = "bow & arrow";
+        else name = getItemName(is);
         final String customName = RUtils.getCustomName(is);
         if (customName != null) name = customName;
         return name;

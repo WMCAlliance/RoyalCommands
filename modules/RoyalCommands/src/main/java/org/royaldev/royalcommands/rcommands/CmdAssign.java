@@ -47,7 +47,7 @@ public class CmdAssign extends TabCommand {
         if (cmds == null) cmds = new ArrayList<>();
         if (eargs.length < 1) {
             RUtils.removeAssignment(hand, PlayerConfigurationManager.getConfiguration(p));
-            p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(hand.getType()) + MessageColor.POSITIVE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
             return true;
         }
         switch (eargs[0].toLowerCase()) {

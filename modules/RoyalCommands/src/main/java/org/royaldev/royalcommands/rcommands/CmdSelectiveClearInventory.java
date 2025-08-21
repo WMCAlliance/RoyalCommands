@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -44,8 +45,8 @@ public class CmdSelectiveClearInventory extends TabCommand {
                 ItemStack toInv;
 				toInv = new ItemStack(theMaterial, Config.defaultStack);
                 t.getInventory().removeItem(toInv);
-                cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + theMaterial.name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-                t.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + theMaterial.name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " taken.");
+                cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(toInv) + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+                t.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(toInv) + MessageColor.POSITIVE + " taken.");
                 return true;
             } else if (theMaterial == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
@@ -84,8 +85,8 @@ public class CmdSelectiveClearInventory extends TabCommand {
             ItemStack toInv;
             toInv = new ItemStack(Material.getMaterial(called), amount);
             target.getInventory().removeItem(toInv);
-            cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + theMaterial.name().toLowerCase().toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-            target.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + theMaterial.name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " taken.");
+            cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(toInv) + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+            target.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(toInv) + MessageColor.POSITIVE + " taken.");
             return true;
         }
         return true;

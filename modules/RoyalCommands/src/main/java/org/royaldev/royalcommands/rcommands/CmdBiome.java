@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -71,7 +72,7 @@ public class CmdBiome extends TabCommand {
                         ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
                     }
                 }
-                p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + b.getKeyOrNull().toString() + MessageColor.POSITIVE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + RUtils.getBiomeName(b) + MessageColor.POSITIVE + ".");
             }
         };
         p.sendMessage(MessageColor.POSITIVE + "Changing biomes. This may take a moment..");

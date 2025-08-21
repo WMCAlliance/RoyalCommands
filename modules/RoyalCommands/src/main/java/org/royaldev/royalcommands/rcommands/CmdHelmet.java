@@ -92,7 +92,7 @@ public class CmdHelmet extends TabCommand {
             p.getInventory().remove(stack);
         }
         p.getInventory().setHelmet(stack);
-        p.sendMessage(MessageColor.POSITIVE + "Set your helmet to " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(stack.getType()) + MessageColor.POSITIVE + ".");
+        p.sendMessage(MessageColor.POSITIVE + "Set your helmet to " + MessageColor.NEUTRAL + RUtils.getItemName(stack) + MessageColor.POSITIVE + ".");
         return true;
     }
 }

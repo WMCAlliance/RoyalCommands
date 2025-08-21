@@ -19,6 +19,8 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import net.md_5.bungee.api.chat.TranslatableComponent;
+
 @ReflectCommand
 public class CmdEnchant extends TabCommand {
 
@@ -166,32 +168,33 @@ public class CmdEnchant extends TabCommand {
                 return true;
             }
         }
+        String enchantName = new TranslatableComponent(toAdd.getTranslationKey()).toPlainText();
         if (level == 0) {
             if (!hand.containsEnchantment(toAdd)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " does not contain " + MessageColor.NEUTRAL + toAdd.getKeyOrNull().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "That " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " does not contain " + MessageColor.NEUTRAL + enchantName + MessageColor.POSITIVE + ".");
                 return true;
             }
             hand.removeEnchantment(toAdd);
-            cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + toAdd.getKeyOrNull().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + enchantName + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
         } else {
             int toApply = getRealLevel(toAdd, level);
             if (toApply > toAdd.getMaxLevel() && !this.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That level is too high for " + MessageColor.NEUTRAL + toAdd.getKeyOrNull().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "That level is too high for " + MessageColor.NEUTRAL + enchantName + MessageColor.NEGATIVE + ".");
                 return true;
             }
             if (!toAdd.canEnchantItem(hand) && !this.ah.isAuthorized(cs, "rcmds.enchant.illegal")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getKeyOrNull().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it is not for that type of item!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + enchantName + MessageColor.NEGATIVE + " because it is not for that type of item!");
                 return true;
             }
             if (!this.ah.isAuthorized(cs, "rcmds.enchant.illegal"))
                 for (Enchantment e : hand.getEnchantments().keySet()) {
                     if (toAdd.conflictsWith(e)) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getKeyOrNull().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it conflicts with " + MessageColor.NEUTRAL + e.getKeyOrNull().getKey().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + enchantName + MessageColor.NEGATIVE + " because it conflicts with " + MessageColor.NEUTRAL + new TranslatableComponent(e.getTranslationKey()).toPlainText() + MessageColor.NEGATIVE + ".");
                         return true;
                     }
                 }
             hand.addUnsafeEnchantment(toAdd, toApply);
-            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getKeyOrNull().getKey().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " at level " + MessageColor.NEUTRAL + toApply + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + enchantName + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + " at level " + MessageColor.NEUTRAL + toApply + MessageColor.POSITIVE + ".");
         }
         return true;
     }

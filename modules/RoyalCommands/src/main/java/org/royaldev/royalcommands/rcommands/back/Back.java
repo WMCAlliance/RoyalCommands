@@ -3,6 +3,7 @@ package org.royaldev.royalcommands.rcommands.back;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.royaldev.royalcommands.RUtils;
 
@@ -29,8 +30,8 @@ public class Back {
 		this.coordinates.copy(location.toVector());
 		this.world = RUtils.getMVWorldName(location.getWorld());
         Block b = location.getBlock().getRelative(BlockFace.DOWN);
-		this.biome = String.valueOf(b.getBiome()).toLowerCase().replace("_", " ");
-		this.block = RUtils.getItemName(b.getType());
+        this.biome = RUtils.getBiomeName(b.getBiome());
+		this.block = RUtils.getItemName(new ItemStack(b.getType()));
     }
 
 	/**

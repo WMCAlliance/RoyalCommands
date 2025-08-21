@@ -65,7 +65,7 @@ public class CmdGive extends TabCommand {
         tc2.setColor(MessageColor.POSITIVE.bc());
         tcS.addExtra(tc2.duplicate());
 
-        TextComponent tci = new TextComponent(RUtils.getItemName(m));
+        TextComponent tci = new TextComponent(RUtils.getItemName(stack));
         tci.setColor(MessageColor.NEUTRAL.bc());
         tci.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, RUtils.getItemTooltip(m)));
         tcS.addExtra(tci);
@@ -177,7 +177,7 @@ public class CmdGive extends TabCommand {
         tcR.addExtra(tc2.duplicate());
         tcS.addExtra(tc2.duplicate());
 
-        TextComponent tci = new TextComponent(RUtils.getItemName(m));
+        TextComponent tci = new TextComponent(RUtils.getItemName(toInv));
         tci.setColor(MessageColor.NEUTRAL.bc());
         tci.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, RUtils.getItemTooltip(m)));
         tcR.addExtra(tci);

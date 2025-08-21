@@ -66,6 +66,7 @@ import org.royaldev.royalcommands.wrappers.player.RPlayer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
 public class PlayerListener implements Listener {
@@ -581,10 +582,12 @@ public class PlayerListener implements Listener {
         le.setCustomName(newName);
         le.setCustomNameVisible(!newName.isEmpty());
         CmdNameEntity.cancelNaming(p);
+
+        String typeName = new TranslatableComponent(le.getType().getTranslationKey()).toPlainText();
         if (newName.isEmpty())
-            p.sendMessage(MessageColor.POSITIVE + "Successfully removed the name from that " + MessageColor.NEUTRAL + le.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Successfully removed the name from that " + MessageColor.NEUTRAL + typeName + MessageColor.POSITIVE + ".");
         else
-            p.sendMessage(MessageColor.POSITIVE + "Successfully renamed that " + MessageColor.NEUTRAL + le.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Successfully renamed that " + MessageColor.NEUTRAL + typeName + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
