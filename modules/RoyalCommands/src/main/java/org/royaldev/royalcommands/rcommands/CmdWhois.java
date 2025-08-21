@@ -61,6 +61,7 @@ public class CmdWhois extends TabCommand {
             final Player p = (Player) t;
             cs.sendMessage(MessageColor.POSITIVE + " Gamemode: " + MessageColor.NEUTRAL + p.getGameMode().name().toLowerCase());
             cs.sendMessage(MessageColor.POSITIVE + " Can fly: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(p.getAllowFlight()));
+            cs.sendMessage(MessageColor.POSITIVE + " Can one hit kill: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("ohk")));
             cs.sendMessage(MessageColor.POSITIVE + " Health/Hunger/Saturation: " + MessageColor.NEUTRAL + df.format(p.getHealth() / 2) + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + p.getFoodLevel() / 2 + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + p.getSaturation() / 2);
             cs.sendMessage(MessageColor.POSITIVE + " Total Exp/Exp %/Level: " + MessageColor.NEUTRAL + p.getTotalExperience() + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + df.format(p.getExp() * 100) + "%" + MessageColor.POSITIVE + " / " + MessageColor.NEUTRAL + p.getLevel());
             PlayerInventory inv = p.getInventory();

@@ -556,6 +556,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PlayerConfigurationManager.getConfiguration(e.getPlayer()).set("seen", System.currentTimeMillis());
+        PlayerConfigurationManager.getConfiguration(e.getPlayer()).set("ohk", false);
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
@@ -563,6 +564,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
+        if (!e.getTo().getWorld().equals(e.getFrom().getWorld())){
+            PlayerConfigurationManager.getConfiguration(e.getPlayer()).set("ohk", false);
+        }
         if (PlayerConfigurationManager.getConfiguration(e.getPlayer()).getBoolean("jailed")) {
             e.getPlayer().sendMessage(MessageColor.NEGATIVE + "You are jailed and may not teleport.");
             e.setCancelled(true);
