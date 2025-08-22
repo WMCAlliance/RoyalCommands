@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -109,7 +110,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 break;
             case ITEM:
                 for (final Material m : Material.values()) {
-                    final String name = m.name();
+                    final String name = m.getKeyOrNull().getKey();
                     final String lowerCaseName = name.toLowerCase();
                     if (!lowerCaseName.startsWith(arg)) continue;
                     possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
@@ -117,23 +118,22 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 break;
             case ATTRIBUTE:
                 for (final Attribute at : Registry.ATTRIBUTE) {
-                    if (!at.getKeyOrNull().toString().startsWith(arg.toLowerCase())) continue;
+                    if (!RUtils.hasKeyMatch(at.getKeyOrNull(), arg)) continue;
                     possibilities.add(at.getKeyOrNull().toString().toLowerCase());
                 }
                 break;
 			case EFFECT:
                 for (PotionEffectType pet : Registry.EFFECT) {
 					if (pet == null) continue;
-					if (!pet.getKeyOrNull().toString().startsWith(arg.toLowerCase())) continue;
+					if (!RUtils.hasKeyMatch(pet.getKeyOrNull(), arg)) continue;
 					possibilities.add(pet.getKeyOrNull().toString().toLowerCase());
 				}
 				possibilities.add("clear");
 				break;
 			case ENCHANT:
 				for (Enchantment e : Registry.ENCHANTMENT) {
-                    String k = e.getKeyOrNull().toString();
-					if (!k.toLowerCase().startsWith(arg.toLowerCase())) continue;
-					possibilities.add(k.toLowerCase());
+					if (!RUtils.hasKeyMatch(e.getKeyOrNull(), arg)) continue;
+					possibilities.add(e.getKeyOrNull().toString().toLowerCase());
 				}
                 Collections.sort(possibilities);
 				possibilities.add("all");
@@ -167,10 +167,8 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 break;
 			case BIOME:
 				for (Biome b : Registry.BIOME) {
-                    final String name = b.getKeyOrNull().toString();
-                    final String lowerCaseName = name.toLowerCase();
-                    if (!lowerCaseName.startsWith(arg)) continue;
-					possibilities.add(lowerCaseName);
+                    if (!RUtils.hasKeyMatch(b.getKeyOrNull(), arg)) continue;
+					possibilities.add(b.getKeyOrNull().toString().toLowerCase());
 				}
 				break;
             case LIST:

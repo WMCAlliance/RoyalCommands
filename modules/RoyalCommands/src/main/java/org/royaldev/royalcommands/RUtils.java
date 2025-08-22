@@ -766,6 +766,13 @@ public final class RUtils {
         return op;
     }
 
+    public static Boolean hasKeyMatch(NamespacedKey key, String arg) {
+        String t = arg.toLowerCase();
+        String k = key.toString();
+        String simpleK = key.getKey();
+        return k.startsWith(t) || simpleK.startsWith(t);
+    }
+
     public static Text getPlayerTooltip(final Object o) {
         List<BaseComponent> bc = new ArrayList<>();
         TextComponent heading = new TextComponent("Offline Player");
@@ -840,6 +847,17 @@ public final class RUtils {
         if (o instanceof Material) {
             final Material item = (Material) o;
             return new Item(item.getKeyOrNull().toString(), 1, null);
+        }
+        return null;
+    }
+
+    public static net.md_5.bungee.api.chat.hover.content.Entity getEntityTooltip(final Object o) {
+        if (o instanceof Entity) {
+            final Entity entity = (Entity) o;
+            return new net.md_5.bungee.api.chat.hover.content.Entity(
+                    entity.getType().getKeyOrNull().toString(),
+                    entity.getUniqueId().toString(),
+                    TextComponent.fromLegacy(entity.getName()));
         }
         return null;
     }

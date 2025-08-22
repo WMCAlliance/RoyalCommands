@@ -7,6 +7,9 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
@@ -25,17 +28,18 @@ public class CmdSpawner extends TabCommand {
     public CmdSpawner(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort()});
     }
-	
+
 	@Override
 	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
 		ArrayList<String> spawnable = new ArrayList<>();
-            for (EntityType et : EntityType.values()) {
+            for (EntityType et : Registry.ENTITY_TYPE) {
                 if (!et.isAlive()) continue;
                 if (!et.isSpawnable()) continue;
-				String lowerCaseName = et.toString().toLowerCase();
-				if (!this.ah.isAuthorized(cs, "rcmds.spawnmob." + lowerCaseName) && !this.ah.isAuthorized(cs, "rcmds.spawnmob.*")) continue;
-                if (!lowerCaseName.startsWith(arg.toLowerCase())) continue;
-				spawnable.add(lowerCaseName);
+                NamespacedKey key = et.getKeyOrNull();
+				String name = key.getKey();
+				if (!this.ah.isAuthorized(cs, "rcmds.spawnmob." + name) && !this.ah.isAuthorized(cs, "rcmds.spawnmob.*")) continue;
+                if (!RUtils.hasKeyMatch(key, arg)) continue;
+				spawnable.add(key.toString());
 			}
 		return spawnable;
 	}
@@ -63,12 +67,12 @@ public class CmdSpawner extends TabCommand {
         CreatureSpawner crs = (CreatureSpawner) bb.getState();
         EntityType ct;
         try {
-            ct = EntityType.valueOf(args[0].toUpperCase());
+            ct = Registry.ENTITY_TYPE.getOrThrow(NamespacedKey.fromString(args[0]));
         } catch (Exception e) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid mob!");
             return true;
         }
-        if (!this.ah.isAuthorized(cs, "rcmds.spawnmob." + ct.name().toLowerCase()) && !this.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
+        if (!this.ah.isAuthorized(cs, "rcmds.spawnmob." + ct.getKeyOrNull().getKey()) && !this.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot use mob type " + MessageColor.NEUTRAL + ct.name().toLowerCase() + MessageColor.NEGATIVE + ".");
             return true;
         }

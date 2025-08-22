@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.DecimalFormat;
+import java.util.Comparator;
 import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,13 +14,51 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @ReflectCommand
 public class CmdNear extends TabCommand {
 
     public CmdNear(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{});
+    }
+
+    private Boolean sendNearbyPlayers(Player p, double radius) {
+        List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
+
+        ents.sort(Comparator.comparingDouble(entity -> p.getLocation().distanceSquared(entity.getLocation())));
+        int amount = 0;
+        p.sendMessage(MessageColor.POSITIVE + "Players in a " + MessageColor.NEUTRAL + radius + MessageColor.POSITIVE + " block radius:");
+        for (Entity e : ents) {
+            if (!(e instanceof Player))
+                continue;
+
+            Player t = (Player) e;
+            double dist = p.getLocation().distanceSquared(t.getLocation());
+
+            DecimalFormat df = new DecimalFormat("#.#");
+            BaseComponent bc = new TextComponent(t.getDisplayName());
+            bc.setColor(MessageColor.NEUTRAL.bc());
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, RUtils.getPlayerTooltip(t)));
+            TextComponent tc = new TextComponent(" ");
+            tc.addExtra(bc);
+
+            tc.addExtra(": ");
+            tc.addExtra(TextComponent.fromLegacy(MessageColor.RESET + df.format(Math.sqrt(dist))));
+
+            p.spigot().sendMessage(tc);
+            amount++;
+        }
+        if (amount == 0) {
+            p.sendMessage(MessageColor.NEGATIVE + " None nearby.");
+            return true;
+        }
+        return true;
     }
 
     @Override
@@ -30,21 +70,7 @@ public class CmdNear extends TabCommand {
         if (args.length < 1) {
             Player p = (Player) cs;
             double radius = Config.defaultNear;
-            List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
-            int amount = 0;
-            for (Entity e : ents) {
-                if (!(e instanceof Player)) continue;
-                Player t = (Player) e;
-                if (this.plugin.isVanished(t, cs)) continue;
-                double dist = p.getLocation().distanceSquared(t.getLocation());
-                p.sendMessage(MessageColor.NEUTRAL + t.getDisplayName() + ": " + MessageColor.RESET + Math.sqrt(dist));
-                amount++;
-            }
-            if (amount == 0) {
-                p.sendMessage(MessageColor.NEGATIVE + "No one nearby!");
-                return true;
-            }
-            return true;
+            return this.sendNearbyPlayers(p, radius);
         }
         if (args.length > 0) {
             Player p = (Player) cs;
@@ -63,21 +89,7 @@ public class CmdNear extends TabCommand {
                 p.sendMessage(MessageColor.NEGATIVE + "That radius was too large!");
                 return true;
             }
-            List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
-            int amount = 0;
-            for (Entity e : ents) {
-                if (!(e instanceof Player)) continue;
-                Player t = (Player) e;
-                if (this.plugin.isVanished(t, cs)) continue;
-                double dist = p.getLocation().distanceSquared(t.getLocation());
-                p.sendMessage(MessageColor.NEUTRAL + t.getDisplayName() + ": " + MessageColor.RESET + Math.sqrt(dist));
-                amount++;
-            }
-            if (amount == 0) {
-                p.sendMessage(MessageColor.NEGATIVE + "No one nearby!");
-                return true;
-            }
-            return true;
+            return this.sendNearbyPlayers(p, radius);
         }
         return true;
     }
