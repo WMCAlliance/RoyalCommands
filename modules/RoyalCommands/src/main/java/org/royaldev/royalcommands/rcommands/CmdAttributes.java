@@ -99,11 +99,11 @@ public class CmdAttributes extends TabCommand {
                                 MessageColor.POSITIVE + "Operation: " + MessageColor.NEUTRAL + operation + "\n" +
                                 MessageColor.POSITIVE + "Amount: " + MessageColor.NEUTRAL + am.getAmount() + "\n" +
                                 MessageColor.POSITIVE + "Key: " + MessageColor.NEUTRAL + am.getKey() + "\n" +
-                                MessageColor.NEUTRAL + "Click to copy the key");
+                                MessageColor.NEUTRAL + "Click to remove");
                         BaseComponent[] bca = new ComponentBuilder("  " + name + " " + operation + " " + am.getAmount())
                                 .color(MessageColor.NEUTRAL.bc())
                                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, tt))
-                                .event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(am.getKey())))
+                                .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/attr remove " + am.getKey().toString()))
                                 .create();
                         cs.spigot().sendMessage(bca);
                     }
