@@ -106,7 +106,7 @@ public class CmdItem extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return true;
         }
-        if (Config.blockedItems.contains(m.name()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + m.name())) {
+        if (Config.blockedItems.contains(m.getKeyOrNull().getKey()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + m.getKeyOrNull().getKey())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
             this.plugin.getLogger().warning(cs.getName() + " was denied access to the command!");
             return true;

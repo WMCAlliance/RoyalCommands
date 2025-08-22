@@ -77,7 +77,7 @@ public class CmdSelectiveClearInventory extends TabCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             }
-            if (Config.blockedItems.contains(theMaterial.name()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item") && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + theMaterial.name().toLowerCase())) {
+            if (Config.blockedItems.contains(theMaterial.getKeyOrNull().getKey()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item") && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + theMaterial.getKeyOrNull().getKey())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                 this.plugin.getLogger().warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
