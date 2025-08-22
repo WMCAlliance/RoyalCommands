@@ -9,13 +9,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 
+import net.md_5.bungee.api.chat.TranslatableComponent;
+
 public enum DeathType {
 
     ENTITY(EntityDamageByEntityEvent.class) {
         @Override
         String replaceVariables(final String message, final EntityDamageEvent damageEvent) {
             final EntityDamageByEntityEvent edbee = (EntityDamageByEntityEvent) damageEvent;
-            return message.replaceAll("(?i)\\{(mob|entity)}", MessageColor.NEGATIVE + edbee.getDamager().getType().name().toLowerCase().replace('_', ' ') + MessageColor.NEUTRAL);
+            return message.replaceAll("(?i)\\{(mob|entity)}", MessageColor.NEGATIVE + new TranslatableComponent(edbee.getDamager().getType().getTranslationKey()).toPlainText() + MessageColor.NEUTRAL);
         }
     },
     PLAYER(EntityDamageByEntityEvent.class) {
