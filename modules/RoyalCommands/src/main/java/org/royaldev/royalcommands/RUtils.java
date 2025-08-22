@@ -88,15 +88,6 @@ import org.royaldev.royalcommands.tools.UUIDFetcher;
 @SuppressWarnings("unused")
 public final class RUtils {
 
-    public static final Set<Material> AIR_MATERIALS = new HashSet<>();
-
-    static {
-        for (final Material m : Material.values()) {
-            if (m.isSolid()) continue;
-            AIR_MATERIALS.add(m);
-        }
-    }
-
     private static final Map<String, Integer> teleRunners = new HashMap<>();
     private static final List<String> teleAllowed = new ArrayList<>();
 
