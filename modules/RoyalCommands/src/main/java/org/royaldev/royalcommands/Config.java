@@ -45,6 +45,10 @@ public class Config {
     public static boolean nickPlayerList;
     public static boolean nickRegexEnabled;
     public static boolean overrideRespawn;
+    public static boolean persistBuddhaSession;
+    public static boolean persistGodSession;
+    public static boolean persistMobIgnoredSession;
+    public static boolean persistOHKSession;
     public static boolean purgeUnusedUserdata;
     public static boolean removePotionEffects;
     public static boolean requireHelm;
@@ -126,6 +130,10 @@ public class Config {
     public static List<String> whitelist;
     public static List<String> ignoredDeathMessageWorlds;
     public static List<String> silencedDeathMessageWorlds;
+    public static List<String> clearBuddhaWorlds;
+    public static List<String> clearGodWorlds;
+    public static List<String> clearMobIgnoredWorlds;
+    public static List<String> clearOHKWorlds;
 
     //-- Longs --//
     public static long afkAutoTime;
@@ -203,6 +211,7 @@ public class Config {
         dumpUseInv = c.getBoolean("dump.use_inv", true);
         explodeFire = c.getBoolean("explode.fire", false);
         h2Convert = c.getBoolean("h2.convert", false);
+        interworldDeathMessages = c.getBoolean("deathmessages.show_interworld", true);
         itemSpawnTag = c.getBoolean("items.spawn.tag.enabled", false);
         kitPerms = c.getBoolean("kits.options.exclusive_perms", false);
         motdLogin = c.getBoolean("motd.options.display_on_login", true);
@@ -212,6 +221,10 @@ public class Config {
         nickPlayerList = c.getBoolean("nicknames.set_player_list", false);
         nickRegexEnabled = c.getBoolean("nicknames.limits.content.regex.enabled", false);
         overrideRespawn = c.getBoolean("general.override_respawn", true);
+        persistBuddhaSession = c.getBoolean("general.persist_buddha_session", false);
+        persistGodSession = c.getBoolean("general.persist_god_session", false);
+        persistMobIgnoredSession = c.getBoolean("general.persist_mobignored_session", false);
+        persistOHKSession = c.getBoolean("general.persist_ohk_session", false);
         purgeUnusedUserdata = c.getBoolean("userdata.saving.purge_unused_userdata_handlers", true);
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
         requireHelm = c.getBoolean("helm.require_item", false);
@@ -247,7 +260,6 @@ public class Config {
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
         ymlConvert = c.getBoolean("yml_convert", false);
-        interworldDeathMessages = c.getBoolean("deathmessages.show_interworld", true);
 
         //-- ConfigurationSections --//
 
@@ -282,6 +294,10 @@ public class Config {
 
         //-- String lists --//
 
+        clearBuddhaWorlds = c.getStringList("general.clear_buddha_worlds");
+        clearGodWorlds = c.getStringList("general.clear_god_worlds");
+        clearMobIgnoredWorlds = c.getStringList("general.clear_mobignored_worlds");
+        clearOHKWorlds = c.getStringList("general.clear_ohk_worlds");
         commandSpyBlacklist = c.getStringList("commands.logging.command_spy_blacklist");
         blockedItems = c.getStringList("items.spawn.blocked");
         disabledBackWorlds = c.getStringList("teleports.back.disabled_worlds");

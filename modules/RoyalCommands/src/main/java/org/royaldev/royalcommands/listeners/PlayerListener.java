@@ -435,6 +435,22 @@ public class PlayerListener implements Listener {
             String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
             pcm.set("ip", playerip);
+            // Clear Buddha
+            if (!Config.persistBuddhaSession){
+                pcm.set("buddha", false);
+            }
+            // Clear GodMode
+            if (!Config.persistGodSession){
+                pcm.set("godmode", false);
+            }
+            // Clear MobIgnore
+            if (!Config.persistMobIgnoredSession){
+                pcm.set("mobignored", false);
+            }
+            // Clear OneHitKill
+            if (!Config.persistOHKSession){
+                pcm.set("ohk", false);
+            }
         }
         if (Config.sendToSpawn) {
 			final RPlayer rp = MemoryRPlayer.getRPlayer(event.getPlayer());
@@ -556,7 +572,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PlayerConfigurationManager.getConfiguration(e.getPlayer()).set("seen", System.currentTimeMillis());
-        PlayerConfigurationManager.getConfiguration(e.getPlayer()).set("ohk", false);
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
@@ -564,10 +579,26 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(e.getPlayer());
         if (!e.getTo().getWorld().equals(e.getFrom().getWorld())){
-            PlayerConfigurationManager.getConfiguration(e.getPlayer()).set("ohk", false);
+            // Clear Buddha on World Change
+            if (Config.clearBuddhaWorlds.contains(e.getTo().getWorld().getName())){
+                pcm.set("buddha", false);
+            }
+            // Clear God Mode on World Change
+            if (Config.clearGodWorlds.contains(e.getTo().getWorld().getName())){
+                pcm.set("godmode", false);
+            }
+            // Clear Mob Ignore on World Change
+            if (Config.clearMobIgnoredWorlds.contains(e.getTo().getWorld().getName())){
+                pcm.set("mobignored", false);
+            }
+            // Clear One Hit Kill on World Change
+            if (Config.clearOHKWorlds.contains(e.getTo().getWorld().getName())){
+                pcm.set("ohk", false);
+            }
         }
-        if (PlayerConfigurationManager.getConfiguration(e.getPlayer()).getBoolean("jailed")) {
+        if (pcm.getBoolean("jailed")) {
             e.getPlayer().sendMessage(MessageColor.NEGATIVE + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
