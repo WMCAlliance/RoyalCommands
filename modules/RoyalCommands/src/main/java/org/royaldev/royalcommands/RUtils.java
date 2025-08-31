@@ -706,7 +706,7 @@ public final class RUtils {
         if (w == null) throw new NullPointerException("w can't be null!");
         if (!Config.multiverseNames || RoyalCommands.mvc == null)
             return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
-        return RoyalCommands.mvc.getApi().getWorldManager().getWorld(w).get().getAlias();
+        return RUtils.colorize(RoyalCommands.mvc.getApi().getWorldManager().getWorld(w).get().getAlias());
     }
 
     public static String getBiomeName(Biome b) {
