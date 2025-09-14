@@ -940,14 +940,16 @@ public final class RUtils {
      */
     public static Location getSafeLocation(Location l) {
         int unsafeY = l.getBlockY();
-        if (unsafeY < 0) return null;
-        for (int i = unsafeY; i >= 0; i--) {
-            if (i < 0) return null;
-            Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
+        World w = l.getWorld();
+        int minHeight = w.getMinHeight();
+        if (unsafeY < minHeight) return null;
+        for (int i = unsafeY; i >= minHeight; i--) {
+            if (i < minHeight) return null;
+            Block b = w.getBlockAt(l.getBlockX(), i, l.getBlockZ());
             if (b == null) return null;
             if (b.getType() == Material.AIR) continue;
             double safeY = l.getY() - (unsafeY - i);
-            return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
+            return new Location(w, l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
         }
         return null;
     }
