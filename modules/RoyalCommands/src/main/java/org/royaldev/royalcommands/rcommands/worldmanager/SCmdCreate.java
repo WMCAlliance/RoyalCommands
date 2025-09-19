@@ -24,15 +24,22 @@ import java.util.List;
 public class SCmdCreate extends SubCommand<CmdWorldManager> {
 
     public SCmdCreate(final RoyalCommands instance, final CmdWorldManager parent) {
-        super(instance, parent, "create", true, "Creates a new world.", "<command> [name] (type) (environment) (seed) (generator)", new String[0], new Short[0]);
-        this.setAlwaysUse(CompletionType.LIST);
+        super(instance, parent, "create", true, "Creates a new world.", "<command> [name] (type) (environment) (seed) (generator)", new String[0], new Short[]{CompletionType.NONE.getShort(), CompletionType.LIST.getShort(), CompletionType.ENUM.getShort(), CompletionType.NONE.getShort(), CompletionType.NONE.getShort()});
     }
 
     @Override
     public List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         final List<String> completions = new ArrayList<>();
         if (args.length < 2) return completions;
-        return completions; // TODO: do later
+        for (final WorldType wt : WorldType.values()) {
+            completions.add(wt.getName().toLowerCase());
+        }
+        return completions;
+    }
+
+    @Override
+    protected Environment[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return Environment.values();
     }
 
     @Override
