@@ -14,6 +14,10 @@ build.xml
 /target
 dependency-reduced-pom.xml
 
+# vscode
+.vscode/tasks.json
+.vscode/launch.json
+
 # vim
 .*.sw[a-p]
 
@@ -33,3 +37,6 @@ package
 *.ipr
 *.iws
 .idea/
+
+# local test server
+server/

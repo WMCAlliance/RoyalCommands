@@ -36,7 +36,7 @@ public class SCmdTeleport extends SubCommand<CmdWorldManager> {
             return true;
         }
         if (eargs.length < 1) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
+            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.NEGATIVE + " for help.");
             return true;
         }
         final Player p = (Player) cs;

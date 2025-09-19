@@ -18,23 +18,21 @@ import java.io.File;
 
 public class SCmdLoad extends SubCommand<CmdWorldManager> {
 
-    private final Flag<String> nameFlag = new Flag<>(String.class, "name", "n");
-
     public SCmdLoad(final RoyalCommands instance, final CmdWorldManager parent) {
-        super(instance, parent, "load", true, "Loads a world.", "<command> -[n,name] [name]", new String[0], new Short[0]);
+        super(instance, parent, "load", true, "Loads a world.", "<command> [name]", new String[0], new Short[0]);
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, final CommandArguments ca) {
         if (!Config.useWorldManager) {
             cs.sendMessage(MessageColor.NEGATIVE + "WorldManager is disabled!");
             return true;
         }
-        if (!ca.hasContentFlag(this.nameFlag)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
+        if (args.length < 1) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.NEGATIVE + " for help.");
             return true;
         }
-        final String name = ca.getFlag(this.nameFlag).getValue();
+        final String name = args[0];
         boolean contains = false;
         File[] fs = this.plugin.getServer().getWorldContainer().listFiles();
         if (fs == null) {

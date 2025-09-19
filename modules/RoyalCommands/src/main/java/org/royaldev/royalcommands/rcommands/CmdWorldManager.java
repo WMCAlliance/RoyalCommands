@@ -21,13 +21,9 @@ import java.util.Random;
 public class CmdWorldManager extends ParentCommand {
 
     private final Random r = new Random();
-    private final Flag<String> nameFlag = new Flag<>(String.class, "name", "n");
-    private final Flag ejectFlag = new Flag("eject", "e");
 
     public CmdWorldManager(final RoyalCommands instance, final String name) {
         super(instance, name, false);
-        addExpectedFlag(nameFlag);
-        addExpectedFlag(ejectFlag);
         this.addSubCommand(new SCmdCreate(this.plugin, this));
         this.addSubCommand(new SCmdDelete(this.plugin, this));
         this.addSubCommand(new SCmdInfo(this.plugin, this));

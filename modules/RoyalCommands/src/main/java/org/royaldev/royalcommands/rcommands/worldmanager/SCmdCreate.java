@@ -18,18 +18,13 @@ import org.royaldev.royalcommands.rcommands.CmdWorldManager;
 import org.royaldev.royalcommands.rcommands.SubCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SCmdCreate extends SubCommand<CmdWorldManager> {
 
-    private final Flag<String> nameFlag = new Flag<>(String.class, "name", "n");
-    private final Flag<String> typeFlag = new Flag<>(String.class, "type", "t");
-    private final Flag<String> envFlag = new Flag<>(String.class, "environment", "env", "e");
-    private final Flag<String> seedFlag = new Flag<>(String.class, "seed", "s");
-    private final Flag<String> genFlag = new Flag<>(String.class, "generator", "gen", "g");
-
     public SCmdCreate(final RoyalCommands instance, final CmdWorldManager parent) {
-        super(instance, parent, "create", true, "Creates a new world.", "<command> -[name,n] [name] -[type,t] [type] -[environment,env,e] [environment] -(seed,s) (seed) -(generator,gen,g) (generator)", new String[0], new Short[0]);
+        super(instance, parent, "create", true, "Creates a new world.", "<command> [name] (type) (environment) (seed) (generator)", new String[0], new Short[0]);
         this.setAlwaysUse(CompletionType.LIST);
     }
 
@@ -41,25 +36,26 @@ public class SCmdCreate extends SubCommand<CmdWorldManager> {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, final CommandArguments ca) {
         if (!Config.useWorldManager) {
             cs.sendMessage(MessageColor.NEGATIVE + "WorldManager is disabled!");
             return true;
         }
-        if (!ca.hasContentFlag(this.nameFlag) || !ca.hasContentFlag(this.typeFlag) || !ca.hasContentFlag(this.envFlag)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
+        if (args.length < 1) {
+            cs.sendMessage("Args: " + args.length + ": " + Arrays.toString(args));
+            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.NEGATIVE + " for help.");
             return true;
         }
-        final String name = ca.getFlag(this.nameFlag).getValue();
-        final WorldType type = WorldType.getByName(ca.getFlag(this.typeFlag).getValue());
+        String name = args[0];
+        final WorldType type = WorldType.getByName(args.length > 1 ? args[1] : "default");
         final Environment we;
         try {
-            we = Environment.valueOf(ca.getFlag(this.envFlag).getValue().toUpperCase());
+            we = Environment.valueOf((args.length > 2 ? args[2] : "normal").toUpperCase());
         } catch (IllegalArgumentException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid environment!");
             String types = "";
             for (Environment t : Environment.values())
-                types = (types.equals("")) ? types.concat(MessageColor.NEUTRAL + t.name() + MessageColor.RESET) : types.concat(", " + MessageColor.NEUTRAL + t.name() + MessageColor.RESET);
+                types = (types.equals("")) ? types.concat(MessageColor.NEUTRAL + t.name() + MessageColor.RESET) : types.concat(", " + MessageColor.NEUTRAL + t.name().toLowerCase() + MessageColor.RESET);
             cs.sendMessage(types);
             return true;
         }
@@ -73,16 +69,16 @@ public class SCmdCreate extends SubCommand<CmdWorldManager> {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid world type!");
             String types = "";
             for (WorldType t : WorldType.values())
-                types = (types.equals("")) ? types.concat(MessageColor.NEUTRAL + t.getName() + MessageColor.RESET) : types.concat(", " + MessageColor.NEUTRAL + t.getName() + MessageColor.RESET);
+                types = (types.equals("")) ? types.concat(MessageColor.NEUTRAL + t.getName() + MessageColor.RESET) : types.concat(", " + MessageColor.NEUTRAL + t.getName().toLowerCase() + MessageColor.RESET);
             cs.sendMessage(types);
             return true;
         }
-        cs.sendMessage(MessageColor.POSITIVE + "Creating world...");
+        cs.sendMessage(MessageColor.POSITIVE + "Creating world " + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + "...");
         WorldCreator wc = new WorldCreator(name);
         wc = wc.type(type);
         wc = wc.environment(we);
-        if (ca.hasContentFlag(this.seedFlag)) {
-            final String seedString = ca.getFlag(this.seedFlag).getValue();
+        if (args.length > 3) {
+            final String seedString = args[3];
             long seed;
             try {
                 seed = Long.valueOf(seedString);
@@ -91,8 +87,8 @@ public class SCmdCreate extends SubCommand<CmdWorldManager> {
             }
             wc = wc.seed(seed);
         } else wc = wc.seed(this.getParent().getRandom().nextLong());
-        if (ca.hasContentFlag(this.genFlag)) {
-            final String generator = ca.getFlag(this.genFlag).getValue();
+        if (args.length > 4) {
+            final String generator = args[4];
             wc = wc.generator(generator);
             RoyalCommands.wm.getConfig().set("worlds." + name + ".generator", generator);
         }

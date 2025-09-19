@@ -15,33 +15,31 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWorldManager;
 import org.royaldev.royalcommands.rcommands.SubCommand;
+import org.royaldev.royalcommands.rcommands.TabCommand;
 
 public class SCmdDelete extends SubCommand<CmdWorldManager> {
 
-    private final Flag<String> nameFlag = new Flag<>(String.class, "name", "n");
-    private final Flag ejectFlag = new Flag("eject", "e");
-
     public SCmdDelete(final RoyalCommands instance, final CmdWorldManager parent) {
-        super(instance, parent, "delete", true, "Unloads and deletes a world. If the eject flag is specified, will kick all players on the world.", "<command> -[n,name] [name] -(e,eject)", new String[0], new Short[0]);
+        super(instance, parent, "delete", true, "Unloads and deletes a world. If eject is specified, will kick all players on the world.", "<command> [name] (eject)", new String[0], new Short[]{TabCommand.CompletionType.WORLD.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, final CommandArguments ca) {
         if (!Config.useWorldManager) {
             cs.sendMessage(MessageColor.NEGATIVE + "WorldManager is disabled!");
             return true;
         }
-        if (!ca.hasContentFlag(this.nameFlag)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
+        if (args.length < 1) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.NEGATIVE + " for help.");
             return true;
         }
-        final World w = this.plugin.getServer().getWorld(ca.getFlag(this.nameFlag).getValue());
+        final World w = this.plugin.getServer().getWorld(args[0]);
         if (w == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
             return true;
         }
         cs.sendMessage(MessageColor.POSITIVE + "Unloading world...");
-        final boolean eject = ca.hasFlag(this.ejectFlag);
+        final boolean eject = args.length > 1;
         if (eject) for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
         boolean success = this.plugin.getServer().unloadWorld(w, true);
         if (success) cs.sendMessage(MessageColor.POSITIVE + "World unloaded successfully!");
