@@ -42,7 +42,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
             if (s == null) s = 0;
             this.completionTypes.add(s);
         }
-		if (this.alwaysUse == null) this.completionTypes.add(TabCommand.CompletionType.NONE.getShort());
+		// if (this.alwaysUse == null) this.completionTypes.add(TabCommand.CompletionType.NONE.getShort());
     }
 
     /**
