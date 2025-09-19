@@ -7,7 +7,6 @@ package org.royaldev.royalcommands.rcommands.worldmanager;
 
 import java.text.DecimalFormat;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -81,11 +80,11 @@ public class SCmdInfo extends SubCommand<CmdWorldManager> {
         cs.sendMessage(MessageColor.POSITIVE + "  Time Frozen: " + MessageColor.NEUTRAL + (timeFrozen ? "yes" : "no"));
         cs.sendMessage(MessageColor.POSITIVE + "  Spawn Limits:");
         for (SpawnCategory cat : SpawnCategory.values()) {
-            String catName = WordUtils.capitalize(RUtils.getFriendlyEnumName(cat));
+            String catName = RUtils.getFriendlyEnumName(cat);
             try {
-                cs.sendMessage(MessageColor.POSITIVE + "    " + catName + ": " + MessageColor.NEUTRAL + w.getSpawnLimit(cat));
+                cs.sendMessage(MessageColor.POSITIVE + "   - " + catName + ": " + MessageColor.NEUTRAL + w.getSpawnLimit(cat));
             } catch (IllegalArgumentException ex) {
-                cs.sendMessage(MessageColor.POSITIVE + "    " + catName + ": " + MessageColor.NEUTRAL + "not supported");
+                cs.sendMessage(MessageColor.POSITIVE + "   - " + catName + ": " + MessageColor.NEUTRAL + "not supported");
             }
         }
         return true;
