@@ -80,6 +80,10 @@ public class WorldManager {
             config.set(path + "monsterspawnlimit", w.getSpawnLimit(SpawnCategory.MONSTER));
             config.set(path + "animalspawnlimit", w.getSpawnLimit(SpawnCategory.ANIMAL));
             config.set(path + "wateranimalspawnlimit", w.getSpawnLimit(SpawnCategory.WATER_ANIMAL));
+            config.set(path + "waterambientspawnlimit", w.getSpawnLimit(SpawnCategory.WATER_AMBIENT));
+            config.set(path + "waterundergroundcreaturespawnlimit", w.getSpawnLimit(SpawnCategory.WATER_UNDERGROUND_CREATURE));
+            config.set(path + "ambientspawnlimit", w.getSpawnLimit(SpawnCategory.AMBIENT));
+            config.set(path + "axolotlspawnlimit", w.getSpawnLimit(SpawnCategory.AXOLOTL));
             config.set(path + "animalspawnticks", w.getTicksPerSpawns(SpawnCategory.ANIMAL));
             config.set(path + "monsterspawnticks", w.getTicksPerSpawns(SpawnCategory.MONSTER));
             config.set(path + "difficulty", w.getDifficulty().name());
@@ -216,8 +220,12 @@ public class WorldManager {
             w.setKeepSpawnInMemory(config.getBoolean("keepspawnloaded", true));
             w.setPVP(config.getBoolean(path + "pvp", true));
             w.setSpawnLimit(SpawnCategory.MONSTER, config.getInt(path + "monsterspawnlimit", 70));
-            w.setSpawnLimit(SpawnCategory.ANIMAL, config.getInt(path + "animalspawnlimit", 15));
+            w.setSpawnLimit(SpawnCategory.ANIMAL, config.getInt(path + "animalspawnlimit", 10));
             w.setSpawnLimit(SpawnCategory.WATER_ANIMAL, config.getInt(path + "wateranimalspawnlimit", 5));
+            w.setSpawnLimit(SpawnCategory.WATER_AMBIENT, config.getInt(path + "waterambientspawnlimit", 20));
+            w.setSpawnLimit(SpawnCategory.WATER_UNDERGROUND_CREATURE, config.getInt(path + "waterundergroundcreaturespawnlimit", 5));
+            w.setSpawnLimit(SpawnCategory.AMBIENT, config.getInt(path + "ambientspawnlimit", 15));
+            w.setSpawnLimit(SpawnCategory.AXOLOTL, config.getInt(path + "axolotlspawnlimit", 5));
             w.setTicksPerSpawns(SpawnCategory.ANIMAL, config.getInt(path + "animalspawnticks", 400));
             w.setTicksPerSpawns(SpawnCategory.MONSTER, config.getInt(path + "monsterspawnticks", 1));
             Difficulty d;
