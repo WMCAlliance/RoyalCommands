@@ -19,15 +19,13 @@ import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
-// TODO: Allow setting homes for other people
-
 @ReflectCommand
 public class CmdSetHome extends TabCommand {
 
     private final Map<UUID, Map<String, Long>> overwrites = new HashMap<>();
 
     public CmdSetHome(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{});
+        super(instance, name, true, new Short[]{CompletionType.NONE.getShort(), CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
@@ -46,6 +44,7 @@ public class CmdSetHome extends TabCommand {
         String name = "";
         if (args.length > 0) name = args[0];
         if (name.isEmpty()) name = "home";
+        if (args.length > 1) name = args[1] + ":" + args[0];
         Home h = Home.fromNotation(p.getUniqueId(), name);
         if (h != null) {
             boolean overwrite = false;

@@ -17,8 +17,7 @@ import org.royaldev.royalcommands.rcommands.home.Home;
 public class CmdDeleteHome extends BaseHomeCommand {
 
     public CmdDeleteHome(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()}, true);
-        this.addExpectedFlag(this.playerFlag);
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.ONLINE_PLAYER.getShort()}, true);
     }
 
     @Override

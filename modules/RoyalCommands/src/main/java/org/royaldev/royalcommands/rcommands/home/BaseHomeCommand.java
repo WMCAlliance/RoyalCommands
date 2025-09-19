@@ -21,7 +21,6 @@ import java.util.List;
 
 public abstract class BaseHomeCommand extends TabCommand {
 
-    protected final Flag<String> playerFlag = new Flag<>(String.class, "player", "p");
     private final boolean consoleAllowed;
 
     protected BaseHomeCommand(final RoyalCommands instance, final String name, final boolean checkPermissions, final Short[] cts, final boolean consoleAllowed) {
@@ -59,8 +58,8 @@ public abstract class BaseHomeCommand extends TabCommand {
         }
         final Player p = isPlayer ? (Player) cs : null;
         String homeName = eargs.length < 1 ? "home" : eargs[0];
-        if (ca.hasContentFlag(this.playerFlag)) {
-            homeName = ca.getFlag(this.playerFlag).getValue() + ":" + homeName;
+        if (eargs.length > 1) {
+            homeName = eargs[1] + ":" + eargs[0];
         }
         if (!isPlayer && !homeName.contains(":")) {
             cs.sendMessage(MessageColor.NEGATIVE + "You must specify a player.");

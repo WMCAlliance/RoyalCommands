@@ -19,7 +19,7 @@ import org.royaldev.royalcommands.wrappers.player.RPlayer;
 public class CmdHome extends BaseHomeCommand {
 
     public CmdHome(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()}, false);
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.ONLINE_PLAYER.getShort()}, false);
     }
 
     @Override
