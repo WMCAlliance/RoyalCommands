@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands.pluginmanager;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -73,7 +74,7 @@ public class SCmdInfo extends SubCommand<CmdPluginManager> {
         if (!dep.isEmpty()) {
             cs.sendMessage(MessageColor.POSITIVE + "Dependencies: " + MessageColor.NEUTRAL + RUtils.join(dep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
         }
-        cs.sendMessage(MessageColor.POSITIVE + "Enabled: " + MessageColor.NEUTRAL + ((p.isEnabled()) ? "Yes" : "No"));
+        cs.sendMessage(MessageColor.POSITIVE + "Enabled: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(p.isEnabled()));
         return true;
     }
 }

@@ -7,6 +7,8 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,10 +54,10 @@ public class CmdSpawnInfo extends TabCommand {
         final String subcommand = eargs[0];
         if (subcommand.equalsIgnoreCase("check")) {
             cs.sendMessage(MessageColor.POSITIVE + "Spawn information on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ":");
-            cs.sendMessage(MessageColor.POSITIVE + "  Is spawned: " + MessageColor.NEUTRAL + ((si.isSpawned()) ? "Yes" : "No"));
+            cs.sendMessage(MessageColor.POSITIVE + "  Is spawned: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(si.isSpawned()));
             if (si.isSpawned())
                 cs.sendMessage(MessageColor.POSITIVE + "  Spawned by: " + MessageColor.NEUTRAL + si.getSpawner());
-            cs.sendMessage(MessageColor.POSITIVE + "  Made with spawned items: " + MessageColor.NEUTRAL + ((si.hasComponents()) ? "Yes" : "No"));
+            cs.sendMessage(MessageColor.POSITIVE + "  Made with spawned items: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(si.hasComponents()));
             if (si.hasComponents()) {
                 cs.sendMessage(MessageColor.POSITIVE + "  Components:");
                 for (String component : si.getComponents())

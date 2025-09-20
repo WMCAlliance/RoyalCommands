@@ -7,6 +7,7 @@ package org.royaldev.royalcommands.rcommands.worldmanager;
 
 import java.text.DecimalFormat;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -72,12 +73,12 @@ public class SCmdInfo extends SubCommand<CmdWorldManager> {
         cs.sendMessage(MessageColor.POSITIVE + "  Spawn Location: " + MessageColor.NEUTRAL + df.format(l.getX()) + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + df.format(l.getY()) + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + df.format(l.getZ()) + MessageColor.POSITIVE);
         cs.sendMessage(MessageColor.POSITIVE + "  Environment: " + MessageColor.NEUTRAL + w.getEnvironment().name().toLowerCase());
         cs.sendMessage(MessageColor.POSITIVE + "  Generator: " + MessageColor.NEUTRAL + (w.getGenerator() != null ? w.getGenerator().toString() : "default"));
-        cs.sendMessage(MessageColor.POSITIVE + "  Generate Structures: " + MessageColor.NEUTRAL + (w.canGenerateStructures() ? "yes" : "no"));
+        cs.sendMessage(MessageColor.POSITIVE + "  Generate Structures: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(w.canGenerateStructures()));
         cs.sendMessage(MessageColor.POSITIVE + "  Difficulty: " + MessageColor.NEUTRAL + (w.getDifficulty().toString().toLowerCase()));
-        cs.sendMessage(MessageColor.POSITIVE + "  Animals: " + MessageColor.NEUTRAL + (w.getAllowAnimals() ? "yes" : "no"));
-        cs.sendMessage(MessageColor.POSITIVE + "  Monsters: " + MessageColor.NEUTRAL + (w.getAllowMonsters() ? "yes" : "no"));
-        cs.sendMessage(MessageColor.POSITIVE + "  PVP: " + MessageColor.NEUTRAL + (w.getPVP() ? "yes" : "no"));
-        cs.sendMessage(MessageColor.POSITIVE + "  Time Frozen: " + MessageColor.NEUTRAL + (timeFrozen ? "yes" : "no"));
+        cs.sendMessage(MessageColor.POSITIVE + "  Animals: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(w.getAllowAnimals()));
+        cs.sendMessage(MessageColor.POSITIVE + "  Monsters: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(w.getAllowMonsters()));
+        cs.sendMessage(MessageColor.POSITIVE + "  PVP: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(w.getPVP()));
+        cs.sendMessage(MessageColor.POSITIVE + "  Time Frozen: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(timeFrozen));
         cs.sendMessage(MessageColor.POSITIVE + "  Spawn Limits:");
         for (SpawnCategory cat : SpawnCategory.values()) {
             String catName = RUtils.getFriendlyEnumName(cat);

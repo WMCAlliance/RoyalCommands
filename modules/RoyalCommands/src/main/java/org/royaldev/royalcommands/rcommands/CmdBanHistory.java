@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,7 +29,7 @@ public class CmdBanHistory extends TabCommand {
     public CmdBanHistory(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
-	
+
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
 		/*
@@ -97,7 +99,7 @@ public class CmdBanHistory extends TabCommand {
         String bannedAt = (banDate < 0L) ? "Unknown" : sdf.format(new Date(banDate));
         cs.sendMessage(MessageColor.POSITIVE + "Banned at " + MessageColor.NEUTRAL + bannedAt);
         boolean isTempBan = baninfo[3].equalsIgnoreCase("true");
-        cs.sendMessage(MessageColor.POSITIVE + "Was tempban? " + MessageColor.NEUTRAL + ((isTempBan) ? "Yes" : "No"));
+        cs.sendMessage(MessageColor.POSITIVE + "Was tempban? " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(isTempBan));
         return true;
     }
 }

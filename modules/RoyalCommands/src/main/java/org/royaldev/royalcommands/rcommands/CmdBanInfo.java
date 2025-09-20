@@ -7,6 +7,8 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -49,7 +51,7 @@ public class CmdBanInfo extends TabCommand {
         String bannedAt = (banDate < 0L) ? "Unknown" : sdf.format(new Date(banDate));
         cs.sendMessage(MessageColor.POSITIVE + "Banned at " + MessageColor.NEUTRAL + bannedAt);
         boolean isTempBan = pcm.get("bantime") != null;
-        cs.sendMessage(MessageColor.POSITIVE + "Is tempban? " + MessageColor.NEUTRAL + ((isTempBan) ? "Yes" : "No"));
+        cs.sendMessage(MessageColor.POSITIVE + "Is tempban? " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(isTempBan));
         if (!isTempBan) return true;
         String expire = sdf.format(new Date(pcm.getLong("bantime")));
         cs.sendMessage(MessageColor.POSITIVE + "Tempban expires on " + MessageColor.NEUTRAL + expire);

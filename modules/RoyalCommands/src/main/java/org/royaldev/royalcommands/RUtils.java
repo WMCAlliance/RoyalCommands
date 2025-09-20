@@ -42,6 +42,8 @@ import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import net.md_5.bungee.chat.TranslationRegistry;
 import net.milkbowl.vault.chat.Chat;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -797,7 +799,7 @@ public final class RUtils {
             operatorLabel.setColor(MessageColor.POSITIVE.bc());
             bc.add(operatorLabel);
 
-            TextComponent operator = new TextComponent(op.isOp() ? "Yes" : "No");
+            TextComponent operator = new TextComponent(BooleanUtils.toStringYesNo(op.isOp()));
             operator.setColor(MessageColor.NEUTRAL.bc());
             bc.add(operator);
 
