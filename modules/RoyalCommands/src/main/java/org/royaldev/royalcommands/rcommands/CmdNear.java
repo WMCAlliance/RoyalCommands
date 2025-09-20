@@ -44,7 +44,7 @@ public class CmdNear extends TabCommand {
             DecimalFormat df = new DecimalFormat("#.#");
             BaseComponent bc = new TextComponent(t.getDisplayName());
             bc.setColor(MessageColor.NEUTRAL.bc());
-            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, RUtils.getPlayerTooltip(t)));
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(t)));
             TextComponent tc = new TextComponent(" ");
             tc.addExtra(bc);
 
