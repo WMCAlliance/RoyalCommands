@@ -1652,6 +1652,24 @@ public final class RUtils {
         pcm.set("prevbans", prevBans);
     }
 
+    public static int isWorldDirectory(File dir) {
+        // Doesn't exist
+        if (!dir.exists())
+            return -1;
+
+        // Not a directory
+        if (!dir.isDirectory())
+            return -2;
+
+        File level = new File(dir, "level.dat");
+        // Is a non-world directory
+        if (!level.exists() || level.isDirectory())
+            return -3;
+
+        // Is a world directory
+        return 1;
+    }
+
     /**
      * Returns the Real Time based on provided ticks
      *

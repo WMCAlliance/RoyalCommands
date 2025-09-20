@@ -13,10 +13,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWorldManager;
 import org.royaldev.royalcommands.rcommands.SubCommand;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,10 +70,26 @@ public class SCmdCreate extends SubCommand<CmdWorldManager> {
         }
         for (World w : this.plugin.getServer().getWorlds()) {
             if (w.getName().equals(name)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "A world with that name already exists!");
+                cs.sendMessage(MessageColor.NEGATIVE + "A world with that name is already loaded!");
                 return true;
             }
         }
+
+        File[] fs = this.plugin.getServer().getWorldContainer().listFiles();
+        int contains = 0;
+        for (File f : fs) if (f.getName().equals(name) && f.isDirectory()) contains = RUtils.isWorldDirectory(f);
+        switch (contains) {
+            case 1:
+                cs.sendMessage(MessageColor.NEGATIVE + "That world already exists! You can load it with " + MessageColor.NEUTRAL + "/wm load " + name);
+                return true;
+            case -3:
+                cs.sendMessage(MessageColor.NEGATIVE + "A directory by that name already exists, and is not a valid world.");
+                return true;
+            case -2: // file, won't be hit
+            case -1:
+                break;
+        }
+
         if (type == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid world type!");
             String types = "";
