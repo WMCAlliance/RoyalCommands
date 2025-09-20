@@ -25,9 +25,9 @@ public class CmdSetSpawn extends TabCommand {
 
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
-        String[] ranks;
+        String[] ranks = null;
         if (!this.plugin.vh.usingVault()) ranks = new String[0];
-        ranks = this.plugin.vh.getPermission().getGroups();
+        else ranks = this.plugin.vh.getPermission().getGroups();
         return new ArrayList<>(Arrays.asList(ranks));
     }
 
