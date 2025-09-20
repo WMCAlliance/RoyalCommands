@@ -27,7 +27,7 @@ import org.royaldev.royalcommands.rcommands.TabCommand;
 public class SCmdInfo extends SubCommand<CmdWorldManager> {
 
     public SCmdInfo(final RoyalCommands instance, final CmdWorldManager parent) {
-        super(instance, parent, "info", true, "Displays available world types and environments; if you are a player, displays information about your world.", "<command>", new String[0], new Short[]{TabCommand.CompletionType.WORLD.getShort()});
+        super(instance, parent, "info", true, "Displays available world types and environments; if you are a player, displays information about your world.", "<command> (name)", new String[0], new Short[]{TabCommand.CompletionType.WORLD.getShort()});
     }
 
     @Override
