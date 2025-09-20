@@ -9,10 +9,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 public class SCmdCheck extends SubCommand<CmdWhitelist> {
 
@@ -31,11 +37,23 @@ public class SCmdCheck extends SubCommand<CmdWhitelist> {
         }
         final RPlayer rp = this.getParent().getRPlayer(RoyalCommands.getFinalArg(eargs, 0));
         final String uuid = rp.getUUID().toString();
-        cs.sendMessage(
-            Config.whitelist.contains(uuid)
-                ? MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is in the whitelist."
-                : MessageColor.NEUTRAL + rp.getName() + MessageColor.NEGATIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is not in the whitelist."
-        );
+        Boolean inWhitelist = Config.whitelist.contains(uuid);
+        String inWhitelistStr = inWhitelist ? "" : "not ";
+        MessageColor inWhitelistColor = inWhitelist ? MessageColor.POSITIVE : MessageColor.NEGATIVE;
+
+        TextComponent tc = new TextComponent("");
+        BaseComponent bc = new TextComponent(rp.getPlayer() != null ? rp.getPlayer().getDisplayName() : rp.getName());
+        bc.setColor(MessageColor.NEUTRAL.bc());
+        if (rp.getPlayer() != null) {
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(rp.getPlayer())));
+        } else {
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(rp.getUUID().toString())));
+        }
+        tc.addExtra(bc);
+
+        tc.addExtra(TextComponent.fromLegacy(" " + inWhitelistColor + "is " + inWhitelistStr + "in the whitelist."));
+
+        cs.spigot().sendMessage(tc);
         return true;
     }
 }

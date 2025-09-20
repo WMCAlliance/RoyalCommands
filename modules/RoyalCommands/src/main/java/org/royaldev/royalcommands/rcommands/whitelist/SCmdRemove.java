@@ -5,19 +5,38 @@
  */
 package org.royaldev.royalcommands.rcommands.whitelist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+
 public class SCmdRemove extends SubCommand<CmdWhitelist> {
 
     public SCmdRemove(final RoyalCommands instance, final CmdWhitelist parent) {
-        super(instance, parent, "remove", true, "Removes a player from the whitelist.", "<command> (player)", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
+        super(instance, parent, "remove", true, "Removes a player from the whitelist.", "<command> (player)", new String[0], new Short[]{CompletionType.LIST.getShort()});
+    }
+
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        List<String> players = new ArrayList<>();
+        for (String p : Config.whitelist) {
+            final RPlayer rp = this.getParent().getRPlayer(p);
+            players.add(rp.getName());
+        }
+        return players;
     }
 
     @Override
@@ -38,7 +57,22 @@ public class SCmdRemove extends SubCommand<CmdWhitelist> {
         Config.whitelist.remove(uuid);
         this.plugin.whl.set("whitelist", Config.whitelist);
         this.getParent().reloadWhitelist();
-        cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") from whitelist.");
+
+        TextComponent tc = new TextComponent("Removed ");
+        tc.setColor(MessageColor.POSITIVE.bc());
+        BaseComponent bc = new TextComponent(rp.getPlayer() != null ? rp.getPlayer().getDisplayName() : rp.getName());
+        bc.setColor(MessageColor.NEUTRAL.bc());
+        if (rp.getPlayer() != null) {
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(rp.getPlayer())));
+        } else {
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(rp.getUUID().toString())));
+        }
+        tc.addExtra(bc);
+
+        tc.addExtra(TextComponent.fromLegacy(MessageColor.POSITIVE + " from the whitelist."));
+
+        cs.spigot().sendMessage(tc);
+
         return true;
     }
 }

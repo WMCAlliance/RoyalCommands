@@ -9,10 +9,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 public class SCmdAdd extends SubCommand<CmdWhitelist> {
 
@@ -38,7 +44,22 @@ public class SCmdAdd extends SubCommand<CmdWhitelist> {
         Config.whitelist.add(uuid);
         this.plugin.whl.set("whitelist", Config.whitelist);
         this.getParent().reloadWhitelist();
-        cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") to whitelist.");
+
+
+        TextComponent tc = new TextComponent("Added ");
+        tc.setColor(MessageColor.POSITIVE.bc());
+        BaseComponent bc = new TextComponent(rp.getPlayer() != null ? rp.getPlayer().getDisplayName() : rp.getName());
+        bc.setColor(MessageColor.NEUTRAL.bc());
+        if (rp.getPlayer() != null) {
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(rp.getPlayer())));
+        } else {
+            bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(rp.getUUID().toString())));
+        }
+        tc.addExtra(bc);
+
+        tc.addExtra(TextComponent.fromLegacy(MessageColor.POSITIVE + " to the whitelist."));
+
+        cs.spigot().sendMessage(tc);
         return true;
     }
 }
