@@ -18,7 +18,7 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 public class CmdSetUserdata extends TabCommand {
 
     public CmdSetUserdata(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{});
+        super(instance, name, true, new Short[]{TabCommand.CompletionType.ONLINE_PLAYER.getShort(), TabCommand.CompletionType.NONE.getShort()});
     }
 
     @Override
