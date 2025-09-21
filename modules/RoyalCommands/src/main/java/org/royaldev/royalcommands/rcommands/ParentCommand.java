@@ -12,6 +12,9 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +101,14 @@ public class ParentCommand extends TabCommand {
         cs.sendMessage(sb.toString());
         for (final SubCommand sc : this.subcommands) {
             if (!this.isAuthorized(cs, sc)) continue;
-            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + " " + sc.getUsage().replace("<command>", sc.getShortName()));
+            String cmdPrefix = "/" + label + " " + sc.getUsage().replace("<command>", sc.getShortName());
+            TextComponent tt = new TextComponent("  ");
+            TextComponent cmd = new TextComponent(cmdPrefix);
+            cmd.setColor(MessageColor.POSITIVE.bc());
+            // cmd.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to ")));
+            cmd.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmdPrefix.split("[\\(\\[\\{]")[0]));
+            tt.addExtra(cmd);
+            cs.spigot().sendMessage(tt);
             cs.sendMessage("    " + MessageColor.NEUTRAL + sc.getDescription());
         }
     }
