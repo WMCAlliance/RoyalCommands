@@ -223,7 +223,7 @@ public class CmdUses extends TabCommand {
             if (is == null || is.getType() == Material.AIR) return;
             final InventoryType it = e.getInventory().getType();
             if (it.compareTo(InventoryType.WORKBENCH) != 0 && it.compareTo(InventoryType.FURNACE) != 0) return;
-            if (!(e.getView().getTitle().startsWith("Use:"))) return;
+            if (!(e.getView().getTitle().startsWith("Uses:"))) return;
             e.setCancelled(true);
             if (!(e.getWhoClicked() instanceof Player)) return;
             final Player p = (Player) e.getWhoClicked();
@@ -237,7 +237,7 @@ public class CmdUses extends TabCommand {
             final InventoryType it = e.getInventory().getType();
             if (it.compareTo(InventoryType.WORKBENCH) != 0 && it.compareTo(InventoryType.FURNACE) != 0) return;
             if (!CmdUses.this.tasks.containsKey(p.getName())) return;
-            if (!(e.getView().getTitle().startsWith("Recipe:"))) return;
+            if (!(e.getView().getTitle().startsWith("Uses:"))) return;
             final UsesHolder uh = (UsesHolder) e.getInventory().getHolder();
             if (uh.isClosing()) return;
             CmdUses.this.cancelTask(p);
