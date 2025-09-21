@@ -26,8 +26,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.TransmuteRecipe;
+import org.bukkit.inventory.RecipeChoice.ExactChoice;
+import org.bukkit.inventory.RecipeChoice.MaterialChoice;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.MessageColor;
@@ -97,6 +101,28 @@ public class CmdUses extends TabCommand {
                     i.setItem(slot, this.syncDurabilities(ingredients.get(slot - 1), is));
                 }
                 i.setItem(0, sr.getResult());
+            } else if (r instanceof TransmuteRecipe) {
+                final TransmuteRecipe tr = (TransmuteRecipe) r;
+                if (!tr.getInput().test(is) && !tr.getMaterial().test(is)) continue;
+                RecipeChoice in1 = tr.getInput();
+                RecipeChoice in2 = tr.getMaterial();
+                i = this.plugin.getServer().createInventory(new UsesHolder(), InventoryType.WORKBENCH);
+                final List<ItemStack> ingredients = new ArrayList<>();
+                if (in1 instanceof ExactChoice) {
+                    ingredients.add(((ExactChoice) in1).getItemStack());
+                } else if (in1 instanceof MaterialChoice) {
+                    ingredients.add(((MaterialChoice) in1).getItemStack());
+                }
+                if (in2 instanceof ExactChoice) {
+                    ingredients.add(((ExactChoice) in2).getItemStack());
+                } else if (in2 instanceof MaterialChoice) {
+                    ingredients.add(((MaterialChoice) in2).getItemStack());
+                }
+                for (int slot = 1; slot <= ingredients.size(); slot++) {
+                    if (slot > ingredients.size()) continue;
+                    i.setItem(slot, this.syncDurabilities(ingredients.get(slot - 1), is));
+                }
+                i.setItem(0, tr.getResult());
             } else if (r instanceof FurnaceRecipe) {
                 final FurnaceRecipe fr = (FurnaceRecipe) r;
                 if (!this.itemStackEquals(fr.getInput(), is)) continue;
