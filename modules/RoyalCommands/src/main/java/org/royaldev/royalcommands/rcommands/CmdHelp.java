@@ -15,6 +15,11 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -82,7 +87,18 @@ public class CmdHelp extends TabCommand {
         cs.sendMessage(MessageColor.POSITIVE + "Help for " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " (Page " + MessageColor.NEUTRAL + pageNumber + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + numPages + MessageColor.POSITIVE + ")");
         for (int i = (pageNumber - 1) * Config.helpAmount; i < (pageNumber * Config.helpAmount) + Config.helpAmount && i < pCommands.size(); i++) {
             final PluginCommand pc = pCommands.get(i);
-            cs.sendMessage(MessageColor.NEUTRAL + "/" + pc.getName() + MessageColor.POSITIVE + " - " + pc.getDescription());
+            String cmdTxt = "/" + pc.getName();
+            TextComponent tt = new TextComponent("  ");
+            TextComponent cmd = new TextComponent(cmdTxt);
+            cmd.setColor(MessageColor.NEUTRAL.bc());
+            // cmd.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to ")));
+            cmd.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmdTxt));
+            tt.addExtra(cmd);
+            TextComponent desc = new TextComponent(" - " + pc.getDescription());
+            desc.setColor(MessageColor.POSITIVE.bc());
+            // desc.setClickEvent(null);
+            tt.addExtra(desc);
+            cs.spigot().sendMessage(tt);
         }
     }
 
@@ -93,7 +109,13 @@ public class CmdHelp extends TabCommand {
             final String pluginName = entry.getKey();
             final Plugin p = getPlugin(pluginName);
             if (p == null) continue;
-            cs.sendMessage(MessageColor.NEUTRAL + p.getName());
+            TextComponent tt = new TextComponent("  ");
+            TextComponent pName = new TextComponent(p.getName());
+            pName.setColor(MessageColor.NEUTRAL.bc());
+            pName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to display help")));
+            pName.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/help " + p.getName()));
+            tt.addExtra(pName);
+            cs.spigot().sendMessage(tt);
         }
     }
 
