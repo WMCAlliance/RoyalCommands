@@ -76,7 +76,7 @@ public class CmdDump extends TabCommand {
         Location l = bl.getLocation();
         l.setY(l.getY() + 1);
         Block b = l.getBlock();
-        if (b.getType() != Material.AIR) {
+        if (!RUtils.isBlockAir(b.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "Please make sure the block above is air.");
             return true;
         }

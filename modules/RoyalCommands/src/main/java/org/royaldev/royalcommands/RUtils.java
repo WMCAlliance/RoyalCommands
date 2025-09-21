@@ -53,6 +53,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
+import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -949,7 +950,7 @@ public final class RUtils {
             if (i < minHeight) return null;
             Block b = w.getBlockAt(l.getBlockX(), i, l.getBlockZ());
             if (b == null) return null;
-            if (b.getType() == Material.AIR) continue;
+            if (isBlockAir(b.getType())) continue;
             double safeY = l.getY() - (unsafeY - i);
             return new Location(w, l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
         }
@@ -1027,6 +1028,11 @@ public final class RUtils {
         }
         w = RoyalCommands.wm.getWorld(name);
         return w;
+    }
+
+    public static boolean isBlockAir(Material mat) {
+        Tag<Material> air = Bukkit.getTag(Tag.REGISTRY_BLOCKS, NamespacedKey.minecraft("air"), Material.class);
+        return air.isTagged(mat);
     }
 
     public static boolean isBanned(final Player p) {

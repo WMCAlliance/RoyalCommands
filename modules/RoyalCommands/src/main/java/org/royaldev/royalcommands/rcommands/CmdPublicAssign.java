@@ -40,7 +40,7 @@ public class CmdPublicAssign extends TabCommand {
         if (args.length < 1) {
             Player p = (Player) cs;
             ItemStack hand = p.getInventory().getItemInMainHand();
-            if (hand == null || hand.getType() == Material.AIR) {
+            if (hand == null || RUtils.isBlockAir(hand.getType())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
                 return true;
             }
@@ -52,7 +52,7 @@ public class CmdPublicAssign extends TabCommand {
         Player p = (Player) cs;
         final Configuration cm = Configuration.getConfiguration("publicassignments.yml");
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand == null || hand.getType() == Material.AIR) {
+        if (hand == null || RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");
             return true;
         }

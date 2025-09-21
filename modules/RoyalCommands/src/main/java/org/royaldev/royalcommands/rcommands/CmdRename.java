@@ -36,7 +36,7 @@ public class CmdRename extends TabCommand {
         Player p = (Player) cs;
         String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand == null || hand.getType() == Material.AIR) {
+        if (hand == null || RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't rename air!");
             return true;
         }

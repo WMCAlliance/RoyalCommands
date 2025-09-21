@@ -40,7 +40,7 @@ public class CmdRepair extends TabCommand {
         if (args.length < 1) {
             Player p = (Player) cs;
             ItemStack hand = p.getInventory().getItemInMainHand();
-            if (hand.getType() == Material.AIR) {
+            if (RUtils.isBlockAir(hand.getType())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't repair air!");
                 return true;
             }
@@ -63,7 +63,7 @@ public class CmdRepair extends TabCommand {
                 if (aPInv == null) continue;
                 ItemMeta apMeta = aPInv.getItemMeta();
                 Damageable apItem = (Damageable)apMeta;
-                if (aPInv != null && aPInv.getType() != Material.AIR && apItem.getDamage() != 0) {
+                if (aPInv != null && !RUtils.isBlockAir(aPInv.getType()) && apItem.getDamage() != 0) {
                     apItem.setDamage(0);
                     aPInv.setItemMeta(apItem);
                     items.append(MessageColor.NEUTRAL);

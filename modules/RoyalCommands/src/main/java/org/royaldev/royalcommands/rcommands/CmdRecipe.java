@@ -168,7 +168,7 @@ public class CmdRecipe extends TabCommand {
             return true;
         }
         final Player p = (Player) cs;
-        if (eargs.length < 1 && p.getInventory().getItemInMainHand().getType() == Material.AIR) {
+        if (eargs.length < 1 && RUtils.isBlockAir(p.getInventory().getItemInMainHand().getType())) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
@@ -200,7 +200,7 @@ public class CmdRecipe extends TabCommand {
         public void workbenchClick(InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
             final ItemStack is = e.getCurrentItem();
-            if (is == null || is.getType() == Material.AIR) return;
+            if (is == null || RUtils.isBlockAir(is.getType())) return;
             final InventoryType it = e.getInventory().getType();
             if (it.compareTo(InventoryType.WORKBENCH) != 0 && it.compareTo(InventoryType.FURNACE) != 0) return;
             // TODO Replace title comparison with a check for the instance or view (potentially stored in a map)

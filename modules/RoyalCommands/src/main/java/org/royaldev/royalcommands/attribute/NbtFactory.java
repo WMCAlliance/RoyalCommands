@@ -26,6 +26,7 @@ import com.google.common.primitives.Primitives;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.attribute.util.ClassType;
 import org.royaldev.royalcommands.attribute.util.Reflector;
 
@@ -240,7 +241,7 @@ public class NbtFactory {
             throw new IllegalArgumentException("Stack cannot be NULL.");
         if(!get().CRAFT_STACK.isAssignableFrom(stack.getClass()))
             throw new IllegalArgumentException("Stack must be a CraftItemStack, found " + stack.getClass().getSimpleName());
-        if(stack.getType() == Material.AIR)
+        if(RUtils.isBlockAir(stack.getType()))
             throw new IllegalArgumentException("ItemStacks representing air cannot store NMS information.");
     }
 

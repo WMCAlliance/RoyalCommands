@@ -39,7 +39,7 @@ public class CmdAssign extends TabCommand {
         final Player p = (Player) cs;
         final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         final ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand == null || hand.getType() == Material.AIR) {
+        if (hand == null || RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't modify commands on air!");
             return true;
         }

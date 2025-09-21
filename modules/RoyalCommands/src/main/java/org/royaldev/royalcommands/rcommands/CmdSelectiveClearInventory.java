@@ -41,14 +41,14 @@ public class CmdSelectiveClearInventory extends TabCommand {
             }
             String called = args[1];
 			Material theMaterial = Material.getMaterial(called);
-            if (theMaterial != null && theMaterial != Material.AIR) {
+            if (theMaterial != null && !RUtils.isBlockAir(theMaterial)) {
                 ItemStack toInv;
 				toInv = new ItemStack(theMaterial, Config.defaultStack);
                 t.getInventory().removeItem(toInv);
                 cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(toInv) + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 t.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(toInv) + MessageColor.POSITIVE + " taken.");
                 return true;
-            } else if (theMaterial == Material.AIR) {
+            } else if (RUtils.isBlockAir(theMaterial)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             } else {
@@ -73,7 +73,7 @@ public class CmdSelectiveClearInventory extends TabCommand {
             if (amount < 1) {
                 amount = 1;
             }
-            if (theMaterial == Material.AIR) {
+            if (RUtils.isBlockAir(theMaterial)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             }

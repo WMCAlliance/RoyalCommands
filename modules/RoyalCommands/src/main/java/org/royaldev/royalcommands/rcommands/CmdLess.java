@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -36,7 +37,7 @@ public class CmdLess extends TabCommand {
             return true;
         }
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand.getType() == Material.AIR) {
+        if (RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
             return true;
         }

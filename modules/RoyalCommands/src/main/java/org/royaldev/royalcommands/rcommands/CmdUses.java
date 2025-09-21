@@ -220,7 +220,7 @@ public class CmdUses extends TabCommand {
         public void workbenchClick(final InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
             final ItemStack is = e.getCurrentItem();
-            if (is == null || is.getType() == Material.AIR) return;
+            if (is == null || RUtils.isBlockAir(is.getType())) return;
             final InventoryType it = e.getInventory().getType();
             if (it.compareTo(InventoryType.WORKBENCH) != 0 && it.compareTo(InventoryType.FURNACE) != 0) return;
             if (!(e.getView().getTitle().startsWith("Uses:"))) return;

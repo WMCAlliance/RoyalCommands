@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -43,7 +44,7 @@ public class CmdIngot2Block extends TabCommand {
         }
         Player p = (Player) cs;
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand == null || hand.getType() == Material.AIR) {
+        if (hand == null || RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "Your hand is empty!");
             return true;
         }

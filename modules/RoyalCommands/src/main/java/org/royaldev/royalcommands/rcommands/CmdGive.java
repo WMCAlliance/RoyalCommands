@@ -48,7 +48,7 @@ public class CmdGive extends TabCommand {
             return false;
         }
         Material m = stack.getType();
-        if (m == Material.AIR) {
+        if (RUtils.isBlockAir(m)) {
             target.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return false;
         }
@@ -141,7 +141,7 @@ public class CmdGive extends TabCommand {
             return true;
         }
         Material m = toInv.getType();
-        if (m == Material.AIR) {
+        if (RUtils.isBlockAir(m)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return true;
         }

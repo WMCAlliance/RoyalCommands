@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -37,14 +38,14 @@ public class CmdMore extends TabCommand {
                 return true;
             } else if (args[0].equalsIgnoreCase("inventory")) {
                 ItemStack hand = p.getInventory().getItemInMainHand();
-                if (hand.getType() == Material.AIR) {
+                if (RUtils.isBlockAir(hand.getType())) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                     return true;
                 }
                 hand.setAmount(64);
                 for (int slot = 0; slot < p.getInventory().getSize(); slot++) {
                     ItemStack i = p.getInventory().getItem(slot);
-                    if (i != null && i.getType() != Material.AIR) continue;
+                    if (i != null && !RUtils.isBlockAir(i.getType())) continue;
                     p.getInventory().setItem(slot, hand);
                 }
                 cs.sendMessage(MessageColor.POSITIVE + "Filled inventory with the item in hand!");
@@ -55,7 +56,7 @@ public class CmdMore extends TabCommand {
             }
         }
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand.getType() == Material.AIR) {
+        if (RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
             return true;
         }

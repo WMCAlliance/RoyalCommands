@@ -68,7 +68,7 @@ public class CmdAttributes extends TabCommand {
             return false;
         }
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand.getType() == Material.AIR) {
+        if (RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply attributes to air!");
             return true;
         }

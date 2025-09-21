@@ -34,7 +34,7 @@ public class CmdLore extends TabCommand {
         Player p = (Player) cs;
         String loreText = RoyalCommands.getFinalArg(args, 0);
         ItemStack is = p.getInventory().getItemInMainHand();
-        if (is == null || is.getType() == Material.AIR) {
+        if (is == null || RUtils.isBlockAir(is.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't set lore on air!");
             return true;
         }

@@ -46,7 +46,7 @@ public class CmdSpawnInfo extends TabCommand {
         }
         final Player p = (Player) cs;
         ItemStack hand = p.getInventory().getItemInMainHand();
-        if (hand.getType() == Material.AIR) {
+        if (RUtils.isBlockAir(hand.getType())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You must be holding something to use this command.");
             return true;
         }

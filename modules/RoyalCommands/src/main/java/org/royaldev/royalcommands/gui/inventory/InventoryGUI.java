@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.tools.Vector2D;
 
@@ -69,7 +70,7 @@ public class InventoryGUI {
      * @return The tagged ItemStack
      */
     private ItemStack tagItem(final ItemStack is, final NamespacedKey key) {
-        if (is == null || is.getType() == Material.AIR) return is;
+        if (is == null || RUtils.isBlockAir(is.getType())) return is;
         ItemMeta meta = is.getItemMeta();
         if(!meta.hasAttributeModifiers()){
             meta.addAttributeModifier(Attribute.FOLLOW_RANGE, new AttributeModifier(key, 0D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND.getGroup()));
@@ -190,7 +191,7 @@ public class InventoryGUI {
      * @return Key or null if no tag
      */
     public NamespacedKey getTag(final ItemStack is) {
-        if (is == null || is.getType() == Material.AIR) return null;
+        if (is == null || RUtils.isBlockAir(is.getType())) return null;
         ItemMeta meta = is.getItemMeta();
         if(meta.hasAttributeModifiers()){
             for (final AttributeModifier a : meta.getAttributeModifiers().values()) {

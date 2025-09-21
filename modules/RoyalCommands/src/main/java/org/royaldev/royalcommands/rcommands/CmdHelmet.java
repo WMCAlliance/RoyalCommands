@@ -38,7 +38,7 @@ public class CmdHelmet extends TabCommand {
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (args.length < 1) {
             ItemStack hand = p.getInventory().getItemInMainHand();
-            if (hand.getType() == Material.AIR) {
+            if (RUtils.isBlockAir(hand.getType())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot use air as a helmet!");
                 return true;
             }
@@ -55,7 +55,7 @@ public class CmdHelmet extends TabCommand {
                         cs.sendMessage(MessageColor.NEGATIVE + "You have no helmet!");
                         return true;
                     }
-                    if (helm == null || helm.getType() == Material.AIR || helm.getType() != stack.getType()) {
+                    if (helm == null || RUtils.isBlockAir(helm.getType()) || helm.getType() != stack.getType()) {
                         p.sendMessage(MessageColor.NEGATIVE + "You have already removed your helmet!");
                         pcm.set("helmet", null);
                         return true;

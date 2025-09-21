@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
 import org.royaldev.royalcommands.gui.inventory.GUIItem;
 import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
@@ -330,7 +331,7 @@ public class Trade {
         for (int i = 0; i < base.getSize(); i++) {
             if (!party.canAccessSlot(i)) continue;
             final ItemStack item = base.getItem(i);
-            if (item == null || item.getType() == Material.AIR) continue;
+            if (item == null || RUtils.isBlockAir(item.getType())) continue;
             final List<Tradable> special = this.processSpecialItem(item);
             if (special == null) items.add(new TradableItem(this, item));
             else items.addAll(special);

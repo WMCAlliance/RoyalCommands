@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 /**
@@ -205,7 +206,7 @@ public class SpawnInfo implements Serializable {
          * @return ItemStack with SpawnInfo applied; never null
          */
         public static ItemStack applySpawnInfo(ItemStack is, String s) {
-            if (is.getType() == Material.AIR) return is; // air; do not apply
+            if (RUtils.isBlockAir(is.getType())) return is; // air; do not apply
             final ItemMeta im = is.getItemMeta();
             im.getPersistentDataContainer().set(new NamespacedKey(RoyalCommands.getInstance(), "spawned"), PersistentDataType.STRING, s);
             is.setItemMeta(im);
@@ -233,7 +234,7 @@ public class SpawnInfo implements Serializable {
          * @return SpawnInfo; never null
          */
         public static SpawnInfo getSpawnInfo(ItemStack is) {
-            if (is.getType() == Material.AIR) return new SpawnInfo(); // air cannot contain NBT data
+            if (RUtils.isBlockAir(is.getType())) return new SpawnInfo(); // air cannot contain NBT data
             String stored = SpawnInfoManager.getData(is);
             if (stored == null || stored.isEmpty()) stored = "false/null/false/null";
             return new SpawnInfo(stored);
@@ -259,7 +260,7 @@ public class SpawnInfo implements Serializable {
          * @return ItemStack without SpawnInfo
          */
         public static ItemStack removeSpawnInfo(ItemStack is) {
-            if (is.getType() == Material.AIR) return is; // silly air
+            if (RUtils.isBlockAir(is.getType())) return is; // silly air
             SpawnInfoManager.removeData(is);
             return is;
         }

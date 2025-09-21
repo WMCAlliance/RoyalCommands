@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
@@ -37,7 +38,7 @@ public class CmdMegaStrike extends TabCommand {
             }
             Block bb = b.next();
             while (b.hasNext()) {
-                if (b.next().getType() == Material.AIR) continue;
+                if (RUtils.isBlockAir(b.next().getType())) continue;
                 bb = b.next();
                 break;
             }

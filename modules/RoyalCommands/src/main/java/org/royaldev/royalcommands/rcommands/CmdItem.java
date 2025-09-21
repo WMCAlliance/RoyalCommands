@@ -102,7 +102,7 @@ public class CmdItem extends TabCommand {
             return true;
         }
         final Material m = toInv.getType();
-        if (m == Material.AIR) {
+        if (RUtils.isBlockAir(m)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return true;
         }
