@@ -24,7 +24,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.primitives.Primitives;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.attribute.util.ClassType;
@@ -570,7 +569,7 @@ public class NbtFactory {
          * Method for when items are not created following NBTtag convention and have Integers where there should be Longs
 		 * @param key
 		 * @param defaultValue
-		 * @return 
+		 * @return
          */
         public Long getIntegerOrLong(String key, Long defaultValue){
             if(!containsKey(key)) return defaultValue;

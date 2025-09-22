@@ -172,7 +172,7 @@ public class MonitorListener implements Listener {
 				if (!b.getType().equals(Material.ENCHANTING_TABLE)) return;
 				t.openEnchanting(b.getLocation(), false);
 			}
-            case BREWING, CRAFTING, DISPENSER -> {
+            default -> {
 				return;
 			}
         }

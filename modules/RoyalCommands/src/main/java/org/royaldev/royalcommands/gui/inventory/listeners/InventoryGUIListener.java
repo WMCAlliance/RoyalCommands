@@ -5,7 +5,6 @@
  */
 package org.royaldev.royalcommands.gui.inventory.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;

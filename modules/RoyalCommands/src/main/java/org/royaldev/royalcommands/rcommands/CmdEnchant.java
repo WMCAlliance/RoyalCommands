@@ -8,7 +8,6 @@ package org.royaldev.royalcommands.rcommands;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.command.Command;
