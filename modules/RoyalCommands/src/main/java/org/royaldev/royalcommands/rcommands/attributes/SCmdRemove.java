@@ -8,7 +8,6 @@ package org.royaldev.royalcommands.rcommands.attributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.UnhandledException;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
