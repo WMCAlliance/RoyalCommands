@@ -6,9 +6,9 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.io.Files;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -231,11 +231,10 @@ public class CmdPluginManager extends ParentCommand {
         URL url = new URI(pluginUrlString).toURL();
         URLConnection request = url.openConnection();
         request.connect();
-        JsonParser jp = new JsonParser();
-        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        JsonObject rootobj = root.getAsJsonObject();
-        if (rootobj.has("current_version")) {
-            return rootobj.get("current_version").getAsString();
+        JSONParser jp = new JSONParser();
+        JSONObject rootobj = (JSONObject) jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        if (rootobj.containsKey("current_version")) {
+            return (String) rootobj.get("current_version");
         }
         return currentVersion;
     }

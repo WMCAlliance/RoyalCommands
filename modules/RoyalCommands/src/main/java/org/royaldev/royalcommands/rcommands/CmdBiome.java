@@ -69,7 +69,8 @@ public class CmdBiome extends TabCommand {
                                 }
                             }
                         }
-                        ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
+                        @SuppressWarnings({ "deprecation", "unused" })
+                        boolean worked = ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
                     }
                 }
                 p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + RUtils.getBiomeName(b) + MessageColor.POSITIVE + ".");

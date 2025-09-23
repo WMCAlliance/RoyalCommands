@@ -28,6 +28,7 @@ public class CmdFixChunk extends TabCommand {
         Player p = (Player) cs;
         Chunk c = p.getLocation().getChunk();
         if (!c.isLoaded()) c.load(true);
+        @SuppressWarnings("deprecation")
         boolean worked = p.getWorld().refreshChunk(c.getX(), c.getZ());
         c.unload();
         c.load();
