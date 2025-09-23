@@ -41,6 +41,7 @@ public class SCmdUpdateCheckAll extends SubCommand<CmdPluginManager> {
                 cs.sendMessage(MessageColor.POSITIVE + "Finished checking for updates.");
             }
         };
+        cs.sendMessage(MessageColor.POSITIVE + "Starting check for updates. This may take a while..");
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
         return true;
     }
