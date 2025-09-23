@@ -209,10 +209,21 @@ trade:
 ###
 
 pluginmanager:
-  # Specify custom update tags for plugins to be checked in PluginManager updates.
-  # PluginName: "tag-on-bukkitdev"
-  custom_tags:
-  #ExamplePlugin: "example-plugin"
+  # Check For Updates functionality
+  # SpigotMC: Numeric Resource IDs
+  spigot_tags:
+    # PluginName: id-on-spigotmc
+  # CurseForge/BukkitDev: Project ID (number) or Slug (string), requires API key
+  curseforge_tags:
+    RoyalCommands: 34507
+    # PluginName: projectid-or-slug
+  # CurseForge API credentials
+  curseforge_api:
+    enabled: false
+    api_key: ""
+    # Only set these if necessary (we fall back to known values)
+    # game_id: 432 # Minecraft
+    # class_id: 5 # Bukkit Plugins
 
 ###
 # MOTD #

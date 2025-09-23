@@ -7,6 +7,7 @@ package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.io.Files;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.bukkit.command.Command;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ReflectCommand
 public class CmdPluginManager extends ParentCommand {
@@ -157,9 +160,36 @@ public class CmdPluginManager extends ParentCommand {
 
     public String getCustomTag(String name) {
         ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.custom_tags");
-        if (cs == null) return null;
+        if (cs == null)
+            return null;
         for (String key : cs.getKeys(false)) {
-            if (!key.equalsIgnoreCase(name)) continue;
+            if (!key.equalsIgnoreCase(name))
+                continue;
+            return cs.getString(key);
+        }
+        return null;
+    }
+
+    public int getSpigotTag(String name) {
+        // Spigot only supports numerical IDs
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.spigot_tags");
+        if (cs == null)
+            return 0;
+        for (String key : cs.getKeys(false)) {
+            if (!key.equalsIgnoreCase(name))
+                continue;
+            return cs.getInt(key);
+        }
+        return 0;
+    }
+
+    public String getCurseforgeTag(String name) {
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.curseforge_tags");
+        if (cs == null)
+            return null;
+        for (String key : cs.getKeys(false)) {
+            if (!key.equalsIgnoreCase(name))
+                continue;
             return cs.getString(key);
         }
         return null;
@@ -224,18 +254,106 @@ public class CmdPluginManager extends ParentCommand {
         }
     }
 
-    public String updateCheck(String name, String currentVersion) throws Exception {
-        String tag = this.getCustomTag(name);
-        if (tag == null) tag = name.toLowerCase();
+    public String parseSpigotUpdate(int tag, String currentVersion) throws Exception {
         String pluginUrlString = "https://api.spigotmc.org/simple/0.2/index.php?action=getResource&id=" + tag;
         URL url = new URI(pluginUrlString).toURL();
         URLConnection request = url.openConnection();
         request.connect();
         JSONParser jp = new JSONParser();
-        JSONObject rootobj = (JSONObject) jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        if (rootobj.containsKey("current_version")) {
-            return (String) rootobj.get("current_version");
+        JSONObject rootObj = (JSONObject) jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        if (rootObj.containsKey("current_version")) {
+            return (String) rootObj.get("current_version");
         }
+        return currentVersion;
+    }
+
+    public String parseCurseforgeUpdate(String tag, String currentVersion) throws Exception {
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.curseforge_api");
+        String apiKey = cs.getString("api_key");
+        if (!cs.getBoolean("enabled", false) || apiKey.isEmpty())
+            throw new RuntimeException("CurseForge API support disabled or no API key provided");
+
+        int projectId = 0;
+        try {
+            projectId = Integer.parseInt(tag);
+        } catch (NumberFormatException e) {}
+
+        String pluginUrlString = "https://api.curseforge.com/v1/mods/";
+        if (projectId > 0) {
+            // Project ID is preferred and most reliable, visible on CurseForge
+            pluginUrlString += projectId;
+        } else {
+            int gameId = cs.getInt("game_id", 432);
+            int classId = cs.getInt("class_id", 5);
+            if (gameId == 0 || classId == 0)
+                throw new RuntimeException("Invalid CurseForge game or class ID");
+
+            pluginUrlString += "search" + "?gameId=" + gameId + "&classId=" + classId + "&slug=" + tag;
+        }
+
+        URL url = new URI(pluginUrlString).toURL();
+        URLConnection request = url.openConnection();
+        request.setRequestProperty("x-api-key", apiKey);
+        request.connect();
+
+        JSONParser jp = new JSONParser();
+        JSONObject rootObj = (JSONObject) jp.parse(new InputStreamReader((InputStream) request.getContent()));
+
+        JSONObject obj = null;
+        if (projectId > 0) {
+            obj = (JSONObject) rootObj.get("data");
+        } else {
+            JSONArray data = (JSONArray) rootObj.get("data");
+            obj = (JSONObject) data.getFirst();
+        }
+
+        JSONArray files = (JSONArray) obj.get("latestFiles");
+        JSONObject latest = (JSONObject) files.getFirst();
+
+        String dispName = (String) latest.get("displayName");
+        String semanticVersionRegex = "(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?";
+        Pattern pattern = Pattern.compile(semanticVersionRegex);
+        Matcher matcher = pattern.matcher(dispName);
+
+        if (matcher.find()) {
+            return matcher.group();
+        } else {
+            return dispName;
+        }
+    }
+
+    public String updateCheck(String name, String currentVersion) throws Exception {
+        /**
+         * Check spigot_tags first, which must be numeric
+         * Check curseforge_tags second, which are best numeric (Project ID), but may be a slug
+         * Check custom_tags, which are either numeric (therefore Spigot) or CurseForge slug. custom_tags is legacy and not included in the default config file.
+         */
+        int spigotTag = this.getSpigotTag(name);
+        if (spigotTag != 0)
+            return this.parseSpigotUpdate(spigotTag, currentVersion);
+
+        String cursforgeTag = this.getCurseforgeTag(name);
+        if (cursforgeTag != null && !cursforgeTag.isEmpty())
+            return this.parseCurseforgeUpdate(cursforgeTag, currentVersion);
+
+        String customTag = this.getCustomTag(name);
+         if (customTag != null) {
+            this.plugin.getLogger().info("Custom tag found= " + customTag);
+            // Legacy fallback. If it's numeric, check Spigot. If it's not, check Bukkit/CurseForge
+            try {
+                spigotTag = Integer.parseInt(customTag);
+                this.plugin.getLogger().info("Custom tag is numeric " + spigotTag);
+                if (spigotTag != 0)
+                    return this.parseSpigotUpdate(spigotTag, currentVersion);
+            } catch (NumberFormatException e) {
+                if (!customTag.isEmpty())
+                    return this.parseCurseforgeUpdate(customTag.toLowerCase(), currentVersion);
+                this.plugin.getLogger().info("Custom tag is string " + spigotTag);
+            }
+        } else {
+            this.plugin.getLogger().info("Custom tag not found");
+        }
+
         return currentVersion;
     }
 }
