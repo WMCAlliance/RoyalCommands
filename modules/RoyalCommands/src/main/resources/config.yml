@@ -213,6 +213,13 @@ pluginmanager:
   # SpigotMC: Numeric Resource IDs
   spigot_tags:
     # PluginName: id-on-spigotmc
+  # Modrinth: id (case sensitive) or slug (lowercase) as a string
+  modrinth_tags:
+    # PluginName: "id-or-slug"
+  # GitHub: Full repository path (owner/repo)
+  github_tags:
+    RoyalCommands: "wmcalliance/royalcommands"
+    # PluginName: "owner/repo"
   # CurseForge/BukkitDev: Project ID (number) or Slug (string), requires API key
   curseforge_tags:
     RoyalCommands: 34507

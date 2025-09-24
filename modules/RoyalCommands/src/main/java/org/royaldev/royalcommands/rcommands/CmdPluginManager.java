@@ -195,6 +195,31 @@ public class CmdPluginManager extends ParentCommand {
         return null;
     }
 
+    public String getGithubTag(String name) {
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.github_tags");
+        if (cs == null)
+            return null;
+        for (String key : cs.getKeys(false)) {
+            if (!key.equalsIgnoreCase(name))
+                continue;
+            return cs.getString(key);
+        }
+        return null;
+    }
+
+    public String getModrinthTag(String name) {
+        // Modrinth IDs and and Slugs are alphanumeric strings
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.modrinth_tags");
+        if (cs == null)
+            return null;
+        for (String key : cs.getKeys(false)) {
+            if (!key.equalsIgnoreCase(name))
+                continue;
+            return cs.getString(key);
+        }
+        return null;
+    }
+
     /**
      * Gets the names of all plugins that depend on the specified plugin.
      * <br>
@@ -322,6 +347,34 @@ public class CmdPluginManager extends ParentCommand {
         }
     }
 
+    public String parseModrinthUpdate(String tag, String currentVersion) throws Exception {
+        String pluginUrlString = "https://api.modrinth.com/v2/project/" + tag + "/version";
+        URL url = new URI(pluginUrlString).toURL();
+        URLConnection request = url.openConnection();
+        request.setRequestProperty("User-Agent", "wmcalliance/royalcommands");
+        request.connect();
+        JSONParser jp = new JSONParser();
+        JSONArray rootObj = (JSONArray) jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        if (!rootObj.isEmpty() && ((JSONObject)rootObj.getFirst()).containsKey("version_number")) {
+            return (String) ((JSONObject)rootObj.getFirst()).get("version_number");
+        }
+        return currentVersion;
+    }
+
+    public String parseGithubUpdate(String tag, String currentVersion) throws Exception {
+        String pluginUrlString = "https://api.github.com/repos/" + tag + "/releases";
+        URL url = new URI(pluginUrlString).toURL();
+        URLConnection request = url.openConnection();
+        request.setRequestProperty("User-Agent", "wmcalliance/royalcommands");
+        request.connect();
+        JSONParser jp = new JSONParser();
+        JSONArray rootObj = (JSONArray) jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        if (!rootObj.isEmpty() && ((JSONObject)rootObj.getFirst()).containsKey("tag_name")) {
+            return (String) ((JSONObject)rootObj.getFirst()).get("tag_name");
+        }
+        return currentVersion;
+    }
+
     public String updateCheck(String name, String currentVersion) throws Exception {
         /**
          * Check spigot_tags first, which must be numeric
@@ -336,22 +389,27 @@ public class CmdPluginManager extends ParentCommand {
         if (cursforgeTag != null && !cursforgeTag.isEmpty())
             return this.parseCurseforgeUpdate(cursforgeTag, currentVersion);
 
+        String modrinthTag = this.getModrinthTag(name);
+        if (modrinthTag != null && !modrinthTag.isEmpty()) {
+            return this.parseModrinthUpdate(modrinthTag, currentVersion);
+        }
+
+        String githubTag = this.getGithubTag(name);
+        if (githubTag != null && !githubTag.isEmpty()) {
+            return this.parseGithubUpdate(githubTag, currentVersion);
+        }
+
         String customTag = this.getCustomTag(name);
          if (customTag != null) {
-            this.plugin.getLogger().info("Custom tag found= " + customTag);
             // Legacy fallback. If it's numeric, check Spigot. If it's not, check Bukkit/CurseForge
             try {
                 spigotTag = Integer.parseInt(customTag);
-                this.plugin.getLogger().info("Custom tag is numeric " + spigotTag);
                 if (spigotTag != 0)
                     return this.parseSpigotUpdate(spigotTag, currentVersion);
             } catch (NumberFormatException e) {
                 if (!customTag.isEmpty())
                     return this.parseCurseforgeUpdate(customTag.toLowerCase(), currentVersion);
-                this.plugin.getLogger().info("Custom tag is string " + spigotTag);
             }
-        } else {
-            this.plugin.getLogger().info("Custom tag not found");
         }
 
         return currentVersion;
