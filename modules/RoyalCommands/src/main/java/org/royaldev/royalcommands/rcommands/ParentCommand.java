@@ -60,6 +60,7 @@ public class ParentCommand extends TabCommand {
                 if (completions.contains(name)) continue;
                 completions.add(name);
             }
+            completions.add("help");
         }
         return completions;
     }
@@ -76,8 +77,8 @@ public class ParentCommand extends TabCommand {
 
     @Override
     protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
-        if (eargs.length < 1) {
-            this.showHelp(cs, label);
+        if (eargs.length < 1 || eargs[0].equalsIgnoreCase("help")) {
+            this.showHelp(cs, label, eargs.length < 1);
             return true;
         }
         final SubCommand sc = this.getSubCommand(eargs[0]);
@@ -93,7 +94,7 @@ public class ParentCommand extends TabCommand {
         return sc.runCommand(cs, cmd, label, (String[]) ArrayUtils.subarray(eargs, 1, eargs.length), ca);
     }
 
-    public void showHelp(final CommandSender cs, final String label) {
+    public void showHelp(final CommandSender cs, final String label, boolean standalone) {
         cs.sendMessage(MessageColor.POSITIVE + "/" + label + " Help");
         final StringBuilder sb = new StringBuilder();
         sb.append(MessageColor.POSITIVE);
