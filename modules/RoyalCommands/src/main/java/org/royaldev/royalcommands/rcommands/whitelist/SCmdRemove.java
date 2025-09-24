@@ -34,7 +34,7 @@ public class SCmdRemove extends SubCommand<CmdWhitelist> {
         List<String> players = new ArrayList<>();
         for (String p : Config.whitelist) {
             final RPlayer rp = this.getParent().getRPlayer(p);
-            players.add(rp.getName());
+            players.add(rp.getName() != null ? rp.getName() : rp.getUUID().toString());
         }
         return players;
     }
@@ -60,7 +60,8 @@ public class SCmdRemove extends SubCommand<CmdWhitelist> {
 
         TextComponent tc = new TextComponent("Removed ");
         tc.setColor(MessageColor.POSITIVE.bc());
-        BaseComponent bc = new TextComponent(rp.getPlayer() != null ? rp.getPlayer().getDisplayName() : rp.getName());
+        String name = rp.getName() != null ? rp.getName() : uuid;
+        BaseComponent bc = new TextComponent(rp.getPlayer() != null ? rp.getPlayer().getDisplayName() : name);
         bc.setColor(MessageColor.NEUTRAL.bc());
         if (rp.getPlayer() != null) {
             bc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(rp.getPlayer())));
