@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.whitelist.SCmdAdd;
 import org.royaldev.royalcommands.rcommands.whitelist.SCmdCheck;
+import org.royaldev.royalcommands.rcommands.whitelist.SCmdList;
 import org.royaldev.royalcommands.rcommands.whitelist.SCmdRemove;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
@@ -22,6 +23,7 @@ public class CmdWhitelist extends ParentCommand {
         super(instance, name, false);
         this.addSubCommand(new SCmdAdd(this.plugin, this));
         this.addSubCommand(new SCmdCheck(this.plugin, this));
+        this.addSubCommand(new SCmdList(this.plugin, this));
         this.addSubCommand(new SCmdRemove(this.plugin, this));
     }
 
