@@ -8,6 +8,7 @@ package org.royaldev.royalcommands.rcommands.pluginmanager;
 import org.apache.commons.lang3.BooleanUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -73,6 +74,27 @@ public class SCmdInfo extends SubCommand<CmdPluginManager> {
         }
         if (!dep.isEmpty()) {
             cs.sendMessage(MessageColor.POSITIVE + "Dependencies: " + MessageColor.NEUTRAL + RUtils.join(dep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+        }
+        ConfigurationSection pmConfig = this.plugin.getConfig().getConfigurationSection("pluginmanager");
+        if (pmConfig != null) {
+            int spigotTag = this.getParent().getSpigotTag(name);
+            String curseforgeTag = this.getParent().getCurseforgeTag(name);
+            String modrinthTag = this.getParent().getModrinthTag(name);
+            String githubTag = this.getParent().getGithubTag(name);
+            String customTag = this.getParent().getCustomTag(name);
+            String updater = "None";
+            if (spigotTag != 0) {
+                updater = "SpigotMC";
+            } else if (curseforgeTag != null && !curseforgeTag.isEmpty()) {
+                updater = "CurseForge/BukkitDev";
+            } else if (modrinthTag != null && !modrinthTag.isEmpty()) {
+                updater = "Modrinth";
+            } else if (githubTag != null && !githubTag.isEmpty()) {
+                updater = "GitHub";
+            } else if (customTag != null && !customTag.isEmpty()) {
+                updater = "Custom (legacy)";
+            }
+            cs.sendMessage(MessageColor.POSITIVE + "Update Check via: " + MessageColor.NEUTRAL + updater);
         }
         cs.sendMessage(MessageColor.POSITIVE + "Enabled: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(p.isEnabled()));
         return true;
