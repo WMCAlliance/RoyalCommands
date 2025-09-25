@@ -232,6 +232,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onEnderChestOpen(InventoryOpenEvent e) {
+        if (!Config.separateInv || !Config.separateEnder) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         Inventory i = e.getInventory();
