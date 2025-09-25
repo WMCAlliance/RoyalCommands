@@ -59,7 +59,7 @@ public class InventoryListener implements Listener {
         if (group == null) return null;
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
+        Integer invSize = pcm.getInt("inventory." + group + ".ender.size", InventoryType.ENDER_CHEST.getDefaultSize());
         final Inventory i = Bukkit.createInventory(p, invSize);
         if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
@@ -167,7 +167,7 @@ public class InventoryListener implements Listener {
         if (group == null) return null;
         final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) pcm.createFile();
-        final int invSize = pcm.getInt("inventory." + group + ".ender.size");
+        final int invSize = pcm.getInt("inventory." + group + ".ender.size", InventoryType.ENDER_CHEST.getDefaultSize());
         final Inventory i = this.plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.ENDER_CHEST.getDefaultSize());
         if (!pcm.isSet("inventory." + group + ".ender.slot")) return i;
         for (int slot = 0; slot < invSize; slot++) {
