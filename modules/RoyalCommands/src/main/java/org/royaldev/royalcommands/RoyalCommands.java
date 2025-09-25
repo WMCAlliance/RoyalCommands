@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
 import org.mvplugins.multiverse.core.MultiverseCore;
@@ -13,6 +14,8 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -94,7 +97,7 @@ public class RoyalCommands extends JavaPlugin {
     private VanishPlugin vp = null;
     private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
-	public PlaceholderAPIPlugin pa = null;
+    public PlaceholderAPIPlugin pa = null;
     private ProtocolListener pl = null;
 
     /**
@@ -407,6 +410,20 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+
+        //-- packetevents --//
+
+        final Plugin pePlugin = this.getServer().getPluginManager().getPlugin("packetevents");
+        // If packetevents exists, load it, even if our config file tells us not to use it later
+        if (pePlugin != null && pePlugin.isEnabled()) {
+            PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+            PacketEvents.getAPI().load();
+        }
+
+    }
+
+    @Override
     public void onDisable() {
 
         //-- Cancel scheduled tasks --//
@@ -424,7 +441,7 @@ public class RoyalCommands extends JavaPlugin {
         Configuration.saveAllConfigurations();
         this.getLogger().info("Userdata saved.");
 
-        //-- ProtocolLib --//
+        //-- packetevents --//
 
         if (this.pl != null) this.pl.uninitialize();
 
@@ -511,10 +528,10 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(new InventoryGUIEventListener(), this);
         pm.registerEvents(new DeathListener(this), this);
 
-        //-- ProtocolLib things --//
+        //-- packetevents things --//
 
-        final Plugin plPlugin = this.getServer().getPluginManager().getPlugin("ProtocolLib");
-        if (Config.useProtocolLib && plPlugin != null && plPlugin.isEnabled()) {
+        final Plugin pePlugin = this.getServer().getPluginManager().getPlugin("packetevents");
+        if (Config.usePacketevents && pePlugin != null && pePlugin.isEnabled()) {
             this.pl = new ProtocolListener(this);
             this.pl.initialize();
         }

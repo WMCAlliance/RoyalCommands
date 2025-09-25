@@ -720,10 +720,10 @@ items:
     tag:
       enabled: false
       plugins:
-        # If ProtocolLib is installed, should it be used?
-        # ProtocolLib is used to remove the blank line under the item name caused by the empty attribute used to store
+        # If packetevents is installed, should it be used?
+        # packetevents is used to remove the blank line under the item name caused by the empty attribute used to store
         # the spawn data.
-        protocollib: true
+        packetevents: true
       # The lore to apply to spawned items. This allows for easy identification without /spawninfo.
       lore:
         - "&9Spawned"

@@ -1,88 +1,91 @@
-/*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
 package org.royaldev.royalcommands.protocol;
 
-import org.royaldev.royalcommands.attribute.NbtFactory;
-import com.comphenix.protocol.PacketType.Play.Server;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.inventory.ItemStack;
+
+import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.protocol.packets.WrapperPlayServerSetSlot;
-import org.royaldev.royalcommands.protocol.packets.WrapperPlayServerWindowItems;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 
-public class ProtocolListener {
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListener;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.item.ItemStack;
+import com.github.retrooper.packetevents.protocol.nbt.NBTCompound;
+import com.github.retrooper.packetevents.protocol.nbt.NBTString;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetSlot;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowItems;
+
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
+
+public class ProtocolListener implements PacketListener {
 
     protected static final String NBT_INFO_KEY = "rcmds-spawninfo";
     private final RoyalCommands plugin;
-    //final SpawnRenameProcessor srp;
-    private final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
 
     public ProtocolListener(RoyalCommands instance) {
         this.plugin = instance;
-		//this.srp = new SpawnRenameProcessor(plugin);
     }
 
-    public void createSetSlotListener() {
-        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, Server.SET_SLOT)) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                if (!Config.useProtocolLib) return;
-                final WrapperPlayServerSetSlot p = new WrapperPlayServerSetSlot(event.getPacket());
-                ItemStack is = p.getSlotData();
-                if (is == null) return;
-                final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(is);
-                if (!si.isSpawned() && !si.hasComponents()) return;
-                is = SpawnInfo.SpawnInfoManager.removeSpawnInfo(is);
-                final NbtFactory.NbtCompound nbtc = NbtFactory.fromItemTag(is);
-                nbtc.put(NBT_INFO_KEY, si.toString());
-                NbtFactory.setItemTag(is, nbtc);
-                p.setSlotData(is);
-            }
-        });
+    private ItemStack checkAndRemoveSpawnInfo(ItemStack is) {
+        if (is == null)
+            return null;
+
+        org.bukkit.inventory.ItemStack bis = SpigotConversionUtil.toBukkitItemStack(is);
+        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(bis);
+        if (!si.isSpawned() && !si.hasComponents()) return is;
+        is = SpigotConversionUtil.fromBukkitItemStack(SpawnInfo.SpawnInfoManager.removeSpawnInfo(bis));
+        NBTCompound nbtc = is.getOrCreateTag();
+        nbtc.setTag(NBT_INFO_KEY, new NBTString(si.toString()));
+        is.setNBT(nbtc);
+        return is;
     }
 
-    public void createWindowItemsListener() {
-        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, Server.WINDOW_ITEMS)) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-				/* TODO This makes items disappear when switching worlds (invisble, not deleted) */
-                if (!Config.useProtocolLib) return;
-                final WrapperPlayServerWindowItems p = new WrapperPlayServerWindowItems(event.getPacket());
-                final List<ItemStack> newItems = new ArrayList<>();
-                for (ItemStack is : p.getSlotData()) {
-                    if (is == null) { // SpawnInfoManager can't take null ItemStacks
-                        newItems.add(null);
-                        continue;
-                    }
-                    final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(is);
-                    if (!si.isSpawned() && !si.hasComponents()) continue;
-                    is = SpawnInfo.SpawnInfoManager.removeSpawnInfo(is);
-                    final NbtFactory.NbtCompound nbtc = NbtFactory.fromItemTag(is);
-                    nbtc.put(NBT_INFO_KEY, si.toString());
-                    NbtFactory.setItemTag(is, nbtc);
-                    newItems.add(is);
+    @Override
+    public void onPacketSend(PacketSendEvent e) {
+        if (!Config.itemSpawnTag || !Config.usePacketevents)
+            return;
+
+        PacketTypeCommon t = e.getPacketType();
+        Player p = e.getPlayer();
+        if (p == null)
+            return;
+
+        if (t == PacketType.Play.Server.SET_SLOT) {
+            WrapperPlayServerSetSlot slot = new WrapperPlayServerSetSlot(e);
+            ItemStack is = slot.getItem();
+            ItemStack newIs = checkAndRemoveSpawnInfo(is);
+            if (newIs == null)
+                return;
+            slot.setItem(is);
+
+        }
+        if (t == PacketType.Play.Server.WINDOW_ITEMS) {
+            WrapperPlayServerWindowItems items = new WrapperPlayServerWindowItems(e);
+            final List<ItemStack> newItems = new ArrayList<>();
+            for (ItemStack is : items.getItems()) {
+                ItemStack newIs = checkAndRemoveSpawnInfo(is);
+                if (is == null || newIs == null) {
+                    newItems.add(null);
+                    continue;
                 }
-                p.setSlotData(newItems);
+                newItems.add(newIs);
             }
-        });
+            items.setItems(newItems);
+        }
     }
 
     public void initialize() {
-        this.createSetSlotListener();
-        this.createWindowItemsListener();
+        PacketEvents.getAPI().getEventManager().registerListener(this, PacketListenerPriority.NORMAL);
+        PacketEvents.getAPI().init();
     }
 
     public void uninitialize() {
-        this.pm.removePacketListeners(this.plugin);
+        PacketEvents.getAPI().getEventManager().unregisterAllListeners();
+        PacketEvents.getAPI().terminate();
     }
 }

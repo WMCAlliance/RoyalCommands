@@ -70,7 +70,7 @@ public class Config {
     public static boolean useAdminMotd;
     public static boolean useCustomDeath;
     public static boolean useFirstJoinMotd;
-    public static boolean useProtocolLib;
+    public static boolean usePacketevents;
     public static boolean useVNP;
     public static boolean useWelcome;
     public static boolean useWhitelist;
@@ -245,8 +245,8 @@ public class Config {
         updateOldUserdata = c.getBoolean("userdata.update_old", true);
         useAdminMotd = c.getBoolean("motd.options.use_first_join_motd", true);
         useCustomDeath = c.getBoolean("deathmessages.enabled", true);
+        usePacketevents = c.getBoolean("items.spawn.tag.plugins.packetevents", true);
         useFirstJoinMotd = c.getBoolean("motd.options.use_first_join_motd", true);
-        useProtocolLib = c.getBoolean("items.spawn.tag.plugins.protocollib", true);
         useVNP = c.getBoolean("plugins.use_vanish", true);
         useWelcome = c.getBoolean("messages.options.enable_welcome_message", true);
         useWhitelist = c.getBoolean("whitelist.enabled", false);
