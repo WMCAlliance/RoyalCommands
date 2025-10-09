@@ -12,14 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.RUtils;
-import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.ConfigurationNode;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-
 /**
  * A class representing a kit.
  */
