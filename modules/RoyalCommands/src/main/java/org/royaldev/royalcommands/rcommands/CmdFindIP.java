@@ -74,7 +74,13 @@ public class CmdFindIP extends TabCommand {
                     if (pip == null) continue;
                     if (pip.contains(ip)) {
                         synchronized (hasIP) {
-                            hasIP.add(pcm.getString("name", op.getName()) + ((partial) ? MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + pip : ""));
+                            String name = "";
+                            try {
+                                name = op.getName();
+                            } catch (Exception e) {
+                                name = op.getUniqueId().toString();
+                            }
+                            hasIP.add(pcm.getString("name", name) + ((partial) ? MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + pip : ""));
                         }
                     }
                     if (!alreadyPresent) pcm.discard();

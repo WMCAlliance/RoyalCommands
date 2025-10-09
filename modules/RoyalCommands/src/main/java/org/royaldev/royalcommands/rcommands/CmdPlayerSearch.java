@@ -41,7 +41,12 @@ public class CmdPlayerSearch extends TabCommand {
                 int found = 0;
                 cs.sendMessage(MessageColor.POSITIVE + "Search for " + MessageColor.NEUTRAL + search + MessageColor.POSITIVE + " started. This may take a while.");
                 for (final OfflinePlayer op : ops) {
-                    if (op == null || op.getName() == null) continue;
+                    try {
+                        if (op == null || op.getName() == null) continue;
+                    } catch (Exception ex) {
+                        cs.sendMessage(MessageColor.NEGATIVE + "Failed to read " + MessageColor.NEUTRAL + op.getUniqueId());
+                        continue;
+                    }
                     if (!op.getName().toLowerCase().contains(search.toLowerCase())) continue;
                     PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
                     if (!pcm.exists()) continue;
