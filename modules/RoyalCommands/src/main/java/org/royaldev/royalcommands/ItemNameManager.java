@@ -44,12 +44,6 @@ public class ItemNameManager {
                 RoyalCommands.getInstance().getLogger().warning("Material in item_aliases.csv is invalid: " + s[0]);
                 continue;
             }
-//            try {
-//                data = Short.valueOf(s[1]);
-//            } catch (NumberFormatException e) {
-//                RoyalCommands.getInstance().getLogger().warning("Data in item_aliases.csv file is invalid: " + s[1]);
-//                continue;
-//            }
             synchronized (items) {
                 items.put(aliases, new Pair<>(m, data));
             }
