@@ -26,9 +26,10 @@ public class ItemNameManager {
     public ItemNameManager(Iterable<String[]> values) {
         for (String[] s : values) {
             if (s.length < 1) continue;
+            if (s[0].startsWith("#")) continue;
             String[] aliases;
             try {
-                aliases = s[2].split(",");
+                aliases = s[1].split(",");
             } catch (IndexOutOfBoundsException e) {
                 Logger l = Logger.getLogger("Minecraft");
                 l.warning("[RoyalCommands] Values passed in ItemNameManager invalid: ");
@@ -36,19 +37,19 @@ public class ItemNameManager {
                 continue;
             }
             Material m;
-            short data;
+            short data = 0;
             try {
                 m = Material.valueOf(s[0]);
             } catch (IllegalArgumentException ex) {
-                RoyalCommands.getInstance().getLogger().warning("Material in items.csv is invalid: " + s[0]);
+                RoyalCommands.getInstance().getLogger().warning("Material in item_aliases.csv is invalid: " + s[0]);
                 continue;
             }
-            try {
-                data = Short.valueOf(s[1]);
-            } catch (NumberFormatException e) {
-                RoyalCommands.getInstance().getLogger().warning("Data in items.csv file is invalid: " + s[1]);
-                continue;
-            }
+//            try {
+//                data = Short.valueOf(s[1]);
+//            } catch (NumberFormatException e) {
+//                RoyalCommands.getInstance().getLogger().warning("Data in item_aliases.csv file is invalid: " + s[1]);
+//                continue;
+//            }
             synchronized (items) {
                 items.put(aliases, new Pair<>(m, data));
             }

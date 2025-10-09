@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.mvplugins.multiverse.core.world.LoadedMultiverseWorld;
 import org.mvplugins.multiverse.core.world.MultiverseWorld;
 
@@ -86,6 +87,7 @@ import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.tools.NameFetcher;
+import org.royaldev.royalcommands.tools.Pair;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
 
 @SuppressWarnings("unused")

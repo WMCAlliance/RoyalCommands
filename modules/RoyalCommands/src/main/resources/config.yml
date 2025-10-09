@@ -279,7 +279,7 @@ kits:
       description: An example kit.
       # List of items for this kit
       items:
-        - type: LOG:OAK
+        - type: OAK_LOG
           amount: 1
           # You can use colors in lore and names
           name: "&rWood of Champions"
@@ -299,9 +299,9 @@ kits:
     wool:
       description: A kit containing wool.
       items:
-        - type: WOOL:BLACK
+        - type: BLACK_WOOL
           amount: 64
-        - type: WOOL:BLUE
+        - type: BLUE_WOOL
           amount: 35
     # This kit can only be used once (cooldown of -1)
     onetime:

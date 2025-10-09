@@ -392,7 +392,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public void loadConfiguration() {
         if (!new File(getDataFolder(), "config.yml").exists()) saveDefaultConfig();
-        if (!new File(getDataFolder(), "items.csv").exists()) saveResource("items.csv", false);
+        if (!new File(getDataFolder(), "item_aliases.csv").exists()) saveResource("item_aliases.csv", false);
         if (!new File(getDataFolder(), "rules.txt").exists()) saveResource("rules.txt", false);
         if (!new File(getDataFolder(), "help.txt").exists()) saveResource("help.txt", false);
         if (!new File(getDataFolder(), "warps.yml").exists()) saveResource("warps.yml", false);

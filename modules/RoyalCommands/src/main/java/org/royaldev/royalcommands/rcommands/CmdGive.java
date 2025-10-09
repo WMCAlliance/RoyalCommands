@@ -25,7 +25,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class CmdGive extends TabCommand {
 
     public CmdGive(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.ITEM_ALIAS.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.ITEM.getShort()});
     }
 
     public static boolean giveItemStandalone(CommandSender cs, Player target, String itemname, int amount) {

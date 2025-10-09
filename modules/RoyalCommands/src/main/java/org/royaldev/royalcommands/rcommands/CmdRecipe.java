@@ -36,7 +36,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
+
 
 @ReflectCommand
 public class CmdRecipe extends TabCommand {
@@ -44,7 +44,7 @@ public class CmdRecipe extends TabCommand {
     private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdRecipe(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.ITEM.getShort()});
         this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), this.plugin);
     }
 

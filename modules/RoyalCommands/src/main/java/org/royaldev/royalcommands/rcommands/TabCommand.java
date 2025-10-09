@@ -112,7 +112,10 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     final String name = m.getKeyOrNull().getKey();
                     final String lowerCaseName = name.toLowerCase();
                     if (!lowerCaseName.startsWith(arg)) continue;
+                    // Minecraft default item names
                     possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
+                    // Custom item names
+                    possibilities.addAll(RoyalCommands.inm.getPossibleNames(arg));
                 }
                 break;
             case ATTRIBUTE:
@@ -279,7 +282,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
          */
         ONLINE_PLAYER((short) 1),
         /**
-         * Completes for any item alias in items.csv.
+         * Completes for any item alias in item_aliases.csv.
          */
         ITEM_ALIAS((short) 2),
         /**
