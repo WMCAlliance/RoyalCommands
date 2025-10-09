@@ -21,7 +21,7 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 public class CmdHelmet extends TabCommand {
 
     public CmdHelmet(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.ITEM.getShort()});
     }
     /**
      * TODO: Add support to add a helmet to another player

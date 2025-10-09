@@ -12,13 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.RUtils;
-import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.ConfigurationNode;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * A class representing a kit.
  */
@@ -68,11 +66,11 @@ public class Kit {
      * @param item Node representing an ItemStack
      * @return ItemStack of null
      */
+    // TODO Handle invalid item names better
     private ItemStack getItemStack(final ConfigurationNode item) {
-        final ItemStack is = RoyalCommands.inm.getItemStackFromAlias(item.getString("type"));
-        final Damageable imd = (Damageable) is.getItemMeta();
+        final ItemStack is = RUtils.getItem(item.getString("type"), item.getInt("amount", 1));
         if (is == null) return null;
-        is.setAmount(item.getInt("amount", 1));
+        final Damageable imd = (Damageable) is.getItemMeta();
         imd.setDamage(item.getShort("damage", (short) 0));
         final ItemMeta im = is.getItemMeta();
         im.setDisplayName(RUtils.colorize(item.getString("name")));
@@ -92,7 +90,9 @@ public class Kit {
         final List<ItemStack> itemStacks = new ArrayList<>();
         for (final ConfigurationNode item : items) {
             final ItemStack is = this.getItemStack(item);
-            if (is == null) continue;
+            if (is == null) {
+                continue;
+            }
             itemStacks.add(is);
         }
         return itemStacks;

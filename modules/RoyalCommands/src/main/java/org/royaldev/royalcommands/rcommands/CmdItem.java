@@ -30,7 +30,7 @@ public class CmdItem extends TabCommand {
     private static final Flag<String> loreFlag = new Flag<>(String.class, "description", "lore", "l");
 
     public CmdItem(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.ITEM.getShort()});
         this.addExpectedFlag(CmdItem.nameFlag);
         this.addExpectedFlag(CmdItem.loreFlag);
     }

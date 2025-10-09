@@ -366,15 +366,15 @@ public class Config {
 
         Reader in = null;
         try {
-            in = new FileReader(new File(this.plugin.getDataFolder() + File.separator + "items.csv"));
+            in = new FileReader(new File(this.plugin.getDataFolder() + File.separator + "item_aliases.csv"));
             CSVReader reader = new CSVReader(in);
             RoyalCommands.inm = new ItemNameManager(reader.readAll());
             reader.close();
         } catch (FileNotFoundException e) {
-            this.plugin.getLogger().warning("items.csv was not found! Item aliases will not be used.");
+            this.plugin.getLogger().warning("item_aliases.csv was not found! Item aliases will not be used.");
             RoyalCommands.inm = null;
         } catch (final IOException e) {
-            this.plugin.getLogger().warning("Internal input/output error loading items.csv. Item aliases will not be used.");
+            this.plugin.getLogger().warning("Internal input/output error loading item_aliases.csv. Item aliases will not be used.");
             RoyalCommands.inm = null;
         } finally {
             try {

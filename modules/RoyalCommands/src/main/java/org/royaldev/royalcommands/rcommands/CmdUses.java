@@ -47,7 +47,7 @@ public class CmdUses extends TabCommand {
     private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdUses(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
+        super(instance, name, true, new Short[]{CompletionType.ITEM.getShort()});
         this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), this.plugin);
     }
 
