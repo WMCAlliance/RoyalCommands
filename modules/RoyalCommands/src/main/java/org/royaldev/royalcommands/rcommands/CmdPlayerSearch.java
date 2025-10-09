@@ -49,8 +49,8 @@ public class CmdPlayerSearch extends TabCommand {
                     if (seen < 1L) continue;
                     found++;
                     String opName = op.getName();
-                    String lastseen = (op.isOnline()) ? " now"
-                            : RUtils.formatDateDiff(seen) + MessageColor.POSITIVE + " ago";
+                    String lastseen = (op.isOnline()) ? "now"
+                            : RUtils.formatDateDiff(seen) + MessageColor.POSITIVE + "ago";
 
                     TextComponent tc = new TextComponent();
 
