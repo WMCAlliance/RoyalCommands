@@ -39,6 +39,7 @@ public class CmdPlayerSearch extends TabCommand {
             @Override
             public void run() {
                 int found = 0;
+                cs.sendMessage(MessageColor.POSITIVE + "Search for " + MessageColor.NEUTRAL + search + MessageColor.POSITIVE + " started. This may take a while.");
                 for (final OfflinePlayer op : ops) {
                     if (op == null || op.getName() == null) continue;
                     if (!op.getName().toLowerCase().contains(search.toLowerCase())) continue;
