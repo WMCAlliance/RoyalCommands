@@ -7,7 +7,10 @@ package org.royaldev.royalcommands.rcommands;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.UUID;
+
 import org.apache.commons.lang3.BooleanUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -36,9 +39,19 @@ public class CmdWhois extends TabCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
-        if (!t.isOnline() && !t.hasPlayedBefore()) {
-            cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
+        OfflinePlayer t = null;
+        if (args[0].matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}")) {
+            t = Bukkit.getOfflinePlayer(UUID.fromString(args[0]));
+        } else {
+            t = RUtils.getOfflinePlayer(args[0]);
+        }
+        try {
+            if (t == null || !t.isOnline() && !t.hasPlayedBefore()) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
+                return true;
+            }
+        } catch (Exception e) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player's data is unreadable!");
             return true;
         }
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
