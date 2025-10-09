@@ -66,7 +66,7 @@ public class CmdPlayerSearch extends TabCommand {
                     neutral.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/whois " + opName));
                     tc.addExtra(neutral.duplicate());
 
-                    positive.setText(" - Last seen");
+                    positive.setText(" - Last seen ");
                     tc.addExtra(positive.duplicate());
 
                     tc.addExtra(TextComponent.fromLegacy(MessageColor.NEUTRAL + lastseen));
