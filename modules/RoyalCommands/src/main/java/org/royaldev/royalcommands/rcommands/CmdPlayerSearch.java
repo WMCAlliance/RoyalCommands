@@ -62,7 +62,7 @@ public class CmdPlayerSearch extends TabCommand {
                     tc.addExtra(positive.duplicate());
 
                     neutral.setText(opName);
-                    neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(cs)));
+                    neutral.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, RUtils.getPlayerTooltip(op)));
                     neutral.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/whois " + opName));
                     tc.addExtra(neutral.duplicate());
 
